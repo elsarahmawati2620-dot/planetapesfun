@@ -740,6 +740,16 @@ const FALLBACK_LB = [
 ];
 const MEDALS = ['👑','🥈','🥉'];
 
+// ─── SAFE LOCALSTORAGE (fixes sandboxed iframe SecurityError on Vercel etc.) ───
+const safeStorage = {
+  get: function(key) {
+    try { return localStorage.getItem(key); } catch (e) { return null; }
+  },
+  set: function(key, value) {
+    try { localStorage.setItem(key, value); return true; } catch (e) { return false; }
+  }
+};
+
 // ─── STATE ───
 var walletAddress = null;
 var ethProvider   = null;
@@ -752,7 +762,7 @@ var comboCount    = 0;
 var lastClickTime = 0;
 var holderBoost   = false;
 var skinBoost     = 1.0;
-var equippedSkin  = localStorage.getItem('planetApesCurrentSkin') || '';
+var equippedSkin  = safeStorage.get('planetApesCurrentSkin') || '';
 var ownedSkins    = [];
 var treasury      = 1245;
 var floatId       = 0;
@@ -761,9 +771,13 @@ var submitting    = false;
 // EIP-6963: collected provider details
 var eip6963Providers = [];
 
-try { ownedSkins = JSON.parse(localStorage.getItem('planetApesOwnedSkins') || '[]'); } catch(e) {}
+try {
+  var savedOwned = safeStorage.get('planetApesOwnedSkins');
+  if (savedOwned) ownedSkins = JSON.parse(savedOwned);
+} catch(e) {}
+
 (function() {
-  var saved = localStorage.getItem('planetApesCurrentSkin');
+  var saved = safeStorage.get('planetApesCurrentSkin');
   if (saved) {
     var s = SKINS.find(function(x) { return x.name === saved; });
     if (s) { equippedSkin = saved; skinBoost = s.boostVal; }
@@ -903,36 +917,74 @@ function detectWallets() {
   return wallets;
 }
 
+// ─── ROBUST MEGAETH NETWORK ENSURER (fixes connect bugs on Firefox, Chrome, Brave, Edge, etc.) ───
+async function ensureMegaETH(rawProvider) {
+  try {
+    // Check current chain first (prevents unnecessary prompts)
+    const currentChainId = await rawProvider.request({ method: 'eth_chainId' });
+    if (currentChainId && currentChainId.toLowerCase() === MEGAETH_CHAIN_ID.toLowerCase()) {
+      return true; // Already on MegaETH Mainnet
+    }
+  } catch (e) {
+    // Ignore, proceed to switch
+  }
+
+  try {
+    await rawProvider.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: MEGAETH_CHAIN_ID }],
+    });
+    return true;
+  } catch (switchErr) {
+    const code = switchErr && switchErr.code;
+    const msg = (switchErr && switchErr.message) || '';
+    if (code === 4902 || code === -32603 || msg.toLowerCase().includes('unrecognized chain') || msg.toLowerCase().includes('chain not found')) {
+      // Chain not added → add it (with exact details user requested)
+      try {
+        await rawProvider.request({
+          method: 'wallet_addEthereumChain',
+          params: [MEGAETH_CONFIG],
+        });
+        // After successful add, force switch to ensure we're on it (some wallets need this)
+        await rawProvider.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: MEGAETH_CHAIN_ID }],
+        });
+        showToast('✅ MegaETH Mainnet added & switched!', 'success');
+        return true;
+      } catch (addErr) {
+        const addCode = addErr && addErr.code;
+        const addMsg = (addErr && addErr.message) || '';
+        if (addCode === 4001 || addMsg.toLowerCase().includes('rejected') || addMsg.toLowerCase().includes('denied')) {
+          showToast('❌ Network addition rejected by user', 'error');
+        } else {
+          showToast('⚠️ Could not auto-add MegaETH. Please add manually:\nNetwork: MegaETH | RPC: https://mainnet.megaeth.com/rpc | Chain ID: 4326 | Symbol: ETH | Explorer: https://mega.etherscan.io', 'error');
+        }
+        return false;
+      }
+    } else if (code === 4001 || msg.toLowerCase().includes('rejected') || msg.toLowerCase().includes('denied')) {
+      showToast('❌ Network switch rejected by user', 'error');
+      return false;
+    } else {
+      showToast('⚠️ Could not switch to MegaETH automatically — please switch manually in wallet', 'error');
+      return false;
+    }
+  }
+}
+
 // ─── WALLET CONNECT ───
 async function connectWithProvider(rawProvider, label) {
   try {
     showToast('⏳ Connecting ' + (label || 'wallet') + '...', 'info');
 
-    // Request accounts
+    // Request accounts (works in all browsers)
     await rawProvider.request({ method: 'eth_requestAccounts' });
 
-    // Switch to / add MegaETH Mainnet
-    try {
-      await rawProvider.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: MEGAETH_CHAIN_ID }],
-      });
-    } catch (switchErr) {
-      if (switchErr && (switchErr.code === 4902 || switchErr.code === -32603)) {
-        try {
-          await rawProvider.request({
-            method: 'wallet_addEthereumChain',
-            params: [MEGAETH_CONFIG],
-          });
-        } catch(addErr) {
-          showToast('⚠️ Please add MegaETH manually (Chain ID: 4326, RPC: https://mainnet.megaeth.com/rpc)', 'error');
-        }
-      } else if (switchErr && switchErr.code === 4001) {
-        showToast('❌ Network switch rejected', 'error');
-        return;
-      } else if (switchErr && switchErr.code !== 4001) {
-        showToast('⚠️ Could not switch to MegaETH automatically — please switch manually', 'error');
-      }
+    // Ensure we are on MegaETH Mainnet (robust fix for all browsers/wallets)
+    const onMega = await ensureMegaETH(rawProvider);
+    if (!onMega) {
+      // Still proceed with connection (user can switch later), but warn
+      showToast('⚠️ Connected but not on MegaETH yet — switch in wallet for full features', 'info');
     }
 
     ethProvider   = new ethers.providers.Web3Provider(rawProvider);
@@ -940,9 +992,9 @@ async function connectWithProvider(rawProvider, label) {
     walletAddress = await ethSigner.getAddress();
     updateWalletUI();
     closeWalletModal();
-    showToast('✅ ' + (label || 'Wallet') + ' connected! ' + walletAddress.slice(0,6) + '...' + walletAddress.slice(-4), 'success');
+    showToast('✅ ' + (label || 'Wallet') + ' connected! ' + walletAddress.slice(0,6) + '...' + walletAddress.slice(-4) + ' on MegaETH', 'success');
 
-    // Listen for account/chain changes
+    // Listen for account/chain changes (reload on chain change to avoid issues)
     rawProvider.on('accountsChanged', function(accounts) {
       walletAddress = (accounts && accounts[0]) ? accounts[0] : null;
       if (walletAddress) {
@@ -1394,7 +1446,7 @@ function updateTreasury() {
 
 function equipSkin(name, boostVal) {
   equippedSkin = name; skinBoost = boostVal;
-  localStorage.setItem('planetApesCurrentSkin', name);
+  safeStorage.set('planetApesCurrentSkin', name);
   var imgs = { 'King Ape':'https://i.imgur.com/YestlX1.jpg','Banana God':'https://i.imgur.com/eyQoioN.jpg','Degen Ape':'https://i.imgur.com/7VFGhCb.jpg','Jungle Chad':'https://i.imgur.com/4rUjNtO.jpg' };
   document.getElementById('ape-img').src = imgs[name] || 'https://i.imgur.com/KlM5HWE.jpg';
   renderSkins();
@@ -1429,7 +1481,7 @@ async function buySkin(name, priceUsdm, boostVal) {
     showToast('⏳ Waiting for on-chain confirmation...', 'info');
     var receipt = await buyTx.wait();
     ownedSkins.push(name);
-    localStorage.setItem('planetApesOwnedSkins', JSON.stringify(ownedSkins));
+    safeStorage.set('planetApesOwnedSkins', JSON.stringify(ownedSkins));
     treasury += priceUsdm;
     updateTreasury();
     equipSkin(name, boostVal);
