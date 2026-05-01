@@ -785,20 +785,30 @@ try {
 })();
 
 // ─── EIP-6963: MULTI-WALLET DISCOVERY ───
-// Works across all browsers including Firefox
-(function setupEip6963() {
-  var seen = {};
-  window.addEventListener('eip6963:announceProvider', function(event) {
-    var detail = event.detail;
-    if (!detail || !detail.info || !detail.provider) return;
-    var uuid = detail.info.uuid;
-    if (seen[uuid]) return;
-    seen[uuid] = true;
-    eip6963Providers.push(detail);
-  });
-  // Request all wallets to announce themselves
-  window.dispatchEvent(new Event('eip6963:requestProvider'));
-})();
+// Works across Firefox, Chrome, Brave, Edge, and all EIP-6963 compatible wallets
+var _eip6963Seen = {};
+window.addEventListener('eip6963:announceProvider', function(event) {
+  var detail = event && event.detail;
+  if (!detail || !detail.info || !detail.provider) return;
+  var uuid = detail.info.uuid || detail.info.name;
+  if (_eip6963Seen[uuid]) return;
+  _eip6963Seen[uuid] = true;
+  eip6963Providers.push(detail);
+});
+
+function requestEip6963Providers() {
+  try {
+    // Use CustomEvent for broader compatibility (Firefox requires this)
+    window.dispatchEvent(new CustomEvent('eip6963:requestProvider'));
+  } catch(e) {
+    try { window.dispatchEvent(new Event('eip6963:requestProvider')); } catch(e2) {}
+  }
+}
+
+// Initial request — fire immediately and again after short delay for slow-loading extensions
+requestEip6963Providers();
+setTimeout(requestEip6963Providers, 500);
+setTimeout(requestEip6963Providers, 1500);
 
 // ─── TOAST ───
 function showToast(msg, type) {
@@ -872,63 +882,73 @@ function getInstallLinks() {
 }
 
 // ─── WALLET DETECTION ───
-// Prioritises EIP-6963 (modern standard, works in Firefox),
-// then falls back to window.ethereum providers array.
+// Priority: EIP-6963 (Firefox/Chrome/all modern), then legacy window.ethereum
 function detectWallets() {
-  // 1. EIP-6963 providers (announced via eip6963:announceProvider)
-  if (eip6963Providers.length > 0) {
-    return eip6963Providers.map(function(detail) {
-      var name = detail.info.name;
-      var icon = '🌐';
-      if (name.toLowerCase().indexOf('metamask') !== -1) icon = '🦊';
-      else if (name.toLowerCase().indexOf('coinbase') !== -1) icon = '🔵';
-      else if (name.toLowerCase().indexOf('brave') !== -1) icon = '🦁';
-      return {
-        type:     detail.info.rdns || name,
-        label:    name,
-        icon:     icon,
-        desc:     detail.info.rdns || 'Browser wallet extension',
-        provider: detail.provider,
-      };
+  var results = [];
+  var seenTypes = {};
+
+  // 1. EIP-6963 providers (modern standard — Firefox MetaMask, most wallets)
+  eip6963Providers.forEach(function(detail) {
+    var name = (detail.info && detail.info.name) || 'Browser Wallet';
+    var rdns = (detail.info && detail.info.rdns) || name;
+    if (seenTypes[rdns]) return;
+    seenTypes[rdns] = true;
+    var icon = '🌐';
+    var lname = name.toLowerCase();
+    if (lname.indexOf('metamask') !== -1) icon = '🦊';
+    else if (lname.indexOf('coinbase') !== -1) icon = '🔵';
+    else if (lname.indexOf('brave') !== -1) icon = '🦁';
+    else if (lname.indexOf('rainbow') !== -1) icon = '🌈';
+    else if (lname.indexOf('trust') !== -1) icon = '🛡️';
+    results.push({
+      type:     'eip6963_' + rdns,
+      label:    name,
+      icon:     icon,
+      desc:     rdns,
+      provider: detail.provider,
+    });
+  });
+
+  // 2. Legacy window.ethereum fallback (older wallets, some Firefox setups)
+  var eth = window.ethereum;
+  if (eth) {
+    var providers = (eth.providers && Array.isArray(eth.providers)) ? eth.providers : [eth];
+    providers.forEach(function(p) {
+      var type, label, icon, desc;
+      if (p.isBraveWallet)                         { type='Brave';       label='Brave Wallet';    icon='🦁'; desc='Brave browser built-in wallet'; }
+      else if (p.isCoinbaseWallet||p.isCoinbaseBrowser){ type='Coinbase'; label='Coinbase Wallet'; icon='🔵'; desc='Coinbase Wallet extension'; }
+      else if (p.isMetaMask)                        { type='MetaMask';    label='MetaMask';        icon='🦊'; desc='MetaMask browser extension'; }
+      else                                          { type='Browser';     label='Browser Wallet';  icon='🌐'; desc='Injected browser wallet'; }
+      // Only add if not already found via EIP-6963
+      var legacyKey = 'legacy_' + type;
+      if (!seenTypes[legacyKey]) {
+        // Check if same wallet was already found via EIP-6963 by name match
+        var alreadyFound = results.some(function(r) { return r.label.toLowerCase().indexOf(label.toLowerCase()) !== -1; });
+        if (!alreadyFound) {
+          seenTypes[legacyKey] = true;
+          results.push({ type: legacyKey, label: label, icon: icon, desc: desc, provider: p });
+        }
+      }
     });
   }
 
-  // 2. Legacy window.ethereum fallback
-  var eth = window.ethereum;
-  if (!eth) return [];
-  var wallets = [];
-  var seen    = {};
-  var providers = (eth.providers && Array.isArray(eth.providers)) ? eth.providers : [eth];
-  providers.forEach(function(p) {
-    if (p.isBraveWallet && !seen['Brave']) {
-      seen['Brave'] = true;
-      wallets.push({ type:'Brave',       label:'Brave Wallet',    icon:'🦁', desc:'Brave browser built-in wallet',    provider:p });
-    } else if ((p.isCoinbaseWallet || p.isCoinbaseBrowser) && !seen['Coinbase']) {
-      seen['Coinbase'] = true;
-      wallets.push({ type:'Coinbase',    label:'Coinbase Wallet', icon:'🔵', desc:'Coinbase Wallet extension',         provider:p });
-    } else if (p.isMetaMask && !seen['MetaMask']) {
-      seen['MetaMask'] = true;
-      wallets.push({ type:'MetaMask',    label:'MetaMask',        icon:'🦊', desc:'MetaMask browser extension',        provider:p });
-    } else if (!seen['BrowserWallet'] && !p.isBraveWallet && !p.isCoinbaseWallet && !p.isMetaMask) {
-      seen['BrowserWallet'] = true;
-      wallets.push({ type:'BrowserWallet', label:'Browser Wallet', icon:'🌐', desc:'Your connected browser wallet',   provider:p });
-    }
-  });
-  return wallets;
+  return results;
 }
 
-// ─── ROBUST MEGAETH NETWORK ENSURER (fixes connect bugs on Firefox, Chrome, Brave, Edge, etc.) ───
+// ─── ROBUST MEGAETH NETWORK ENSURER ───
+// Handles Firefox (different error codes), Chrome, Brave, Edge, MetaMask, Coinbase Wallet
 async function ensureMegaETH(rawProvider) {
+  var targetChainId = MEGAETH_CHAIN_ID.toLowerCase(); // '0x10e6'
   try {
-    // Check current chain first (prevents unnecessary prompts)
-    const currentChainId = await rawProvider.request({ method: 'eth_chainId' });
-    if (currentChainId && currentChainId.toLowerCase() === MEGAETH_CHAIN_ID.toLowerCase()) {
+    var currentChainId = await rawProvider.request({ method: 'eth_chainId' });
+    if (currentChainId && currentChainId.toLowerCase() === targetChainId) {
       return true; // Already on MegaETH Mainnet
     }
   } catch (e) {
-    // Ignore, proceed to switch
+    // Cannot read chainId — proceed to try switching anyway
   }
 
+  // Try switching to MegaETH
   try {
     await rawProvider.request({
       method: 'wallet_switchEthereumChain',
@@ -936,83 +956,133 @@ async function ensureMegaETH(rawProvider) {
     });
     return true;
   } catch (switchErr) {
-    const code = switchErr && switchErr.code;
-    const msg = (switchErr && switchErr.message) || '';
-    if (code === 4902 || code === -32603 || msg.toLowerCase().includes('unrecognized chain') || msg.toLowerCase().includes('chain not found')) {
-      // Chain not added → add it (with exact details user requested)
+    var code = switchErr && switchErr.code;
+    var msg  = ((switchErr && switchErr.message) || '').toLowerCase();
+
+    // User rejected the switch
+    if (code === 4001 || msg.indexOf('rejected') !== -1 || msg.indexOf('denied') !== -1 || msg.indexOf('cancelled') !== -1) {
+      showToast('❌ Network switch rejected — please switch to MegaETH manually in your wallet', 'error');
+      return false;
+    }
+
+    // Chain not added to wallet:
+    // 4902 = standard | -32603 = some wallets | -32000 = some wallets
+    // Also catch message-based detection for Firefox/non-standard wallets
+    var chainNotAdded = (code === 4902 || code === -32603 || code === -32000 ||
+      msg.indexOf('unrecognized chain') !== -1 || msg.indexOf('chain not found') !== -1 ||
+      msg.indexOf('unknown chain') !== -1 || msg.indexOf('try adding') !== -1 ||
+      msg.indexOf('wallet_addethereumchain') !== -1);
+
+    if (chainNotAdded) {
       try {
         await rawProvider.request({
           method: 'wallet_addEthereumChain',
           params: [MEGAETH_CONFIG],
         });
-        // After successful add, force switch to ensure we're on it (some wallets need this)
-        await rawProvider.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: MEGAETH_CHAIN_ID }],
-        });
-        showToast('✅ MegaETH Mainnet added & switched!', 'success');
+        // After adding, try to switch (some wallets require explicit switch after add)
+        try {
+          await rawProvider.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: MEGAETH_CHAIN_ID }],
+          });
+        } catch(e) { /* ignore switch error after add — wallet may have already switched */ }
+        showToast('✅ MegaETH Mainnet added & activated!', 'success');
         return true;
       } catch (addErr) {
-        const addCode = addErr && addErr.code;
-        const addMsg = (addErr && addErr.message) || '';
-        if (addCode === 4001 || addMsg.toLowerCase().includes('rejected') || addMsg.toLowerCase().includes('denied')) {
-          showToast('❌ Network addition rejected by user', 'error');
+        var addCode = addErr && addErr.code;
+        var addMsg  = ((addErr && addErr.message) || '').toLowerCase();
+        if (addCode === 4001 || addMsg.indexOf('rejected') !== -1 || addMsg.indexOf('denied') !== -1) {
+          showToast('❌ Adding MegaETH network rejected by user', 'error');
         } else {
-          showToast('⚠️ Could not auto-add MegaETH. Please add manually:\nNetwork: MegaETH | RPC: https://mainnet.megaeth.com/rpc | Chain ID: 4326 | Symbol: ETH | Explorer: https://mega.etherscan.io', 'error');
+          // Show manual instructions as fallback
+          showToast('⚠️ Please add MegaETH manually: Name: MegaETH | RPC: https://mainnet.megaeth.com/rpc | Chain ID: 4326 | Symbol: ETH', 'error');
         }
         return false;
       }
-    } else if (code === 4001 || msg.toLowerCase().includes('rejected') || msg.toLowerCase().includes('denied')) {
-      showToast('❌ Network switch rejected by user', 'error');
-      return false;
-    } else {
-      showToast('⚠️ Could not switch to MegaETH automatically — please switch manually in wallet', 'error');
-      return false;
     }
+
+    // Any other error — show manual instructions
+    showToast('⚠️ Auto-switch failed. Please switch to MegaETH (Chain ID: 4326) manually in your wallet.', 'error');
+    return false;
   }
 }
 
 // ─── WALLET CONNECT ───
 async function connectWithProvider(rawProvider, label) {
+  if (!rawProvider) {
+    showToast('❌ Wallet provider not found. Please reload and try again.', 'error');
+    return;
+  }
   try {
+    closeWalletModal();
     showToast('⏳ Connecting ' + (label || 'wallet') + '...', 'info');
 
-    // Request accounts (works in all browsers)
-    await rawProvider.request({ method: 'eth_requestAccounts' });
-
-    // Ensure we are on MegaETH Mainnet (robust fix for all browsers/wallets)
-    const onMega = await ensureMegaETH(rawProvider);
-    if (!onMega) {
-      // Still proceed with connection (user can switch later), but warn
-      showToast('⚠️ Connected but not on MegaETH yet — switch in wallet for full features', 'info');
+    // Request accounts — works in all browsers (Firefox, Chrome, Brave, Edge)
+    var accounts;
+    try {
+      accounts = await rawProvider.request({ method: 'eth_requestAccounts' });
+    } catch(reqErr) {
+      if (reqErr && (reqErr.code === 4001 || (reqErr.message||'').toLowerCase().indexOf('rejected') !== -1 || (reqErr.message||'').toLowerCase().indexOf('denied') !== -1)) {
+        showToast('❌ Connection rejected by user', 'error');
+      } else {
+        showToast('❌ Could not request accounts: ' + ((reqErr && reqErr.message) || 'Unknown error').slice(0, 80), 'error');
+      }
+      return;
     }
 
-    ethProvider   = new ethers.providers.Web3Provider(rawProvider);
+    if (!accounts || accounts.length === 0) {
+      showToast('❌ No accounts returned from wallet', 'error');
+      return;
+    }
+
+    // Ensure we are on MegaETH Mainnet
+    var onMega = await ensureMegaETH(rawProvider);
+    if (!onMega) {
+      showToast('⚠️ Connected but not on MegaETH yet — switch network in your wallet', 'info');
+    }
+
+    // Create ethers provider — handle both ethers v5 and potential issues
+    try {
+      ethProvider   = new ethers.providers.Web3Provider(rawProvider, 'any');
+      await ethProvider.ready; // wait for network to be ready (important for Firefox)
+    } catch(provErr) {
+      // Fallback: try without 'any'
+      ethProvider = new ethers.providers.Web3Provider(rawProvider);
+    }
+
     ethSigner     = ethProvider.getSigner();
     walletAddress = await ethSigner.getAddress();
     updateWalletUI();
-    closeWalletModal();
     showToast('✅ ' + (label || 'Wallet') + ' connected! ' + walletAddress.slice(0,6) + '...' + walletAddress.slice(-4) + ' on MegaETH', 'success');
 
-    // Listen for account/chain changes (reload on chain change to avoid issues)
-    rawProvider.on('accountsChanged', function(accounts) {
-      walletAddress = (accounts && accounts[0]) ? accounts[0] : null;
-      if (walletAddress) {
-        ethProvider = new ethers.providers.Web3Provider(rawProvider);
-        ethSigner   = ethProvider.getSigner();
-      } else {
-        ethProvider = null; ethSigner = null;
-      }
-      updateWalletUI();
-    });
-    rawProvider.on('chainChanged', function() { location.reload(); });
+    // Listen for account/chain changes
+    if (rawProvider.on) {
+      rawProvider.on('accountsChanged', function(accs) {
+        walletAddress = (accs && accs[0]) ? accs[0] : null;
+        if (walletAddress) {
+          try {
+            ethProvider = new ethers.providers.Web3Provider(rawProvider, 'any');
+            ethSigner   = ethProvider.getSigner();
+          } catch(e) {}
+        } else {
+          ethProvider = null; ethSigner = null;
+        }
+        updateWalletUI();
+      });
+      rawProvider.on('chainChanged', function() { location.reload(); });
+      rawProvider.on('disconnect', function() {
+        walletAddress = null; ethProvider = null; ethSigner = null;
+        updateWalletUI();
+        showToast('⚠️ Wallet disconnected', 'info');
+      });
+    }
 
   } catch (err) {
     var msg = (err && err.message) || '';
-    if (err && (err.code === 4001 || msg.indexOf('rejected') !== -1 || msg.indexOf('denied') !== -1)) {
+    if (err && (err.code === 4001 || msg.toLowerCase().indexOf('rejected') !== -1 || msg.toLowerCase().indexOf('denied') !== -1)) {
       showToast('❌ Connection rejected by user', 'error');
     } else {
-      showToast('❌ Connect failed: ' + msg.slice(0, 80), 'error');
+      showToast('❌ Connect failed: ' + msg.slice(0, 100), 'error');
     }
   }
 }
@@ -1032,8 +1102,7 @@ function updateWalletUI() {
 }
 
 // ─── WALLET MODAL ───
-function openWalletModal() {
-  var modal      = document.getElementById('wallet-modal');
+function renderWalletModalBody() {
   var body       = document.getElementById('wallet-modal-body');
   var tag        = document.getElementById('wallet-browser-tag');
   var browserName = getBrowserName();
@@ -1044,38 +1113,50 @@ function openWalletModal() {
     var links = getInstallLinks();
     var html  = '<div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:1rem;padding:1rem;margin-bottom:1rem">' +
       '<div style="font-weight:700;color:#ef4444;margin-bottom:0.4rem">❌ No wallet detected</div>' +
-      '<div style="font-size:0.8rem;color:#9CA3AF;line-height:1.6">No wallet extension found for ' + browserName + '. Install one below, then reload.</div></div>' +
+      '<div style="font-size:0.8rem;color:#9CA3AF;line-height:1.6">No wallet extension found for ' + escHtml(browserName) + '. Install one below, then reload the page.</div></div>' +
       '<div style="display:flex;flex-direction:column;gap:0.625rem">';
     links.forEach(function(link) {
       html += '<button onclick="window.open(\'' + link.url + '\',\'_blank\')" style="display:flex;align-items:center;gap:0.75rem;padding:0.875rem 1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.15);border-radius:0.875rem;color:#fff;font-weight:700;font-size:0.875rem;cursor:pointer;text-align:left" onmouseover="this.style.borderColor=\'rgba(250,204,21,0.5)\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,0.15)\'">' +
         '<span style="font-size:1.5rem">🦊</span>' +
-        '<div><div>' + link.label + '</div><div style="font-size:0.7rem;color:#9CA3AF;font-weight:400">' + link.desc + '</div></div>' +
+        '<div><div>' + escHtml(link.label) + '</div><div style="font-size:0.7rem;color:#9CA3AF;font-weight:400">' + escHtml(link.desc) + '</div></div>' +
         '<span style="margin-left:auto;color:#FACC15">↗</span></button>';
     });
-    html += '</div>';
+    html += '</div>' +
+      '<button onclick="location.reload()" style="margin-top:0.75rem;width:100%;padding:0.75rem;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.2);border-radius:0.875rem;color:#9CA3AF;font-size:0.8rem;cursor:pointer">🔄 Already installed? Reload page</button>';
     body.innerHTML = html;
   } else {
-    // Store providers on window for onclick access
+    // Store providers on window for onclick access (keyed by index to avoid string injection issues)
     window.__walletProviders = {};
-    wallets.forEach(function(w) { window.__walletProviders[w.type] = w.provider; });
+    wallets.forEach(function(w, i) { window.__walletProviders['w' + i] = w.provider; });
 
     var html = '<div style="display:flex;flex-direction:column;gap:0.625rem">';
-    wallets.forEach(function(w) {
-      var safeType = w.type.replace(/'/g, "\\'");
+    wallets.forEach(function(w, i) {
       var safeLabel = escHtml(w.label);
       var safeDesc  = escHtml(w.desc);
-      html += '<button onclick="connectWithProvider(window.__walletProviders[\'' + safeType + '\'],\'' + safeLabel + '\')" ' +
-        'style="display:flex;align-items:center;gap:1rem;padding:0.875rem 1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.15);border-radius:0.875rem;color:#fff;font-weight:700;font-size:0.875rem;cursor:pointer;text-align:left" ' +
+      html += '<button onclick="connectWithProvider(window.__walletProviders[\'w' + i + '\'],\'' + safeLabel.replace(/'/g,"\\'") + '\')" ' +
+        'style="display:flex;align-items:center;gap:1rem;padding:0.875rem 1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.15);border-radius:0.875rem;color:#fff;font-weight:700;font-size:0.875rem;cursor:pointer;text-align:left;width:100%" ' +
         'onmouseover="this.style.borderColor=\'rgba(250,204,21,0.5)\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,0.15)\'">' +
         '<span style="font-size:2rem">' + w.icon + '</span>' +
-        '<div><div>' + safeLabel + '</div><div style="font-size:0.7rem;color:#9CA3AF;font-weight:400">' + safeDesc + '</div></div>' +
+        '<div style="flex:1;min-width:0"><div>' + safeLabel + '</div><div style="font-size:0.7rem;color:#9CA3AF;font-weight:400">' + safeDesc + '</div></div>' +
         '</button>';
     });
     html += '</div>';
     body.innerHTML = html;
   }
-  modal.style.display = 'flex';
 }
+
+function openWalletModal() {
+  var modal = document.getElementById('wallet-modal');
+  modal.style.display = 'flex';
+  // Re-request EIP-6963 providers each time modal opens (catches late-loading extensions)
+  requestEip6963Providers();
+  renderWalletModalBody();
+  // Re-render after short delay in case wallet announces itself asynchronously (Firefox)
+  setTimeout(function() {
+    if (modal.style.display === 'flex') renderWalletModalBody();
+  }, 600);
+}
+
 function closeWalletModal() {
   document.getElementById('wallet-modal').style.display = 'none';
 }
