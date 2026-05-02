@@ -296,6 +296,16 @@
       </button>
     </div>
 
+    <!-- Contract Address Copy Bar -->
+    <div style="margin-top:1.75rem;display:flex;align-items:center;justify-content:center;gap:0;max-width:600px;margin-left:auto;margin-right:auto">
+      <div style="flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,215,0,0.3);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.8rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+        CA: 0x03dC8b777d0146A07DFef8eD8c969cA48889d420
+      </div>
+      <button id="copy-ca-btn" onclick="copyCA()" style="background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;font-size:0.8rem;border:none;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;cursor:pointer;white-space:nowrap;transition:opacity 0.2s">
+        📋 COPY
+      </button>
+    </div>
+
     <div style="margin-top:2.5rem;display:flex;justify-content:center;gap:2rem;font-size:0.875rem;opacity:0.75;flex-wrap:wrap">
       <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#34D399">✔</span>FAIR LAUNCH</div>
       <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#34D399">✔</span>0 TAX</div>
@@ -467,6 +477,16 @@
         <div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#F59E0B">Renounced</div>
         <div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">No control, true community coin</div>
       </div>
+    </div>
+
+    <!-- Contract Address Copy Bar (Tokenomics) -->
+    <div style="margin-bottom:2rem;display:flex;align-items:center;gap:0;max-width:640px;margin-left:auto;margin-right:auto">
+      <div style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,215,0,0.3);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+        CA: 0x03dC8b777d0146A07DFef8eD8c969cA48889d420
+      </div>
+      <button id="copy-ca-btn-2" onclick="copyCA()" style="background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;font-size:0.8rem;border:none;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;cursor:pointer;white-space:nowrap">
+        📋 COPY
+      </button>
     </div>
 
     <div style="background:#111;border:1px solid rgba(250,204,21,0.3);border-radius:1.5rem;padding:2rem">
@@ -831,6 +851,19 @@ function smoothScroll(id) {
   var el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: 'smooth' });
   return false;
+}
+
+function copyCA() {
+  var ca = '0x03dC8b777d0146A07DFef8eD8c969cA48889d420';
+  navigator.clipboard.writeText(ca).then(function() {
+    var btn = document.getElementById('copy-ca-btn');
+    var btn2 = document.getElementById('copy-ca-btn-2');
+    if (btn) { btn.textContent = '✅ COPIED!'; setTimeout(function(){ btn.textContent = '📋 COPY'; }, 2000); }
+    if (btn2) { btn2.textContent = '✅ COPIED!'; setTimeout(function(){ btn2.textContent = '📋 COPY'; }, 2000); }
+    showToast('✅ Contract address copied!', 'success');
+  }).catch(function() {
+    showToast('❌ Copy failed — please copy manually', 'error');
+  });
 }
 
 // ─── ESCAPE HTML ───
