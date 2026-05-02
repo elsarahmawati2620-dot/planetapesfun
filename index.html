@@ -212,7 +212,7 @@
 
     <div style="display:inline-flex;align-items:center;gap:0.75rem;padding:0.5rem 1.5rem;background:#FFD700;color:#000;border-radius:9999px;margin-bottom:1rem">
       <div class="animate-pulse" style="width:0.75rem;height:0.75rem;background:#22c55e;border-radius:50%"></div>
-      <span style="font-weight:900;font-size:0.875rem;letter-spacing:3px">LAUNCHING ON MONAD</span>
+      <span style="font-weight:900;font-size:0.875rem;letter-spacing:3px">LIVE ON MONAD</span>
     </div>
 
     <h1 class="pixel-font" style="font-size:clamp(3rem,10vw,5rem);line-height:1;color:#fff;margin-bottom:0.5rem">PLANET<br>APES</h1>
@@ -223,20 +223,24 @@
       Take bananas. Rule the jungle. <span style="color:#FACC15">To the moon.</span>
     </p>
 
-    <!-- Coming Soon Banner -->
-    <div style="max-width:36rem;margin:0 auto 2rem;padding:1rem 1.5rem;background:rgba(131,110,249,0.15);border:2px solid rgba(131,110,249,0.5);border-radius:1rem">
-      <div style="color:#836EF9;font-weight:900;font-size:1.1rem;margin-bottom:0.25rem">🚀 LAUNCHING SOON ON NAD.FUN 🚀</div>
-      <div style="font-size:0.9rem;color:#D1D5DB">CA: <span style="color:#FACC15;font-weight:700;letter-spacing:2px">SOON</span></div>
+    <!-- CA Bar -->
+    <div style="max-width:36rem;margin:0 auto 2rem;display:flex;align-items:center;gap:0">
+      <div style="flex:1;background:rgba(131,110,249,0.1);border:1px solid rgba(131,110,249,0.4);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+        CA: 0xdc678DfE5D83Fa3e2e955Dc3ad785801121c7777
+      </div>
+      <button id="copy-ca-btn" onclick="copyCA()" style="background:linear-gradient(90deg,#836EF9,#6d54f0);color:#fff;font-weight:900;font-size:0.78rem;border:none;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;cursor:pointer;white-space:nowrap;transition:opacity 0.2s">
+        📋 COPY
+      </button>
     </div>
 
     <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;align-items:center">
-      <button onclick="smoothScroll('game')"
+      <button class="meme-btn" onclick="window.open('https://nad.fun/tokens/0xdc678DfE5D83Fa3e2e955Dc3ad785801121c7777','_blank')"
         style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;display:flex;align-items:center;gap:0.75rem;box-shadow:0 10px 40px rgba(255,215,0,0.5)">
-        🎮 PLAY TAKE BANANA
+        <span>BUY $APES</span><span>🚀</span>
       </button>
-      <button onclick="window.open('https://x.com/planetapesxyz','_blank')"
+      <button onclick="smoothScroll('game')"
         style="padding:1.25rem 2.5rem;border:4px solid #FFD700;background:transparent;color:#fff;font-weight:900;font-size:1.1rem;border-radius:1rem">
-        𝕏 FOLLOW US
+        🎮 PLAY TAKE BANANA
       </button>
     </div>
 
@@ -250,23 +254,23 @@
   <div class="ticker-wrap">
     <div class="ticker-inner">
       <span>🍌 $150 PRIZE POOL — TOP 3 WINS! 🍌</span>
-      <span>🐵 LAUNCHING ON MONAD 🐵</span>
+      <span>🐵 LIVE ON MONAD 🐵</span>
       <span>🏆 WEEKLY LEADERBOARD 🏆</span>
-      <span>🚀 COMING SOON ON NAD.FUN 🚀</span>
+      <span>🚀 BUY $APES ON NAD.FUN 🚀</span>
       <span>🦍 KING OF THE JUNGLE ON MONAD 🦍</span>
       <span>🍌 $150 PRIZE POOL — TOP 3 WINS! 🍌</span>
-      <span>🐵 LAUNCHING ON MONAD 🐵</span>
+      <span>🐵 LIVE ON MONAD 🐵</span>
       <span>🏆 WEEKLY LEADERBOARD 🏆</span>
-      <span>🚀 COMING SOON ON NAD.FUN 🚀</span>
+      <span>🚀 BUY $APES ON NAD.FUN 🚀</span>
       <span>🦍 KING OF THE JUNGLE ON MONAD 🦍</span>
     </div>
   </div>
 </section>
 
-<!-- Launching on bar -->
-<div style="background:#0a0a0a;border-bottom:1px solid rgba(234,179,8,0.2);padding:1.25rem;text-align:center">
-  <div style="color:#FACC15;font-size:0.75rem;letter-spacing:0.2em">LAUNCHING ON</div>
-  <div style="font-size:2.25rem;font-weight:900;color:#836EF9">NAD.FUN</div>
+<!-- Available on bar -->
+<div style="background:#0a0a0a;border-bottom:1px solid rgba(234,179,8,0.2);padding:1.25rem;text-align:center;cursor:pointer" onclick="window.open('https://nad.fun/tokens/0xdc678DfE5D83Fa3e2e955Dc3ad785801121c7777','_blank')">
+  <div style="color:#FACC15;font-size:0.75rem;letter-spacing:0.2em">AVAILABLE ON</div>
+  <div style="font-size:2.25rem;font-weight:900;color:#836EF9">NAD.FUN 🚀</div>
 </div>
 
 <!-- GAME — TAKE BANANA -->
@@ -406,13 +410,14 @@
       </div>
     </div>
 
-    <!-- CA Soon Bar -->
-    <div style="margin-bottom:2rem;display:flex;align-items:center;justify-content:center;gap:0;max-width:640px;margin-left:auto;margin-right:auto">
-      <div style="flex:1;background:rgba(131,110,249,0.1);border:1px solid rgba(131,110,249,0.4);border-radius:1rem;padding:1rem 1.5rem;text-align:center">
-        <div style="font-size:0.7rem;color:#9CA3AF;letter-spacing:2px;margin-bottom:0.25rem">CONTRACT ADDRESS</div>
-        <div style="font-size:1.25rem;font-weight:900;color:#836EF9;letter-spacing:4px">SOON™</div>
-        <div style="font-size:0.75rem;color:#6B7280;margin-top:0.25rem">Launching on nad.fun — stay tuned!</div>
+    <!-- CA Bar (Tokenomics) -->
+    <div style="margin-bottom:2rem;display:flex;align-items:center;gap:0;max-width:640px;margin-left:auto;margin-right:auto">
+      <div style="flex:1;background:rgba(131,110,249,0.1);border:1px solid rgba(131,110,249,0.4);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+        CA: 0xdc678DfE5D83Fa3e2e955Dc3ad785801121c7777
       </div>
+      <button id="copy-ca-btn-2" onclick="copyCA()" style="background:linear-gradient(90deg,#836EF9,#6d54f0);color:#fff;font-weight:900;font-size:0.78rem;border:none;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;cursor:pointer;white-space:nowrap;transition:opacity 0.2s">
+        📋 COPY
+      </button>
     </div>
 
   </div>
@@ -450,14 +455,15 @@
       <div class="step-num">4</div>
       <div>
         <div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy $APES on nad.fun</div>
-        <div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Visit <strong style="color:#836EF9">nad.fun</strong> — the premier launchpad on Monad. Once $APES launches, connect your wallet, find $APES, and buy instantly. CA dropping soon!</div>
+        <div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Visit <strong style="color:#836EF9">nad.fun</strong> — the premier launchpad on Monad. Connect your wallet, find $APES, and swap instantly.<br><span style="color:#FACC15;font-size:0.8rem">CA: 0xdc678DfE5D83Fa3e2e955Dc3ad785801121c7777</span></div>
       </div>
     </div>
   </div>
   <div style="margin-top:2rem;text-align:center">
-    <div style="display:inline-block;padding:1.25rem 3rem;background:rgba(131,110,249,0.15);border:2px solid rgba(131,110,249,0.5);color:#836EF9;font-weight:900;font-size:1.1rem;border-radius:1rem">
-      🚀 LAUNCHING SOON ON NAD.FUN — FOLLOW US FOR THE ANNOUNCEMENT!
-    </div>
+    <button class="meme-btn" onclick="window.open('https://nad.fun/tokens/0xdc678DfE5D83Fa3e2e955Dc3ad785801121c7777','_blank')"
+      style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;box-shadow:0 10px 40px rgba(255,215,0,0.4)">
+      🚀 BUY $APES ON NAD.FUN
+    </button>
   </div>
 </section>
 
@@ -473,10 +479,10 @@
       <div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Twitter / X</div>
       <div style="color:#9CA3AF;font-size:0.875rem">Follow for alpha, memes &amp; updates</div>
     </div>
-    <div class="social-card" onclick="window.open('https://nad.fun','_blank')">
+    <div class="social-card" onclick="window.open('https://nad.fun/tokens/0xdc678DfE5D83Fa3e2e955Dc3ad785801121c7777','_blank')">
       <div style="font-size:3rem;margin-bottom:1rem">🚀</div>
       <div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">nad.fun</div>
-      <div style="color:#9CA3AF;font-size:0.875rem">Buy $APES when we launch</div>
+      <div style="color:#9CA3AF;font-size:0.875rem">Buy $APES now on nad.fun</div>
     </div>
     <div class="social-card" onclick="window.open('#','_blank')">
       <div style="font-size:3rem;margin-bottom:1rem">📊</div>
@@ -505,7 +511,7 @@
   <div style="color:#6B7280;font-size:0.875rem;margin-bottom:1.5rem">The most based meme coin on Monad.</div>
   <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap">
     <a href="https://x.com/planetapesxyz" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#FFD700'" onmouseout="this.style.color='#9CA3AF'">Twitter</a>
-    <a href="https://nad.fun" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#836EF9'" onmouseout="this.style.color='#9CA3AF'">nad.fun</a>
+    <a href="https://nad.fun/tokens/0xdc678DfE5D83Fa3e2e955Dc3ad785801121c7777" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#836EF9'" onmouseout="this.style.color='#9CA3AF'">Buy $APES</a>
   </div>
   <div style="color:#4B5563;font-size:0.75rem">
     $APES is a meme coin with no intrinsic value. Always do your own research. Not financial advice.
@@ -586,6 +592,20 @@ function smoothScroll(id) {
   var el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: 'smooth' });
   return false;
+}
+
+// ─── COPY CA ───
+function copyCA() {
+  var ca = '0xdc678DfE5D83Fa3e2e955Dc3ad785801121c7777';
+  navigator.clipboard.writeText(ca).then(function() {
+    ['copy-ca-btn','copy-ca-btn-2'].forEach(function(id) {
+      var btn = document.getElementById(id);
+      if (btn) { btn.textContent = '✅ COPIED!'; setTimeout(function(){ btn.textContent = '📋 COPY'; }, 2000); }
+    });
+    showToast('✅ Contract address copied!', 'success');
+  }).catch(function() {
+    showToast('❌ Copy failed — please copy manually', 'error');
+  });
 }
 
 // ─── ESCAPE HTML ───
