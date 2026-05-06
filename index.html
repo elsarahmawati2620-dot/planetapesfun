@@ -189,12 +189,15 @@
     <a href="#tokenomics" onclick="smoothScroll('tokenomics');return false;">TOKENOMICS</a>
     <a href="#how" onclick="smoothScroll('how');return false;">HOW TO BUY</a>
     <a href="#roadmap" onclick="smoothScroll('roadmap');return false;">ROADMAP</a>
-    <a href="#skins" onclick="smoothScroll('skins');return false;">SKINS</a>
     <a href="#community" onclick="smoothScroll('community');return false;">COMMUNITY</a>
   </div>
   <div class="nav-actions">
     <button class="btn-twitter" onclick="window.open('https://groypfi.io/','_blank')">
       𝕏 @planetapesxyz
+    </button>
+    <button onclick="window.open('https://t.me/planetapesfun','_blank')"
+      style="display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(34,158,217,0.5); background:rgba(34,158,217,0.1); color:#229ED9; font-size:0.75rem; font-weight:700; transition:all 0.2s;">
+      📱 TG
     </button>
   </div>
 </nav>
@@ -1126,6 +1129,12 @@ async function submitScore() {
       closeSubmitModal();
       showToast('🏆 Score submitted! You\'re ranked #' + (result.rank || '?') + '!', 'success');
       fetchLeaderboard();
+      
+      if (currentScore > personalBest) {
+        personalBest = currentScore;
+        updateGameUI();
+      }
+      
       submitting = false;
       if (btn) { btn.textContent = '🏆 SUBMIT'; btn.disabled = false; }
       return;
@@ -1142,6 +1151,11 @@ async function submitScore() {
   existing = existing.slice(0, 10);
   window.__localLeaderboard = existing;
   renderLeaderboard(existing);
+
+  if (currentScore > personalBest) {
+    personalBest = currentScore;
+    updateGameUI();
+  }
 
   submitting = false;
   if (btn) { btn.textContent = '🏆 SUBMIT'; btn.disabled = false; }
