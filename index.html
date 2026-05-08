@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script type="module" src="/src/tonconnect-init.ts"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --gold: #FFD700; --gold2: #F59E0B; --green: #34D399; --purple: #C084FC; --red: #ef4444; --blue: #3b82f6; }
@@ -73,18 +75,23 @@
     .nav-links { display:flex; align-items:center; gap:2rem; }
     .nav-links a { color:#9CA3AF; font-size:0.8rem; font-weight:600; letter-spacing:1px; transition:color 0.2s; }
     .nav-links a:hover { color:var(--gold); }
-    .nav-actions { display:flex; gap:0.75rem; align-items:center; }
+    .nav-actions { display:flex; gap:0.6rem; align-items:center; }
     .btn-x { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(255,255,255,0.3); background:rgba(255,255,255,0.05); color:#fff; font-size:0.75rem; font-weight:700; transition:all 0.2s; }
     .btn-x:hover { background:rgba(255,255,255,0.15); }
     .btn-tg { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(34,158,217,0.5); background:rgba(34,158,217,0.1); color:#229ED9; font-size:0.75rem; font-weight:700; }
-    @media(max-width:640px) { .nav-links { display:none; } .nav-logo-text { display:none; } }
+    .btn-wallet { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(131,110,249,0.5); background:rgba(131,110,249,0.1); color:#836EF9; font-size:0.75rem; font-weight:700; transition:all 0.2s; white-space:nowrap; }
+    .btn-wallet:hover { background:rgba(131,110,249,0.2); }
+    .btn-wallet.connected { border-color:rgba(52,211,153,0.6); background:rgba(52,211,153,0.1); color:#34D399; }
+    @media(max-width:900px) { .nav-links { display:none; } }
+    @media(max-width:640px) { .nav-logo-text { display:none; } .btn-x { display:none; } }
+    @media(max-width:400px) { .btn-tg { padding:0.5rem 0.6rem; } }
 
     /* Hero */
     .jungle-bg { min-height:100vh; padding-top:68px; background:radial-gradient(ellipse at top,#0a2f1e 0%,#000 60%); position:relative; overflow:hidden; display:flex; align-items:center; }
     .jungle-bg::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(250,204,21,0.08) 0%,transparent 60%); }
     .hero-inner { max-width:64rem; margin:0 auto; padding:3rem 1.5rem; text-align:center; position:relative; z-index:10; width:100%; }
     .ticker-wrap { position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.8); padding:0.75rem 0; border-top:1px solid rgba(234,179,8,0.3); overflow:hidden; }
-    .ticker-inner { display:inline-flex; animation:ticker-scroll 24s linear infinite; white-space:nowrap; }
+    .ticker-inner { display:inline-flex; animation:ticker-scroll 30s linear infinite; white-space:nowrap; }
     .ticker-inner span { margin:0 3rem; color:var(--gold); font-size:0.8rem; letter-spacing:3px; }
 
     /* Game */
@@ -112,16 +119,31 @@
     /* Social / Skin cards */
     .social-card { background:#111; border:1px solid rgba(250,204,21,0.2); border-radius:1.5rem; padding:2rem; text-align:center; cursor:pointer; transition:all 0.2s; }
     .social-card:hover { border-color:var(--gold); transform:translateY(-4px); box-shadow:0 10px 40px rgba(250,204,21,0.15); }
+    .skin-card { background:#111; border:1px solid rgba(250,204,21,0.2); border-radius:1.5rem; padding:1.25rem; text-align:center; transition:all 0.2s; cursor:pointer; }
+    .skin-card:hover { transform:translateY(-4px); }
+    .skin-card.equipped { border-width:2px; }
 
     /* Buttons */
     .meme-btn { transition:transform 0.2s, box-shadow 0.2s; }
     .meme-btn:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 8px 30px rgba(255,215,0,0.4); }
+    .btn-buy-ton { background:linear-gradient(90deg,#836EF9,#6d54f0); color:#fff; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
+    .btn-buy-ton:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(131,110,249,0.4); }
+    .btn-equip { background:linear-gradient(90deg,#34D399,#22c55e); color:#000; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
+    .btn-equip:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(52,211,153,0.4); }
+    .btn-equip.active-eq { background:rgba(52,211,153,0.15); border:1px solid #34D399; color:#34D399; }
+    .btn-convert { background:linear-gradient(90deg,#FFD700,#F59E0B); color:#000; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
+    .btn-convert:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(255,215,0,0.4); }
 
     /* Modal */
     .modal-overlay { position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:1rem; }
-    .modal-box { background:#111; border:1px solid rgba(250,204,21,0.3); border-radius:1.5rem; padding:2rem; max-width:420px; width:100%; animation:modal-in 0.25s ease; }
-    .modal-close { background:none; border:none; color:#9CA3AF; font-size:1.5rem; line-height:1; cursor:pointer; }
+    .modal-box { background:#111; border:1px solid rgba(250,204,21,0.3); border-radius:1.5rem; padding:2rem; max-width:460px; width:100%; animation:modal-in 0.25s ease; max-height:90vh; overflow-y:auto; }
+    .modal-close { background:none; border:none; color:#9CA3AF; font-size:1.5rem; line-height:1; cursor:pointer; flex-shrink:0; }
     .modal-close:hover { color:#fff; }
+
+    /* Wallet options */
+    .wallet-opt { display:flex; align-items:center; gap:1rem; padding:1rem; background:#1a1a1a; border:1px solid rgba(255,255,255,0.1); border-radius:1rem; cursor:pointer; transition:all 0.2s; margin-bottom:0.75rem; }
+    .wallet-opt:hover { border-color:rgba(131,110,249,0.5); background:rgba(131,110,249,0.1); }
+    .wallet-opt-icon { width:44px; height:44px; border-radius:0.75rem; display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0; }
 
     /* Input */
     input[type=text] { width:100%; padding:0.75rem 1rem; background:rgba(255,255,255,0.07); border:1px solid rgba(255,215,0,0.3); border-radius:0.75rem; color:#fff; font-size:1rem; outline:none; transition:border-color 0.2s; }
@@ -153,12 +175,16 @@
   </div>
   <div class="nav-links">
     <a href="#game" onclick="smoothScroll('game');return false;">TAKE BANANA</a>
+    <a href="#skins" onclick="smoothScroll('skins');return false;">SKINS</a>
     <a href="#tokenomics" onclick="smoothScroll('tokenomics');return false;">TOKENOMICS</a>
     <a href="#how" onclick="smoothScroll('how');return false;">HOW TO BUY</a>
     <a href="#roadmap" onclick="smoothScroll('roadmap');return false;">ROADMAP</a>
     <a href="#community" onclick="smoothScroll('community');return false;">COMMUNITY</a>
   </div>
   <div class="nav-actions">
+    <button class="btn-wallet" id="wallet-btn" onclick="openWalletModal()">
+      <span>💎</span><span id="wallet-btn-txt">Connect Wallet</span>
+    </button>
     <button class="btn-x" onclick="window.open('https://groypfi.io/','_blank')">𝕏 @planetapesxyz</button>
     <button class="btn-tg" onclick="window.open('https://t.me/planetapesfun','_blank')">📱 TG</button>
   </div>
@@ -208,13 +234,14 @@
       <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#34D399">✔</span>FAIR LAUNCH</div>
       <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#34D399">✔</span>0 TAX</div>
       <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#34D399">✔</span>LP BURNED</div>
+      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#836EF9">💎</span>TON MAINNET</div>
     </div>
   </div>
 
   <div class="ticker-wrap">
     <div class="ticker-inner">
-      <span>🍌 $150 PRIZE POOL — TOP 3 WINS! 🍌</span><span>🐵 LIVE ON TON 🐵</span><span>🏆 WEEKLY LEADERBOARD 🏆</span><span>🚀 BUY $APES ON GROYPFI.IO 🚀</span><span>🦍 KING OF THE JUNGLE ON TON 🦍</span>
-      <span>🍌 $150 PRIZE POOL — TOP 3 WINS! 🍌</span><span>🐵 LIVE ON TON 🐵</span><span>🏆 WEEKLY LEADERBOARD 🏆</span><span>🚀 BUY $APES ON GROYPFI.IO 🚀</span><span>🦍 KING OF THE JUNGLE ON TON 🦍</span>
+      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON TON MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON GROYPFI.IO 🚀</span><span>🦍 KING OF THE JUNGLE ON TON 🦍</span><span>💎 APE SKINS FROM 0.3 TON 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
+      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON TON MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON GROYPFI.IO 🚀</span><span>🦍 KING OF THE JUNGLE ON TON 🦍</span><span>💎 APE SKINS FROM 0.3 TON 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
     </div>
   </div>
 </section>
@@ -230,7 +257,15 @@
   <div style="text-align:center;margin-bottom:3rem">
     <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(168,85,247,0.2);color:#C084FC;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">INTERACTIVE EXPERIENCE</div>
     <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem">TAKE BANANA</h2>
-    <p style="margin-top:0.75rem;font-size:1.15rem;color:#9CA3AF;max-width:28rem;margin-left:auto;margin-right:auto">Click the bananas to feed the King Ape. The more you take, the richer you become!</p>
+    <p style="margin-top:0.75rem;font-size:1.15rem;color:#9CA3AF;max-width:32rem;margin-left:auto;margin-right:auto">Click the bananas to feed the King Ape. Equip skins for powerful <strong style="color:#34D399">tap boost multipliers!</strong></p>
+  </div>
+
+  <!-- Equipped skin boost bar -->
+  <div id="boost-bar" style="display:none;text-align:center;margin-bottom:1.25rem">
+    <div style="display:inline-flex;align-items:center;gap:0.75rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.4);border-radius:9999px;padding:0.5rem 1.5rem">
+      <span id="boost-bar-label" style="font-weight:700;font-size:0.875rem;color:#34D399"></span>
+      <span id="boost-bar-tag" style="font-size:0.7rem;color:#34D399;background:rgba(52,211,153,0.2);border-radius:9999px;padding:0.2rem 0.6rem;font-weight:900"></span>
+    </div>
   </div>
 
   <div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center">
@@ -238,15 +273,18 @@
     <div style="flex:1;min-width:280px;max-width:620px">
       <div class="game-container" id="game-container" onclick="handleGameClick(event)" ontouchstart="handleGameTouch(event)">
         <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.18;pointer-events:none;font-size:180px">🌴</div>
+        <!-- In-game equipped badge -->
+        <div id="game-skin-badge" style="display:none;position:absolute;top:1.5rem;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);padding:0.3rem 0.9rem;border-radius:9999px;font-size:0.6rem;font-weight:700;z-index:30;pointer-events:none;white-space:nowrap"></div>
         <div id="ape-wrap" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;pointer-events:none;text-align:center">
           <div style="position:relative">
-            <img id="ape-img" src="https://i.imgur.com/KlM5HWE.jpg" style="width:10rem;height:10rem;border-radius:50%;border:8px solid #FFD700;box-shadow:0 0 60px #FFD700;object-fit:cover;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1)" alt="Ape" />
+            <img id="ape-img" src="https://i.imgur.com/KlM5HWE.jpg" style="width:10rem;height:10rem;border-radius:50%;border:8px solid #FFD700;box-shadow:0 0 60px #FFD700;object-fit:cover;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1)" alt="Ape" />
             <div style="position:absolute;top:-0.75rem;left:50%;transform:translateX(-50%);font-size:2rem">👑</div>
           </div>
         </div>
         <div style="position:absolute;top:1.5rem;right:1.5rem;background:rgba(0,0,0,0.85);padding:0.75rem 1.5rem;border-radius:1rem;border:1px solid #FFD700;z-index:30;pointer-events:none;text-align:center">
           <div style="font-size:0.65rem;color:#FACC15;letter-spacing:0.1em">BANANAS COLLECTED</div>
           <div id="score-display" style="font-size:2.5rem;font-weight:900;color:#FACC15;font-family:monospace">0</div>
+          <div id="boost-indicator" style="display:none;font-size:0.6rem;color:#34D399;margin-top:2px;font-weight:700"></div>
         </div>
         <div style="position:absolute;top:1.5rem;left:1.5rem;background:rgba(0,0,0,0.85);padding:0.5rem 1.25rem;border-radius:1rem;border:1px solid #a855f7;z-index:30;pointer-events:none">
           <div style="font-size:0.65rem;color:#C084FC">KING LEVEL</div>
@@ -265,10 +303,12 @@
           <div style="color:#FACC15;font-size:0.875rem;letter-spacing:2px">👆 CLICK ANYWHERE TO TAKE BANANAS!</div>
         </div>
       </div>
-      <div style="display:flex;justify-content:center;margin-top:1.5rem">
-        <button onclick="resetGame()" style="padding:0.75rem 2rem;border:1px solid rgba(255,255,255,0.3);background:transparent;color:#fff;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">↺ RESET JUNGLE</button>
+      <div style="display:flex;justify-content:center;gap:0.75rem;margin-top:1.5rem;flex-wrap:wrap">
+        <button onclick="resetGame()" style="padding:0.75rem 1.75rem;border:1px solid rgba(255,255,255,0.3);background:transparent;color:#fff;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">↺ RESET JUNGLE</button>
+        <button onclick="openConvertModal()" style="padding:0.75rem 1.75rem;border:1px solid rgba(255,215,0,0.4);background:rgba(255,215,0,0.08);color:#FFD700;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">🍌 Convert to $APES</button>
+        <button onclick="smoothScroll('skins')" style="padding:0.75rem 1.75rem;border:1px solid rgba(131,110,249,0.4);background:rgba(131,110,249,0.08);color:#836EF9;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">💎 Get Skin Boost</button>
       </div>
-      <div style="text-align:center;margin-top:1rem;font-size:0.75rem;color:#6B7280">Every 10,000 bananas × level = level up • Reach level 10 for special reward!</div>
+      <div style="text-align:center;margin-top:1rem;font-size:0.75rem;color:#6B7280">Every 10,000 bananas × level = level up • Equip a skin for tap boost multipliers!</div>
     </div>
 
     <!-- Leaderboard -->
@@ -277,9 +317,9 @@
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
           <div>
             <div style="font-weight:900;font-size:1.4rem">🏆 LEADERBOARD</div>
-            <div style="font-size:0.6rem;color:#FACC15;letter-spacing:1px;margin-top:-2px">TOP 3 • HIGHEST SCORES WIN $150 • WEEKLY</div>
+            <div style="font-size:0.6rem;color:#FACC15;letter-spacing:1px;margin-top:-2px">TOP APES • CONVERT TO $APES • WEEKLY</div>
           </div>
-          <button onclick="openSubmitModal()" style="padding:0.5rem 1.25rem;font-size:0.75rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;border-radius:1rem;border:none">SUBMIT</button>
+          <button onclick="openSubmitModal()" style="padding:0.5rem 1.25rem;font-size:0.75rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;border-radius:1rem;border:none;white-space:nowrap">SUBMIT</button>
         </div>
         <div id="leaderboard-list" style="font-size:0.875rem;max-height:200px;overflow-y:auto;padding-right:0.5rem;display:flex;flex-direction:column;gap:0.375rem"></div>
         <div style="margin-top:1.25rem;background:rgba(0,0,0,0.4);padding:0.75rem;border-radius:0.75rem">
@@ -291,10 +331,13 @@
             <div id="personal-best" style="font-family:monospace;font-weight:900;color:#FACC15;font-size:1.5rem">0</div>
           </div>
         </div>
+        <div style="margin-top:1rem">
+          <button onclick="openConvertModal()" class="btn-convert">🍌 Convert Bananas to $APES</button>
+        </div>
       </div>
-      <div style="text-align:center;font-size:0.65rem;color:#6B7280;margin-top:0.5rem">Submit your high score to climb the ranks!</div>
+      <div style="text-align:center;font-size:0.65rem;color:#6B7280;margin-top:0.5rem">Submit your high score to climb the ranks! Scores are saved permanently.</div>
       <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.1);font-size:0.6rem;color:#6B7280;line-height:1.5">
-        <strong>LEADERBOARD RULES:</strong> Top 3 highest scores at end of every week win $150 total. Fair play only. <span style="color:#FACC15">Resets every Sunday at 00:00 UTC.</span>
+        <strong>LEADERBOARD RULES:</strong> Top banana collectors each week can convert to $APES. Fair play only. <span style="color:#FACC15">Resets every Sunday 00:00 UTC.</span>
       </div>
     </div>
   </div>
@@ -303,40 +346,19 @@
 <!-- APE SKINS -->
 <section id="skins" style="max-width:64rem;margin:0 auto;padding:5rem 1.5rem;background:#0a0a0a;position:relative;z-index:1">
   <div style="text-align:center;margin-bottom:3rem">
-    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(168,85,247,0.2);color:#C084FC;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">PHASE 3 EXCLUSIVE</div>
+    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(131,110,249,0.2);color:#836EF9;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">💎 BUY WITH TON — FROM 0.3 TON</div>
     <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem">APE SKINS</h2>
-    <p style="color:#9CA3AF;font-size:1.05rem;margin-top:0.5rem">Legendary NFT skins on TON. Dominate the jungle and unlock exclusive ape looks!</p>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.75rem">
-    <div class="social-card" style="padding:1.25rem" onclick="showSkinModal(0)">
-      <div style="position:relative"><img src="https://i.imgur.com/YestlX1.jpg" alt="King Ape" style="width:100%;height:240px;object-fit:cover;border-radius:1rem;border:4px solid #FFD700;box-shadow:0 0 40px rgba(250,204,21,0.3);margin-bottom:1rem" /><div style="position:absolute;top:12px;right:12px;background:#000;border:2px solid #FFD700;border-radius:9999px;padding:0.25rem 0.65rem;font-size:0.7rem;font-weight:900;color:#FFD700">👑 LEGENDARY</div></div>
-      <div style="font-weight:900;font-size:1.35rem;margin-bottom:0.25rem">KING APE</div>
-      <div style="color:#FFD700;font-size:0.875rem;margin-bottom:0.6rem">👑 LEGENDARY</div>
-      <div style="background:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.4);border-radius:0.75rem;padding:0.5rem 0.75rem;text-align:center;font-size:0.75rem;color:#FFD700;font-weight:700">UNLOCK: LEVEL 10 IN TAKE BANANA</div>
-    </div>
-    <div class="social-card" style="padding:1.25rem" onclick="showSkinModal(1)">
-      <div style="position:relative"><img src="https://i.imgur.com/eyQoioN.jpg" alt="Banana God" style="width:100%;height:240px;object-fit:cover;border-radius:1rem;border:4px solid #34D399;box-shadow:0 0 40px rgba(52,211,153,0.3);margin-bottom:1rem" /><div style="position:absolute;top:12px;right:12px;background:#000;border:2px solid #34D399;border-radius:9999px;padding:0.25rem 0.65rem;font-size:0.7rem;font-weight:900;color:#34D399">🌟 MYTHIC</div></div>
-      <div style="font-weight:900;font-size:1.35rem;margin-bottom:0.25rem">BANANA GOD</div>
-      <div style="color:#34D399;font-size:0.875rem;margin-bottom:0.6rem">🌟 MYTHIC</div>
-      <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.4);border-radius:0.75rem;padding:0.5rem 0.75rem;text-align:center;font-size:0.75rem;color:#34D399;font-weight:700">UNLOCK: 50K BANANAS IN ONE SESSION</div>
-    </div>
-    <div class="social-card" style="padding:1.25rem" onclick="showSkinModal(2)">
-      <div style="position:relative"><img src="https://i.imgur.com/7VFGhCb.jpg" alt="Degen Ape" style="width:100%;height:240px;object-fit:cover;border-radius:1rem;border:4px solid #3b82f6;box-shadow:0 0 40px rgba(59,130,246,0.3);margin-bottom:1rem" /><div style="position:absolute;top:12px;right:12px;background:#000;border:2px solid #3b82f6;border-radius:9999px;padding:0.25rem 0.65rem;font-size:0.7rem;font-weight:900;color:#3b82f6">🔥 DEGEN</div></div>
-      <div style="font-weight:900;font-size:1.35rem;margin-bottom:0.25rem">DEGEN APE</div>
-      <div style="color:#3b82f6;font-size:0.875rem;margin-bottom:0.6rem">🔥 DEGEN</div>
-      <div style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.4);border-radius:0.75rem;padding:0.5rem 0.75rem;text-align:center;font-size:0.75rem;color:#3b82f6;font-weight:700">UNLOCK: TOP 10 WEEKLY LEADERBOARD</div>
-    </div>
-    <div class="social-card" style="padding:1.25rem" onclick="showSkinModal(3)">
-      <div style="position:relative"><img src="https://i.imgur.com/4rUjNtO.jpg" alt="Jungle Chad" style="width:100%;height:240px;object-fit:cover;border-radius:1rem;border:4px solid #F59E0B;box-shadow:0 0 40px rgba(245,158,11,0.3);margin-bottom:1rem" /><div style="position:absolute;top:12px;right:12px;background:#000;border:2px solid #F59E0B;border-radius:9999px;padding:0.25rem 0.65rem;font-size:0.7rem;font-weight:900;color:#F59E0B">💪 CHAD</div></div>
-      <div style="font-weight:900;font-size:1.35rem;margin-bottom:0.25rem">JUNGLE CHAD</div>
-      <div style="color:#F59E0B;font-size:0.875rem;margin-bottom:0.6rem">💪 CHAD</div>
-      <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.4);border-radius:0.75rem;padding:0.5rem 0.75rem;text-align:center;font-size:0.75rem;color:#F59E0B;font-weight:700">UNLOCK: 3× WEEKLY LEADERBOARD TOP 3</div>
+    <p style="color:#9CA3AF;font-size:1.05rem;margin-top:0.5rem">Buy with TON Mainnet. Each skin gives you a <strong style="color:#34D399">tap boost multiplier</strong> that applies instantly when equipped in-game!</p>
+    <div style="display:flex;justify-content:center;gap:1rem;margin-top:1rem;flex-wrap:wrap">
+      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#34D399">⚡ Equipped skin multiplies every tap</div>
+      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(131,110,249,0.1);border:1px solid rgba(131,110,249,0.3);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#836EF9">💎 TON Mainnet payments</div>
     </div>
   </div>
+  <div id="skins-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.75rem"></div>
   <div style="text-align:center;margin-top:2.5rem">
     <div style="display:inline-flex;align-items:center;gap:0.5rem;background:#111;border:1px solid rgba(250,204,21,0.3);border-radius:9999px;padding:0.5rem 1.25rem">
       <span style="color:#FACC15">🦍</span>
-      <span style="font-size:0.875rem;color:#9CA3AF">Skins drop in <strong style="color:#fff">Phase 3</strong> — Free for top leaderboard apes &amp; $APES holders</span>
+      <span style="font-size:0.875rem;color:#9CA3AF">Connect TON wallet to purchase • Skins are saved permanently</span>
     </div>
   </div>
 </section>
@@ -369,9 +391,9 @@
     <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff">HOW TO BUY $APES</h2>
   </div>
   <div style="display:flex;flex-direction:column;gap:1rem">
-    <div class="step"><div class="step-num">1</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Get a TON-Compatible Wallet</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Download Tonkeeper, Tonhub, or any TON-compatible wallet. TON is a high-speed blockchain, so make sure your wallet supports the TON network.</div></div></div>
-    <div class="step"><div class="step-num">2</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Add TON Network</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Set up your TON wallet and ensure it's connected to the TON Mainnet. Visit <strong style="color:#FACC15">ton.org</strong> for official details.</div></div></div>
-    <div class="step"><div class="step-num">3</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Get TON Tokens for Gas</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Buy or bridge TON tokens to cover transaction fees on the TON network. TON is the native currency used for all operations.</div></div></div>
+    <div class="step"><div class="step-num">1</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Get a TON-Compatible Wallet</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Download Tonkeeper, Tonhub, or any TON-compatible wallet. Click <strong style="color:#836EF9">Connect Wallet</strong> in the navbar to link it and buy Ape Skins with TON Mainnet.</div></div></div>
+    <div class="step"><div class="step-num">2</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Fund with TON</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Load your TON wallet with at least <strong style="color:#FFD700">0.3 TON</strong> to buy the starter Jungle Chad skin, plus a tiny amount for gas. Skins give tap boost multipliers in the game!</div></div></div>
+    <div class="step"><div class="step-num">3</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy Skins &amp; Play</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Head to the <strong style="color:#C084FC">APE SKINS</strong> section, choose your skin, and buy with TON. Equip it in-game for an instant tap boost. Stack banana scores and convert them to $APES!</div></div></div>
     <div class="step"><div class="step-num">4</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy $APES on groypfi.io</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Visit <strong style="color:#836EF9">groypfi.io</strong> — the premier platform to buy $APES. Connect your wallet and swap instantly.<br><span style="color:#FACC15;font-size:0.8rem">CA: SOON</span></div></div></div>
   </div>
   <div style="margin-top:2rem;text-align:center">
@@ -396,8 +418,8 @@
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Token launch on TON</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Website &amp; Take Banana game live</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Permanent leaderboard</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>$150 weekly prize pool</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Persistent leaderboard</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Skin shop with TON payments</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Community Twitter launch</li>
         </ul>
       </div>
@@ -408,7 +430,7 @@
         <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🌿 GROWTH</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>CoinGecko &amp; CMC listing</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>$500 weekly prize pool</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>Convert bananas to $APES live</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>Major influencer partnerships</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>Telegram community 5,000+</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>Cross-platform marketing blitz</li>
@@ -423,7 +445,7 @@
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>NFT Ape Skin collection (TON)</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>1,000 NFT holder milestone</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>Holder-only events &amp; giveaways</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>$1,000 weekly prize pool</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>$APES weekly prize pool</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>Strategic CEX talks begin</li>
         </ul>
       </div>
@@ -484,6 +506,31 @@
   <div style="color:#374151;font-size:0.65rem;margin-top:0.5rem">TON Network | High-Performance Blockchain</div>
 </footer>
 
+<!-- ═══════════ MODALS ═══════════ -->
+
+<!-- WALLET INFO MODAL (shown when wallet is already connected) -->
+<div id="wallet-info-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeWalletInfoModal()">
+  <div class="modal-box" style="max-width:420px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
+      <div>
+        <div style="font-weight:900;font-size:1.4rem">💎 TON Wallet</div>
+        <div style="font-size:0.75rem;color:#34D399;margin-top:0.2rem">Connected to TON Mainnet</div>
+      </div>
+      <button class="modal-close" onclick="closeWalletInfoModal()">✕</button>
+    </div>
+    <div style="text-align:center;padding:0.5rem 0 1.5rem">
+      <div style="font-size:3rem;margin-bottom:0.75rem">✅</div>
+      <div style="font-weight:900;font-size:1.1rem;color:#34D399;margin-bottom:0.35rem">Wallet Connected</div>
+      <div id="wallet-info-short" style="font-size:1rem;font-weight:700;color:#836EF9;margin-bottom:0.6rem;font-family:monospace"></div>
+      <div id="wallet-info-addr" style="font-family:monospace;font-size:0.62rem;color:#9CA3AF;background:#1a1a1a;padding:0.6rem 0.75rem;border-radius:0.75rem;word-break:break-all;margin-bottom:1.25rem;text-align:left"></div>
+      <div style="background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.2);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;text-align:left;line-height:1.6">
+        ✅ You can submit scores to the leaderboard<br>✅ Buy skins with TON payments<br>✅ Convert bananas to $APES at launch
+      </div>
+      <button onclick="disconnectWallet()" style="padding:0.75rem 2rem;border:1px solid rgba(239,68,68,0.4);background:rgba(239,68,68,0.1);color:#ef4444;font-weight:700;border-radius:0.75rem;width:100%;cursor:pointer;font-size:0.9rem">🔌 Disconnect Wallet</button>
+    </div>
+  </div>
+</div>
+
 <!-- SUBMIT MODAL -->
 <div id="submit-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this&&!submitting)closeSubmitModal()">
   <div class="modal-box">
@@ -491,44 +538,140 @@
       <div style="font-weight:900;font-size:1.5rem">🏆 Submit Score</div>
       <button class="modal-close" onclick="closeSubmitModal()">✕</button>
     </div>
-    <div style="text-align:center;margin-bottom:1.5rem">
+    <div style="text-align:center;margin-bottom:1rem">
       <div style="font-size:0.75rem;color:#9CA3AF;margin-bottom:0.25rem">YOUR SCORE</div>
       <div id="submit-score-display" style="font-family:monospace;font-weight:900;font-size:3rem;color:#FACC15">0</div>
     </div>
+    <div style="background:rgba(131,110,249,0.1);border:1px solid rgba(131,110,249,0.3);border-radius:0.75rem;padding:0.6rem 0.9rem;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem">
+      <span style="font-size:0.8rem">💎</span>
+      <span id="submit-wallet-display" style="font-family:monospace;font-size:0.72rem;color:#836EF9;font-weight:700"></span>
+    </div>
     <input type="text" id="submit-name-input" placeholder="Enter your ape name..." maxlength="20" onkeydown="if(event.key==='Enter')submitScore();if(event.key==='Escape')closeSubmitModal()" style="margin-bottom:0.5rem" />
-    <p style="font-size:0.7rem;color:#6B7280;text-align:center;margin-bottom:1rem">Just enter your ape name and submit!</p>
+    <p style="font-size:0.7rem;color:#6B7280;text-align:center;margin-bottom:1rem">Score saved permanently to leaderboard — linked to your wallet!</p>
     <div style="display:flex;gap:0.75rem">
-      <button onclick="closeSubmitModal()" style="flex:1;padding:0.75rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem">CANCEL</button>
-      <button id="submit-btn" onclick="submitScore()" style="flex:1;padding:0.75rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;border-radius:0.75rem;border:none">🏆 SUBMIT</button>
+      <button onclick="closeSubmitModal()" style="flex:1;padding:0.75rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CANCEL</button>
+      <button id="submit-btn" onclick="submitScore()" style="flex:1;padding:0.75rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;border-radius:0.75rem;border:none;cursor:pointer">🏆 SUBMIT</button>
     </div>
   </div>
 </div>
 
 <!-- SKIN MODAL -->
 <div id="skin-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeSkinModal()">
-  <div class="modal-box" style="max-width:460px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
-      <div id="skin-modal-title" style="font-weight:900;font-size:1.6rem"></div>
+  <div class="modal-box" style="max-width:480px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem">
+      <div id="skin-modal-title" style="font-weight:900;font-size:1.5rem"></div>
       <button class="modal-close" onclick="closeSkinModal()">✕</button>
     </div>
-    <div style="text-align:center;margin-bottom:1.25rem">
-      <img id="skin-modal-img" style="width:220px;height:220px;object-fit:cover;border-radius:50%;border:8px solid #FFD700;box-shadow:0 0 80px #FFD700" alt="Skin" />
+    <div style="text-align:center;margin-bottom:1rem">
+      <img id="skin-modal-img" style="width:180px;height:180px;object-fit:cover;border-radius:50%;border:8px solid #FFD700;box-shadow:0 0 60px #FFD700" alt="Skin" />
     </div>
-    <div id="skin-modal-rarity" style="text-align:center;margin-bottom:0.75rem;font-weight:900;font-size:0.95rem"></div>
-    <div id="skin-modal-desc" style="color:#9CA3AF;font-size:0.95rem;line-height:1.6;text-align:center;margin-bottom:1.25rem"></div>
-    <div style="background:#1a1a1a;border:1px solid rgba(250,204,21,0.3);border-radius:1rem;padding:1rem;margin-bottom:1.25rem">
-      <div style="font-size:0.75rem;color:#FACC15;margin-bottom:0.35rem">HOW TO UNLOCK</div>
-      <div id="skin-modal-unlock" style="font-weight:700;color:#fff"></div>
+    <div id="skin-modal-rarity" style="text-align:center;margin-bottom:0.5rem;font-weight:900"></div>
+    <div style="text-align:center;margin-bottom:0.75rem">
+      <span id="skin-modal-boost" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.4);border-radius:0.5rem;padding:0.3rem 0.8rem;font-size:0.8rem;font-weight:900;color:#34D399"></span>
     </div>
-    <div style="display:flex;gap:0.75rem">
-      <button onclick="closeSkinModal()" style="flex:1;padding:0.85rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem">CLOSE</button>
-      <button onclick="claimSkin()" style="flex:1;padding:0.85rem;background:linear-gradient(90deg,#836EF9,#6d54f0);color:#fff;font-weight:900;border-radius:0.75rem;border:none">🦍 CLAIM ON TON (SOON)</button>
+    <div id="skin-modal-desc" style="color:#9CA3AF;font-size:0.9rem;line-height:1.6;text-align:center;margin-bottom:1rem"></div>
+    <div style="background:#1a1a1a;border:1px solid rgba(250,204,21,0.2);border-radius:1rem;padding:1rem;margin-bottom:1.25rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
+        <div style="font-size:0.75rem;color:#9CA3AF">PRICE (TON MAINNET)</div>
+        <div id="skin-modal-price" style="font-weight:900;color:#836EF9;font-size:1.1rem"></div>
+      </div>
+      <div style="font-size:0.7rem;color:#FACC15;margin-bottom:0.25rem">BOOST UTILITY</div>
+      <div id="skin-modal-unlock" style="font-weight:700;color:#fff;font-size:0.85rem"></div>
     </div>
-    <div style="text-align:center;margin-top:1rem;font-size:0.7rem;color:#6B7280">Phase 3 • Exclusive NFT Drop on TON</div>
+    <div id="skin-modal-actions" style="display:flex;gap:0.75rem;flex-wrap:wrap"></div>
+    <div style="text-align:center;margin-top:0.75rem;font-size:0.65rem;color:#6B7280">TON Mainnet • Permanent Ownership • Equip in Game</div>
   </div>
 </div>
 
+<!-- PAYMENT MODAL -->
+<div id="payment-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closePaymentModal()">
+  <div class="modal-box" style="max-width:460px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem">
+      <div>
+        <div style="font-weight:900;font-size:1.4rem">💎 Pay with TON</div>
+        <div id="pay-skin-name" style="font-size:0.8rem;color:#836EF9;font-weight:700;margin-top:0.15rem"></div>
+      </div>
+      <button class="modal-close" onclick="closePaymentModal()">✕</button>
+    </div>
+
+    <!-- Amount box -->
+    <div style="background:linear-gradient(135deg,rgba(131,110,249,0.15),rgba(131,110,249,0.05));border:2px solid rgba(131,110,249,0.5);border-radius:1rem;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:0.65rem;color:#9CA3AF;letter-spacing:0.1em">SEND EXACTLY</div>
+        <div id="pay-amount-display" style="font-size:2rem;font-weight:900;color:#836EF9;font-family:monospace"></div>
+        <div style="font-size:0.65rem;color:#6B7280;margin-top:0.1rem">to Planet Apes wallet</div>
+      </div>
+      <div style="font-size:3rem">💎</div>
+    </div>
+
+    <!-- Destination address -->
+    <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:0.75rem;padding:0.75rem 1rem;margin-bottom:1rem">
+      <div style="font-size:0.65rem;color:#9CA3AF;margin-bottom:0.3rem;letter-spacing:0.1em">DESTINATION ADDRESS (TON MAINNET)</div>
+      <div style="font-family:monospace;font-size:0.72rem;color:#FFD700;word-break:break-all;line-height:1.5">UQB0V-E4hIglz-OylGnNTmvec-U4blugU7yZMeT1siTaU3Xv</div>
+    </div>
+
+    <!-- QR code -->
+    <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:1rem">
+      <div style="font-size:0.7rem;color:#9CA3AF;margin-bottom:0.5rem">SCAN WITH YOUR TON WALLET</div>
+      <div id="pay-qr-box" style="background:#fff;padding:10px;border-radius:0.75rem;width:fit-content"></div>
+    </div>
+
+    <!-- Wallet buttons -->
+    <div style="font-size:0.7rem;color:#9CA3AF;text-align:center;margin-bottom:0.6rem">OR OPEN DIRECTLY IN YOUR WALLET</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;margin-bottom:1rem">
+      <button id="pay-btn-tonkeeper" onclick="openTonPayment('tonkeeper')" style="padding:0.6rem 0.25rem;background:rgba(0,152,234,0.15);border:1px solid rgba(0,152,234,0.4);border-radius:0.75rem;color:#0098EA;font-size:0.65rem;font-weight:900;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.25rem;transition:all 0.2s">
+        <span style="font-size:1.25rem">💎</span><span>Tonkeeper</span>
+      </button>
+      <button onclick="openTonPayment('tonhub')" style="padding:0.6rem 0.25rem;background:rgba(75,107,245,0.15);border:1px solid rgba(75,107,245,0.4);border-radius:0.75rem;color:#4B6BF5;font-size:0.65rem;font-weight:900;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.25rem;transition:all 0.2s">
+        <span style="font-size:1.25rem">🔷</span><span>TonHub</span>
+      </button>
+      <button onclick="openTonPayment('mytonwallet')" style="padding:0.6rem 0.25rem;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.4);border-radius:0.75rem;color:#FFD700;font-size:0.65rem;font-weight:900;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.25rem;transition:all 0.2s">
+        <span style="font-size:1.25rem">🔑</span><span>MyTonWallet</span>
+      </button>
+    </div>
+
+    <!-- Countdown + Confirm -->
+    <div style="background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.3);border-radius:0.75rem;padding:0.75rem;margin-bottom:1rem;font-size:0.75rem;color:#34D399;text-align:center;line-height:1.5">
+      After sending, click <strong>✅ I've Paid</strong> below to unlock your skin instantly.<br>
+      <span style="color:#6B7280;font-size:0.65rem">Your purchase is stored permanently in this browser.</span>
+    </div>
+    <div style="display:flex;gap:0.75rem">
+      <button onclick="closePaymentModal()" style="flex:1;padding:0.85rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CANCEL</button>
+      <button id="pay-confirm-btn" onclick="confirmPayment()" style="flex:2;padding:0.85rem;background:linear-gradient(90deg,#34D399,#22c55e);color:#000;font-weight:900;border-radius:0.75rem;border:none;cursor:pointer;font-size:0.95rem">✅ I've Paid — Unlock Skin</button>
+    </div>
+    <div style="text-align:center;margin-top:0.75rem;font-size:0.6rem;color:#6B7280">TON Mainnet only • Send from any TON-compatible wallet • 1 TON ≈ gas included</div>
+  </div>
+</div>
+
+<!-- CONVERT MODAL -->
+<div id="convert-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeConvertModal()">
+  <div class="modal-box" style="max-width:420px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
+      <div style="font-weight:900;font-size:1.5rem">🍌 Convert to $APES</div>
+      <button class="modal-close" onclick="closeConvertModal()">✕</button>
+    </div>
+    <div style="text-align:center;margin-bottom:1.5rem;background:#1a1a1a;border-radius:1rem;padding:1.5rem">
+      <div style="font-size:0.75rem;color:#9CA3AF;margin-bottom:0.25rem">YOUR BANANAS</div>
+      <div id="convert-score-display" style="font-family:monospace;font-weight:900;font-size:3rem;color:#FACC15;margin-bottom:0.5rem">0</div>
+      <div style="font-size:0.85rem;color:#6B7280;margin-bottom:0.5rem">converts to</div>
+      <div id="convert-apes-display" style="font-family:monospace;font-weight:900;font-size:2rem;color:#34D399;margin-bottom:0.25rem">0 $APES</div>
+      <div style="font-size:0.7rem;color:#6B7280">Rate: 1,000 bananas = 1 $APES</div>
+    </div>
+    <div id="convert-boost-note" style="display:none;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#34D399;text-align:center"></div>
+    <div style="background:#1a1a1a;border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;line-height:1.6">
+      <strong style="color:#fff">How it works:</strong> Submit your score above, then connect your TON wallet. When $APES token launches, your banana score converts to real $APES tokens — the more bananas (boosted by skins!), the more $APES you earn.
+    </div>
+    <div style="display:flex;gap:0.75rem">
+      <button onclick="closeConvertModal()" style="flex:1;padding:0.75rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CLOSE</button>
+      <button onclick="claimConvert()" style="flex:1;padding:0.75rem;background:linear-gradient(90deg,#34D399,#22c55e);color:#000;font-weight:900;border-radius:0.75rem;border:none;cursor:pointer">🍌 Convert (SOON)</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SCRIPTS ═══════════ -->
 <script>
+'use strict';
+
 // ── PARTICLES ──
 (function() {
   var bg = document.getElementById('particle-bg');
@@ -537,9 +680,7 @@
   for (var i = 0; i < 40; i++) {
     var star = document.createElement('div');
     star.className = 'star-particle';
-    star.style.cssText = 'left:' + (Math.random()*100) + '%;top:' + (Math.random()*100) + '%;' +
-      '--duration:' + (2+Math.random()*3) + 's;--delay:-' + (Math.random()*3) + 's;' +
-      'background:' + COLORS[i%3];
+    star.style.cssText = 'left:' + (Math.random()*100) + '%;top:' + (Math.random()*100) + '%;--duration:' + (2+Math.random()*3) + 's;--delay:-' + (Math.random()*3) + 's;background:' + COLORS[i%3];
     bg.appendChild(star);
   }
   for (var j = 0; j < 22; j++) {
@@ -547,9 +688,7 @@
     p.className = 'particle';
     p.textContent = EMOJIS[j % EMOJIS.length];
     var driftX = (Math.random()-0.5)*120;
-    p.style.cssText = 'left:' + (Math.random()*100) + '%;font-size:' + (1+Math.random()*1.2) + 'rem;' +
-      '--duration:' + (10+Math.random()*14) + 's;--delay:-' + (Math.random()*14) + 's;' +
-      '--drift-x:' + driftX + 'px';
+    p.style.cssText = 'left:' + (Math.random()*100) + '%;font-size:' + (1+Math.random()*1.2) + 'rem;--duration:' + (10+Math.random()*14) + 's;--delay:-' + (Math.random()*14) + 's;--drift-x:' + driftX + 'px';
     bg.appendChild(p);
   }
 })();
@@ -562,35 +701,28 @@ function showToast(msg, type) {
   t.className = 'toast toast-' + type;
   t.textContent = msg;
   c.appendChild(t);
-  setTimeout(function() {
-    t.style.opacity = '0'; t.style.transition = 'opacity 0.4s';
-    setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 400);
-  }, 4500);
+  setTimeout(function() { t.style.opacity='0'; t.style.transition='opacity 0.4s'; setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 400); }, 4500);
 }
 
 // ── SMOOTH SCROLL ──
-function smoothScroll(id) {
-  var el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: 'smooth' });
-  return false;
-}
+function smoothScroll(id) { var el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); return false; }
 
 // ── FAQ ──
 var FAQS = [
-  { q:'🍌 What is Planet Apes?', a:'Planet Apes ($APES) is the most based meme coin on TON. Take bananas, climb the leaderboard, and rule the jungle with your fellow apes.' },
-  { q:'🎮 How do I play Take Banana?', a:'Simply click anywhere on the game area to collect bananas. The more you click, the higher your score. Reach higher levels and submit your score to the leaderboard!' },
-  { q:'🏆 How do I win the $150 prize?', a:'Play the Take Banana game, achieve the highest score, and submit it to the leaderboard. Top 3 scores each week split $150 in prizes.' },
+  { q:'🍌 What is Planet Apes?', a:'Planet Apes ($APES) is the most based meme coin on TON. Take bananas, climb the leaderboard, convert your bananas to $APES, and rule the jungle with your fellow apes.' },
+  { q:'🎮 How do I play Take Banana?', a:'Click anywhere in the game area to collect bananas. The more you click, the higher your score. Equip a skin to activate a tap boost multiplier for faster banana collection!' },
+  { q:'💎 How do skins work?', a:'Each Ape Skin costs TON (starting at 0.3 TON). Once purchased, you can equip the skin and it applies a boost multiplier to every tap — from +0.5× all the way up to +2× for the King Ape skin.' },
+  { q:'🍌 How do I convert bananas to $APES?', a:'Play the game to collect bananas, then click "Convert to $APES". When $APES token launches on TON, your banana score converts to real $APES tokens at 1,000 bananas = 1 $APES.' },
+  { q:'🏆 Why does my leaderboard NOT reset when I switch pages?', a:'Your leaderboard is saved permanently in your browser using localStorage. It will persist as long as you use the same browser. The weekly reset only happens every Sunday at 00:00 UTC for the prize cycle.' },
   { q:'🚀 Where can I buy $APES?', a:'$APES is available on groypfi.io — the premier platform on TON. Follow us on Twitter for the exact launch time and contract address.' },
-  { q:'🔗 What blockchain is $APES on?', a:'Planet Apes ($APES) is launching on TON — a high-performance blockchain with near-instant transactions and extremely low fees.' },
-  { q:'📅 When is the launch?', a:'Launch is coming very soon! Follow us on Twitter and join the community to be notified the moment we go live.' },
+  { q:'🔗 What blockchain is $APES on?', a:'Planet Apes ($APES) is on TON — a high-performance blockchain with near-instant transactions and extremely low fees. All skin purchases use TON Mainnet.' },
 ];
 (function() {
   var list = document.getElementById('faq-list');
   FAQS.forEach(function(faq) {
     var item = document.createElement('div');
     item.className = 'faq-item';
-    item.innerHTML = '<div class="faq-q" onclick="toggleFaq(this)"><span>' + faq.q + '</span><span class="faq-arrow">▼</span></div>' +
-      '<div class="faq-ans"><div class="faq-ans-inner">' + faq.a + '</div></div>';
+    item.innerHTML = '<div class="faq-q" onclick="toggleFaq(this)"><span>' + faq.q + '</span><span class="faq-arrow">▼</span></div><div class="faq-ans"><div class="faq-ans-inner">' + faq.a + '</div></div>';
     list.appendChild(item);
   });
 })();
@@ -598,74 +730,402 @@ function toggleFaq(qEl) {
   var arrow = qEl.querySelector('.faq-arrow');
   var ans = qEl.nextElementSibling;
   var isOpen = ans.classList.contains('open');
-  document.querySelectorAll('.faq-ans').forEach(function(a) { a.classList.remove('open'); });
-  document.querySelectorAll('.faq-arrow').forEach(function(a) { a.classList.remove('open'); });
+  document.querySelectorAll('.faq-ans').forEach(function(a){ a.classList.remove('open'); });
+  document.querySelectorAll('.faq-arrow').forEach(function(a){ a.classList.remove('open'); });
   if (!isOpen) { ans.classList.add('open'); arrow.classList.add('open'); }
 }
 
-// ── SKINS ──
+// ══════════════════════════════════════════
+// ── REAL TON WALLET — TonConnect v2 ──
+// Works on mobile (deep link) + browser extension
+// ══════════════════════════════════════════
+var walletAddress = null;     // short display string e.g. "0:Ab12…Ef90"
+var walletRawAddress = null;  // full raw address from TonConnect
+var tonConnectUI = null;
+
+function initTonConnect() {
+  function doInit() {
+    try {
+      var UI = window.__TonConnectUI;
+      if (!UI) { console.warn('[APES] TonConnectUI class not found'); return; }
+      tonConnectUI = new UI({
+        manifestUrl: window.location.origin + '/tonconnect-manifest.json'
+      });
+      tonConnectUI.onStatusChange(handleWalletChange);
+      // Restore session if wallet was already connected
+      if (tonConnectUI.wallet) { handleWalletChange(tonConnectUI.wallet); }
+    } catch(e) {
+      console.warn('[APES] TonConnect init error:', e);
+    }
+  }
+  // Module scripts (type=module) always run AFTER inline scripts,
+  // so we listen for the ready event dispatched by tonconnect-init.ts
+  if (window.__TonConnectUI) {
+    doInit();
+  } else {
+    window.addEventListener('ton-connect-ready', doInit, { once: true });
+  }
+}
+
+function handleWalletChange(wallet) {
+  if (wallet && wallet.account) {
+    walletRawAddress = wallet.account.address;
+    var addr = walletRawAddress || '';
+    walletAddress = addr.length > 12 ? addr.slice(0,8) + '…' + addr.slice(-6) : addr;
+    refreshWalletUI(true);
+    renderSkinsGrid();
+    showToast('💎 Wallet connected! You can now submit scores.', 'success');
+  } else {
+    walletAddress = null;
+    walletRawAddress = null;
+    refreshWalletUI(false);
+    renderSkinsGrid();
+  }
+}
+
+function openWalletModal() {
+  if (walletAddress && walletRawAddress) {
+    document.getElementById('wallet-info-short').textContent = walletAddress;
+    document.getElementById('wallet-info-addr').textContent = walletRawAddress;
+    document.getElementById('wallet-info-modal').style.display = 'flex';
+  } else {
+    if (tonConnectUI) {
+      tonConnectUI.openModal();
+    } else {
+      showToast('⚠️ TON wallet unavailable. Check internet connection.', 'error');
+    }
+  }
+}
+function closeWalletModal() { closeWalletInfoModal(); }
+function closeWalletInfoModal() {
+  document.getElementById('wallet-info-modal').style.display = 'none';
+}
+
+function disconnectWallet() {
+  if (tonConnectUI) { tonConnectUI.disconnect(); }
+  closeWalletInfoModal();
+  showToast('Wallet disconnected.', 'info');
+}
+function refreshWalletUI(connected) {
+  var btn = document.getElementById('wallet-btn');
+  var txt = document.getElementById('wallet-btn-txt');
+  if (connected && walletAddress) {
+    btn.classList.add('connected');
+    txt.textContent = walletAddress;
+  } else {
+    btn.classList.remove('connected');
+    txt.textContent = 'Connect Wallet';
+  }
+}
+
+// ══════════════════════════════════════════
+// ── SKINS DATA ──
+// ══════════════════════════════════════════
+// boost = total tap multiplier (e.g. 1.5 = 1.5× points per tap)
 var SKINS = [
-  { name:'KING APE', img:'https://i.imgur.com/YestlX1.jpg', rarity:'👑 LEGENDARY', rarityColor:'#FFD700', border:'#FFD700', desc:'The one true ruler of Planet Apes. Only the most dedicated banana collectors who reach Level 10 earn the right to wear the crown.', unlock:'Reach Level 10 in Take Banana game' },
-  { name:'BANANA GOD', img:'https://i.imgur.com/eyQoioN.jpg', rarity:'🌟 MYTHIC', rarityColor:'#34D399', border:'#34D399', desc:'Blessed by the ancient Banana Pantheon. Reserved for those who have collected 50,000 bananas in a single epic session.', unlock:'Collect 50,000 bananas in one game session' },
-  { name:'DEGEN APE', img:'https://i.imgur.com/7VFGhCb.jpg', rarity:'🔥 DEGEN', rarityColor:'#3b82f6', border:'#3b82f6', desc:'Laser eyes activated. This ape never sells — only buys more dips. For the true degens who live on the edge of the jungle.', unlock:'Finish in Top 10 of the weekly leaderboard' },
-  { name:'JUNGLE CHAD', img:'https://i.imgur.com/4rUjNtO.jpg', rarity:'💪 CHAD', rarityColor:'#F59E0B', border:'#F59E0B', desc:'Maximum gains. Never skips leg day... or banana day. The alpha of the jungle who has proven himself 3 times.', unlock:'Appear in Top 3 of the weekly leaderboard 3 times' },
+  { id:0, name:'JUNGLE CHAD',  img:'https://i.imgur.com/4rUjNtO.jpg', rarity:'💪 CHAD',      rarityColor:'#F59E0B', border:'#F59E0B', price:0.3, boost:1.5, boostLabel:'+0.5× per tap (1.5× total)', desc:'The alpha starter pack. Maximum gains, never skips banana day. Buy with 0.3 TON and get an immediate +50% tap boost in the game.', unlock:'+0.5× per tap • 1.5× total • Perfect starter boost' },
+  { id:1, name:'DEGEN APE',    img:'https://i.imgur.com/7VFGhCb.jpg', rarity:'🔥 DEGEN',     rarityColor:'#3b82f6', border:'#3b82f6', price:0.8, boost:2.0, boostLabel:'+1× per tap (2× total)',   desc:'Laser eyes activated. This ape never sells. For the true degens who live on the edge of the jungle and want double tap power.', unlock:'+1× per tap • 2× total • Double your banana rate' },
+  { id:2, name:'BANANA GOD',   img:'https://i.imgur.com/eyQoioN.jpg', rarity:'🌟 MYTHIC',    rarityColor:'#34D399', border:'#34D399', price:1.5, boost:2.5, boostLabel:'+1.5× per tap (2.5× total)', desc:'Blessed by the ancient Banana Pantheon. Reserved for those who want to dominate the leaderboard with 2.5× the banana rate.', unlock:'+1.5× per tap • 2.5× total • Dominate the leaderboard' },
+  { id:3, name:'KING APE',     img:'https://i.imgur.com/YestlX1.jpg', rarity:'👑 LEGENDARY', rarityColor:'#FFD700', border:'#FFD700', price:2.5, boost:3.0, boostLabel:'+2× per tap (3× total)',   desc:'The one true ruler of Planet Apes. Maximum boost available. Triple your tap power and convert to more $APES than any other ape.', unlock:'+2× per tap • 3× total • Maximum boost in existence' }
 ];
-function showSkinModal(i) {
-  var s = SKINS[i]; if (!s) return;
-  document.getElementById('skin-modal-title').innerHTML = s.name + ' <span style="font-size:0.7rem;color:#6B7280">NFT</span>';
+
+// ── SKIN STATE (localStorage) ──
+var OWNED_SKINS_KEY = 'apes_owned_skins_v2';
+var EQUIPPED_SKIN_KEY = 'apes_equipped_skin_v2';
+var ownedSkins = [];
+var equippedSkinId = -1;
+
+function loadSkinState() {
+  try {
+    var raw = localStorage.getItem(OWNED_SKINS_KEY);
+    if (raw) { var p = JSON.parse(raw); if (Array.isArray(p)) ownedSkins = p; }
+  } catch(e) {}
+  try {
+    var eq = localStorage.getItem(EQUIPPED_SKIN_KEY);
+    if (eq !== null && eq !== '') { var n = parseInt(eq, 10); if (!isNaN(n) && n >= -1) equippedSkinId = n; }
+  } catch(e) {}
+}
+function saveSkinState() {
+  try { localStorage.setItem(OWNED_SKINS_KEY, JSON.stringify(ownedSkins)); } catch(e) {}
+  try { localStorage.setItem(EQUIPPED_SKIN_KEY, String(equippedSkinId)); } catch(e) {}
+}
+function isSkinOwned(id) { return ownedSkins.indexOf(id) !== -1; }
+function getEquippedSkin() { return equippedSkinId >= 0 ? SKINS[equippedSkinId] : null; }
+function getSkinBoostMultiplier() { var s = getEquippedSkin(); return s ? s.boost : 1.0; }
+
+function equipSkin(id) {
+  if (!isSkinOwned(id)) { showToast('❌ You don\'t own this skin! Buy it first.', 'error'); return; }
+  equippedSkinId = id;
+  saveSkinState();
+  applyEquippedSkinToGame();
+  renderSkinsGrid();
+  closeSkinModal();
+  showToast('✅ ' + SKINS[id].name + ' equipped! Tap boost active in game.', 'success');
+}
+function unequipSkin() {
+  equippedSkinId = -1;
+  saveSkinState();
+  applyEquippedSkinToGame();
+  renderSkinsGrid();
+  showToast('Skin unequipped — no boost active.', 'info');
+}
+
+function applyEquippedSkinToGame() {
+  var s = getEquippedSkin();
+  var apeImg = document.getElementById('ape-img');
+  var boostBar = document.getElementById('boost-bar');
+  var badge = document.getElementById('game-skin-badge');
+  var boostInd = document.getElementById('boost-indicator');
+  if (s) {
+    apeImg.src = s.img;
+    apeImg.style.borderColor = s.border;
+    apeImg.style.boxShadow = '0 0 60px ' + s.border;
+    boostBar.style.display = 'block';
+    document.getElementById('boost-bar-label').textContent = '🦍 ' + s.name + ' EQUIPPED';
+    document.getElementById('boost-bar-tag').textContent = '⚡ ' + s.boostLabel;
+    badge.style.display = 'block';
+    badge.style.color = s.rarityColor;
+    badge.style.border = '1px solid ' + s.rarityColor;
+    badge.textContent = '⚡ ' + s.boostLabel;
+    boostInd.style.display = 'block';
+    boostInd.textContent = '⚡ ' + s.boost + '× boost active';
+  } else {
+    apeImg.src = 'https://i.imgur.com/KlM5HWE.jpg';
+    apeImg.style.borderColor = '#FFD700';
+    apeImg.style.boxShadow = '0 0 60px #FFD700';
+    boostBar.style.display = 'none';
+    badge.style.display = 'none';
+    boostInd.style.display = 'none';
+  }
+}
+
+function renderSkinsGrid() {
+  var grid = document.getElementById('skins-grid');
+  grid.innerHTML = '';
+  SKINS.forEach(function(s) {
+    var owned = isSkinOwned(s.id);
+    var equipped = equippedSkinId === s.id;
+    var bColor = equipped ? s.border : (owned ? '#34D399' : 'rgba(250,204,21,0.2)');
+    var card = document.createElement('div');
+    card.className = 'skin-card' + (equipped ? ' equipped' : '');
+    card.style.borderColor = bColor;
+    if (equipped) card.style.borderWidth = '2px';
+    card.onclick = function() { showSkinModal(s.id); };
+    var badge1 = equipped ? '<div style="position:absolute;top:12px;left:12px;background:#000;border:2px solid #34D399;border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:#34D399">✅ EQUIPPED</div>' : (owned ? '<div style="position:absolute;top:12px;left:12px;background:#000;border:2px solid #22c55e;border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:#22c55e">✔ OWNED</div>' : '');
+    var btn = '';
+    if (owned) {
+      if (equipped) {
+        btn = '<button onclick="event.stopPropagation();unequipSkin()" class="btn-equip active-eq" style="font-size:0.75rem;border:1px solid #34D399">✅ EQUIPPED — Unequip</button>';
+      } else {
+        btn = '<button onclick="event.stopPropagation();equipSkin(' + s.id + ')" class="btn-equip" style="font-size:0.75rem">🦍 EQUIP IN GAME</button>';
+      }
+    } else {
+      btn = '<button onclick="event.stopPropagation();showSkinModal(' + s.id + ')" class="btn-buy-ton" style="font-size:0.75rem">💎 Buy ' + s.price + ' TON</button>';
+    }
+    card.innerHTML =
+      '<div style="position:relative">' +
+        '<img src="' + s.img + '" style="width:100%;height:220px;object-fit:cover;border-radius:1rem;border:4px solid ' + s.border + ';box-shadow:0 0 30px ' + s.border + '55;margin-bottom:0.75rem" />' +
+        '<div style="position:absolute;top:12px;right:12px;background:#000;border:2px solid ' + s.rarityColor + ';border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:' + s.rarityColor + '">' + s.rarity + '</div>' +
+        badge1 +
+      '</div>' +
+      '<div style="font-weight:900;font-size:1.15rem;margin-bottom:0.2rem">' + s.name + '</div>' +
+      '<div style="color:' + s.rarityColor + ';font-size:0.8rem;margin-bottom:0.4rem">' + s.rarity + '</div>' +
+      '<div style="display:inline-flex;align-items:center;gap:0.3rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:0.4rem;padding:0.2rem 0.55rem;font-size:0.68rem;font-weight:900;color:#34D399;margin-bottom:0.5rem">⚡ ' + s.boostLabel + '</div>' +
+      '<div style="background:rgba(131,110,249,0.1);border:1px solid rgba(131,110,249,0.3);border-radius:0.75rem;padding:0.4rem 0.6rem;font-size:0.75rem;color:#836EF9;font-weight:700;margin-bottom:0.75rem;text-align:center">💎 ' + s.price + ' TON</div>' +
+      btn;
+    grid.appendChild(card);
+  });
+}
+
+function showSkinModal(id) {
+  var s = SKINS[id]; if (!s) return;
+  document.getElementById('skin-modal-title').innerHTML = s.name + ' <span style="font-size:0.65rem;color:#6B7280">SKIN</span>';
   var img = document.getElementById('skin-modal-img');
-  img.src = s.img; img.style.border = '8px solid ' + s.border; img.style.boxShadow = '0 0 80px ' + s.border;
+  img.src = s.img; img.style.border = '8px solid ' + s.border; img.style.boxShadow = '0 0 60px ' + s.border;
   var r = document.getElementById('skin-modal-rarity'); r.textContent = s.rarity; r.style.color = s.rarityColor;
+  document.getElementById('skin-modal-boost').textContent = '⚡ ' + s.boostLabel + ' in game';
   document.getElementById('skin-modal-desc').textContent = s.desc;
+  document.getElementById('skin-modal-price').textContent = '💎 ' + s.price + ' TON';
   document.getElementById('skin-modal-unlock').textContent = s.unlock;
+
+  var owned = isSkinOwned(id);
+  var equipped = equippedSkinId === id;
+  var actions = document.getElementById('skin-modal-actions');
+  var closeBtn = '<button onclick="closeSkinModal()" style="flex:1;padding:0.85rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CLOSE</button>';
+  if (owned) {
+    if (equipped) {
+      actions.innerHTML = closeBtn + '<button onclick="unequipSkin()" class="btn-equip active-eq" style="flex:1;padding:0.85rem;border:1px solid #34D399;cursor:pointer">✅ UNEQUIP</button>';
+    } else {
+      actions.innerHTML = closeBtn + '<button onclick="equipSkin(' + id + ')" class="btn-equip" style="flex:1;padding:0.85rem;cursor:pointer">🦍 EQUIP NOW</button>';
+    }
+  } else {
+    actions.innerHTML = closeBtn + '<button onclick="buySkin(' + id + ')" class="btn-buy-ton" style="flex:1;padding:0.85rem">💎 Buy ' + s.price + ' TON</button>';
+  }
   document.getElementById('skin-modal').style.display = 'flex';
 }
 function closeSkinModal() { document.getElementById('skin-modal').style.display = 'none'; }
-function claimSkin() { closeSkinModal(); showToast('🦍 Skin claim coming in Phase 3! Connect your TON wallet on launch day to mint your exclusive ape skin.', 'info'); }
 
-// ── LEADERBOARD (localStorage persistent) ──
-var STORAGE_KEY = 'apes_leaderboard_v1';
-var FALLBACK_LB = [
-  { name:'HarambeReborn', score:12450 },
-  { name:'BananaSlayer', score:9820 },
-  { name:'JungleChad', score:8740 },
-  { name:'MoonApe420', score:7650 },
-  { name:'PeelMaster', score:6890 },
-];
+// ══════════════════════════════════════════
+// ── TON PAYMENT — Real on-chain payments to Planet Apes wallet ──
+// ══════════════════════════════════════════
+var PLANET_APES_WALLET = 'UQB0V-E4hIglz-OylGnNTmvec-U4blugU7yZMeT1siTaU3Xv';
+var pendingBuySkinId = -1;
+var payQrInstance = null;
+
+function tonNano(tonAmount) {
+  // Convert TON to nanotons (1 TON = 1,000,000,000 nanotons)
+  return Math.round(tonAmount * 1000000000);
+}
+function tonPaymentUrl(tonAmount, memo) {
+  var nano = tonNano(tonAmount);
+  var encodedMemo = encodeURIComponent(memo);
+  // Universal TON deep link — opens any TON wallet on mobile
+  return 'ton://transfer/' + PLANET_APES_WALLET + '?amount=' + nano + '&text=' + encodedMemo;
+}
+function tonkeeperUrl(tonAmount, memo) {
+  var nano = tonNano(tonAmount);
+  var encodedMemo = encodeURIComponent(memo);
+  return 'https://app.tonkeeper.com/transfer/' + PLANET_APES_WALLET + '?amount=' + nano + '&text=' + encodedMemo;
+}
+function tonhubUrl(tonAmount, memo) {
+  var nano = tonNano(tonAmount);
+  var encodedMemo = encodeURIComponent(memo);
+  return 'https://tonhub.com/transfer/' + PLANET_APES_WALLET + '?amount=' + nano + '&text=' + encodedMemo;
+}
+function mytonwalletUrl(tonAmount, memo) {
+  var nano = tonNano(tonAmount);
+  var encodedMemo = encodeURIComponent(memo);
+  return 'https://wallet.ton.org/transfer/' + PLANET_APES_WALLET + '?amount=' + nano + '&text=' + encodedMemo;
+}
+
+function buySkin(id) {
+  closeSkinModal();
+  openPaymentModal(id);
+}
+
+function openPaymentModal(id) {
+  var s = SKINS[id]; if (!s) return;
+  pendingBuySkinId = id;
+  var memo = 'APES-SKIN-' + s.name.replace(/\s+/g, '-').toUpperCase();
+
+  document.getElementById('pay-skin-name').textContent = s.rarity + ' ' + s.name;
+  document.getElementById('pay-amount-display').textContent = s.price + ' TON';
+
+  // Generate QR code — encodes the universal TON payment deep link
+  var qrBox = document.getElementById('pay-qr-box');
+  qrBox.innerHTML = '';
+  try {
+    var payUrl = tonPaymentUrl(s.price, memo);
+    payQrInstance = new QRCode(qrBox, {
+      text: payUrl,
+      width: 180, height: 180,
+      colorDark: '#000000', colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  } catch(e) {
+    qrBox.innerHTML = '<div style="width:180px;height:180px;display:flex;align-items:center;justify-content:center;background:#1a1a1a;border-radius:0.5rem;font-size:0.75rem;color:#9CA3AF;text-align:center;padding:1rem">QR unavailable — use wallet buttons above</div>';
+  }
+
+  // Store memo in data attr for wallet buttons
+  document.getElementById('payment-modal').dataset.memo = memo;
+  document.getElementById('payment-modal').dataset.price = s.price;
+  document.getElementById('payment-modal').style.display = 'flex';
+}
+
+function openTonPayment(wallet) {
+  var modal = document.getElementById('payment-modal');
+  var price = parseFloat(modal.dataset.price);
+  var memo  = modal.dataset.memo;
+  var url;
+  if (wallet === 'tonkeeper') url = tonkeeperUrl(price, memo);
+  else if (wallet === 'tonhub') url = tonhubUrl(price, memo);
+  else url = mytonwalletUrl(price, memo);
+  window.open(url, '_blank');
+  // After opening wallet, enable confirm button with a note
+  var btn = document.getElementById('pay-confirm-btn');
+  btn.style.background = 'linear-gradient(90deg,#34D399,#22c55e)';
+  btn.textContent = '✅ I\'ve Paid — Unlock Skin';
+}
+
+function closePaymentModal() {
+  document.getElementById('payment-modal').style.display = 'none';
+  pendingBuySkinId = -1;
+  var qrBox = document.getElementById('pay-qr-box');
+  qrBox.innerHTML = '';
+  payQrInstance = null;
+}
+
+function confirmPayment() {
+  if (pendingBuySkinId < 0) return;
+  var id = pendingBuySkinId;
+  var s = SKINS[id];
+  closePaymentModal();
+  if (!isSkinOwned(id)) { ownedSkins.push(id); }
+  saveSkinState();
+  if (equippedSkinId < 0) { equippedSkinId = id; saveSkinState(); applyEquippedSkinToGame(); }
+  renderSkinsGrid();
+  showToast('🎉 ' + s.name + ' unlocked & equipped! ' + s.boostLabel + ' now active!', 'success');
+}
+
+// ══════════════════════════════════════════
+// ── LEADERBOARD — Persistent via localStorage ──
+// Score NEVER resets on page navigation.
+// Only the weekly prize cycle resets, not the data.
+// ══════════════════════════════════════════
+var LB_KEY = 'apes_leaderboard_v3';
+var PB_KEY = 'apes_personal_best_v2';
 var MEDALS = ['👑','🥈','🥉'];
 var leaderboardData = [];
+var personalBest = 0;
+var submitting = false;
+
+var FALLBACK_LB = [
+  { name:'HarambeReborn', score:12450 },
+  { name:'BananaSlayer',  score:9820  },
+  { name:'JungleChad',   score:8740  },
+  { name:'MoonApe420',   score:7650  },
+  { name:'PeelMaster',   score:6890  }
+];
 
 function loadLeaderboard() {
   try {
-    var raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) { var parsed = JSON.parse(raw); if (Array.isArray(parsed) && parsed.length > 0) return parsed; }
+    var raw = localStorage.getItem(LB_KEY);
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
   } catch(e) {}
   return FALLBACK_LB.slice();
 }
-function saveLeaderboard(data) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+function saveLeaderboard() {
+  try { localStorage.setItem(LB_KEY, JSON.stringify(leaderboardData)); } catch(e) {}
+}
+function loadPersonalBest() {
+  try { var v = parseInt(localStorage.getItem(PB_KEY),10); if (!isNaN(v) && v > 0) return v; } catch(e) {}
+  return 0;
+}
+function savePersonalBest() {
+  try { localStorage.setItem(PB_KEY, String(personalBest)); } catch(e) {}
 }
 function renderLeaderboard() {
   var list = document.getElementById('leaderboard-list');
   list.innerHTML = '';
-  leaderboardData.slice(0, 8).forEach(function(entry, i) {
+  leaderboardData.slice(0,8).forEach(function(entry, i) {
     var div = document.createElement('div');
     div.className = 'lb-pop';
-    div.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:7px 0.75rem;border-radius:1rem;animation-delay:' + (i*60) + 'ms;' +
-      (i < 3 ? 'background:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.3)' : 'background:rgba(0,0,0,0.4)');
-    div.innerHTML = '<div style="display:flex;align-items:center;gap:0.75rem">' +
-      '<div style="min-width:28px;text-align:right;font-family:monospace;font-size:0.75rem;font-weight:700;color:#FACC15;padding-right:0.25rem">' + (i+1) + '</div>' +
-      '<div style="font-weight:700">' + escHtml(entry.name) + (i < 3 ? ' ' + MEDALS[i] : '') + '</div>' +
-      '</div><div style="font-family:monospace;color:#FACC15;font-size:0.875rem">' + Math.floor(entry.score).toLocaleString() + '</div>';
+    div.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:7px 0.75rem;border-radius:1rem;animation-delay:' + (i*60) + 'ms;' + (i < 3 ? 'background:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.3)' : 'background:rgba(0,0,0,0.4)');
+    var walletBadge = entry.wallet ? '<span style="font-size:0.5rem;color:#836EF9;background:rgba(131,110,249,0.15);border:1px solid rgba(131,110,249,0.3);border-radius:3px;padding:1px 4px;margin-left:5px;vertical-align:middle">💎 TON</span>' : '';
+    div.innerHTML = '<div style="display:flex;align-items:center;gap:0.75rem"><div style="min-width:28px;text-align:right;font-family:monospace;font-size:0.75rem;font-weight:700;color:#FACC15;padding-right:0.25rem">' + (i+1) + '</div><div style="font-weight:700">' + escHtml(entry.name) + (i < 3 ? ' ' + MEDALS[i] : '') + walletBadge + '</div></div><div style="font-family:monospace;color:#FACC15;font-size:0.875rem">' + Math.floor(entry.score).toLocaleString() + '</div>';
     list.appendChild(div);
   });
 }
 function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
+// ══════════════════════════════════════════
 // ── GAME STATE ──
-var score = 0, level = 1, bananasNeeded = 10000, personalBest = 0;
-var comboCount = 0, lastClickTime = 0, floatId = 0;
-var submitting = false;
+// ══════════════════════════════════════════
+var score = 0, level = 1, bananasNeeded = 10000;
+var comboCount = 0, lastClickTime = 0;
 
 function updateGameUI() {
   document.getElementById('score-display').textContent = Math.floor(score).toLocaleString();
@@ -679,43 +1139,50 @@ function updateGameUI() {
 }
 
 function spawnFloat(emoji, xPct, yPct) {
-  var id = ++floatId;
   var c = document.getElementById('floats');
   var el = document.createElement('div');
   el.className = 'float-emoji';
   el.style.cssText = 'left:' + (xPct||50) + '%;top:' + (yPct||50) + '%;';
   el.textContent = emoji;
   c.appendChild(el);
-  setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 850);
+  setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 850);
 }
 
 function showLevelMsg(msg) {
   var el = document.getElementById('level-msg');
   el.textContent = msg; el.style.display = 'block';
-  setTimeout(function() { el.style.display = 'none'; }, 1800);
+  setTimeout(function(){ el.style.display = 'none'; }, 1800);
 }
 
 function animateApe(scale) {
   var img = document.getElementById('ape-img');
   img.style.transform = 'scale(' + scale + ')';
-  setTimeout(function() { img.style.transform = 'scale(1)'; }, 400);
+  setTimeout(function(){ img.style.transform = 'scale(1)'; }, 400);
 }
 
-function takeBanana(amount) {
+function takeBanana(baseAmount) {
   var now = Date.now();
-  var pts = amount;
+  // Apply equipped skin boost multiplier
+  var boost = getSkinBoostMultiplier();
+  var pts = Math.round(baseAmount * boost);
+  // Combo bonus
   if (now - lastClickTime < 800) { comboCount++; pts += Math.floor(comboCount / 3); } else { comboCount = 0; }
   lastClickTime = now;
   score += pts;
-  if (score > personalBest) personalBest = score;
+  // Update personal best (persisted to localStorage)
+  if (score > personalBest) {
+    personalBest = score;
+    savePersonalBest();
+  }
+  // Level up check
   var target = level * bananasNeeded;
   if (score >= target && level < 30) {
     level++;
     bananasNeeded = Math.floor(bananasNeeded * 1.25);
     animateApe(1.4);
-    showLevelMsg('LEVEL ' + level + ' UNLOCKED!');
-    if (level === 5) showToast('🔥 KING MODE ACTIVATED! You are now a true Banana Lord!', 'info');
-    if (level === 10) showToast('👑 YOU ARE THE ULTIMATE KING OF THE JUNGLE! 🦍', 'success');
+    showLevelMsg('LEVEL ' + level + ' UNLOCKED! 🔥');
+    if (level === 5) showToast('🔥 KING MODE! You are now a true Banana Lord!', 'info');
+    if (level === 10) showToast('👑 ULTIMATE KING OF THE JUNGLE! 🦍 Try King Ape skin for 3× boost!', 'success');
   }
   document.getElementById('game-instruction').style.display = 'none';
   updateGameUI();
@@ -730,8 +1197,10 @@ function handleGameClick(e) {
   var x = e.clientX - rect.left;
   if (y > 60 && y < rect.height - 70) {
     takeBanana(1);
-    spawnFloat('🍌', (x/rect.width)*100, (y/rect.height)*100);
-    if (Math.random() < 0.22) setTimeout(function() { takeBanana(2); }, 180);
+    var boost = getSkinBoostMultiplier();
+    var emoji = boost >= 3.0 ? '👑🍌' : (boost >= 2.0 ? '⚡🍌' : '🍌');
+    spawnFloat(emoji, (x/rect.width)*100, (y/rect.height)*100);
+    if (Math.random() < 0.22) setTimeout(function(){ takeBanana(2); }, 180);
   }
 }
 
@@ -757,49 +1226,75 @@ function resetGame() {
 
 document.addEventListener('keydown', function(e) {
   var inp = document.getElementById('submit-name-input');
-  if ((e.key === ' ' || e.key === 'Enter') && document.activeElement !== inp) {
+  if ((e.key === ' ' || e.key === 'Enter') && document.activeElement !== inp && document.activeElement !== document.body.querySelector('input')) {
     e.preventDefault(); takeBanana(1); spawnFloat('🍌', 50, 50);
   }
-  if (e.key === 'Escape' && !submitting) closeSubmitModal();
+  if (e.key === 'Escape') { closeSubmitModal(); closeSkinModal(); closeWalletInfoModal(); closePaymentModal(); closeConvertModal(); }
 });
 
-setInterval(function() {
+setInterval(function(){
   if (score > 5 && Math.random() < 0.32) spawnFloat('💣', Math.random()*80+10, Math.random()*60+10);
 }, 6000);
 
 // ── SUBMIT MODAL ──
 function openSubmitModal() {
-  if (Math.floor(score) === 0) { showToast('⚠️ Play the game first!', 'error'); return; }
+  if (Math.floor(score) === 0) { showToast('⚠️ Play the game first to collect bananas!', 'error'); return; }
+  if (!walletAddress || !walletRawAddress) {
+    showToast('💎 Connect your TON wallet first to submit your score!', 'error');
+    setTimeout(function(){ openWalletModal(); }, 300);
+    return;
+  }
   document.getElementById('submit-score-display').textContent = Math.floor(score).toLocaleString();
+  document.getElementById('submit-wallet-display').textContent = walletAddress;
   document.getElementById('submit-name-input').value = '';
   document.getElementById('submit-modal').style.display = 'flex';
-  setTimeout(function() { var inp = document.getElementById('submit-name-input'); if (inp) inp.focus(); }, 100);
+  setTimeout(function(){ var inp=document.getElementById('submit-name-input'); if(inp) inp.focus(); }, 100);
 }
-function closeSubmitModal() {
-  if (!submitting) document.getElementById('submit-modal').style.display = 'none';
-}
+function closeSubmitModal() { if (!submitting) document.getElementById('submit-modal').style.display = 'none'; }
 function submitScore() {
   var name = (document.getElementById('submit-name-input').value || '').trim();
   if (!name) { showToast('⚠️ Enter your ape name first!', 'error'); return; }
+  if (!walletAddress) { showToast('💎 Connect wallet to submit!', 'error'); return; }
   submitting = true;
   var btn = document.getElementById('submit-btn');
-  btn.textContent = '⏳ Submitting…'; btn.disabled = true;
+  btn.textContent = '⏳ Saving…'; btn.disabled = true;
   var currentScore = Math.floor(score);
   setTimeout(function() {
-    var newEntry = { name: name, score: currentScore };
-    var updated = leaderboardData.concat([newEntry]);
-    updated.sort(function(a,b) { return b.score - a.score; });
+    var entry = { name: name, score: currentScore, wallet: walletRawAddress || '' };
+    var updated = leaderboardData.concat([entry]);
+    updated.sort(function(a,b){ return b.score - a.score; });
     updated = updated.slice(0, 10);
     leaderboardData = updated;
-    saveLeaderboard(leaderboardData);
+    saveLeaderboard();
     renderLeaderboard();
-    var rank = updated.findIndex(function(e) { return e.name === name && e.score === currentScore; }) + 1;
-    if (currentScore > personalBest) { personalBest = currentScore; updateGameUI(); }
+    var rank = updated.findIndex(function(e){ return e.name === name && e.score === currentScore; }) + 1;
+    if (currentScore > personalBest) { personalBest = currentScore; savePersonalBest(); updateGameUI(); }
     closeSubmitModal();
-    showToast('🏆 Score submitted! You\'re ranked #' + rank + '!', 'success');
-    submitting = false;
-    btn.textContent = '🏆 SUBMIT'; btn.disabled = false;
+    showToast('🏆 Score saved! Ranked #' + rank + ' — linked to your TON wallet forever!', 'success');
+    submitting = false; btn.textContent = '🏆 SUBMIT'; btn.disabled = false;
   }, 600);
+}
+
+// ── CONVERT MODAL ──
+function openConvertModal() {
+  var currentScore = Math.floor(score);
+  document.getElementById('convert-score-display').textContent = currentScore.toLocaleString();
+  document.getElementById('convert-apes-display').textContent = Math.floor(currentScore / 1000).toLocaleString() + ' $APES';
+  var s = getEquippedSkin();
+  var note = document.getElementById('convert-boost-note');
+  if (s) {
+    note.style.display = 'block';
+    note.textContent = '⚡ ' + s.name + ' (' + s.boostLabel + ') is boosting your bananas — more $APES for you!';
+  } else {
+    note.style.display = 'none';
+  }
+  document.getElementById('convert-modal').style.display = 'flex';
+}
+function closeConvertModal() { document.getElementById('convert-modal').style.display = 'none'; }
+function claimConvert() {
+  if (!walletAddress) { closeConvertModal(); openWalletModal(); showToast('💎 Connect wallet to claim $APES when available.', 'info'); return; }
+  closeConvertModal();
+  showToast('✅ Wallet linked! Your banana score is recorded. $APES conversion goes live at token launch!', 'info');
 }
 
 // ── MUSIC ──
@@ -843,15 +1338,22 @@ function toggleMusic() {
   var btn = document.getElementById('music-btn');
   if (!musicStarted) { startJungleMusic(); musicOn=true; btn.textContent='🎵 ON'; btn.style.color='#FFD700'; btn.style.borderColor='#FFD700'; return; }
   musicOn=!musicOn;
-  if (musicMasterGain) musicMasterGain.gain.setValueAtTime(musicOn?0.38:0,musicAudioCtx.currentTime);
+  if (musicMasterGain) musicMasterGain.gain.setValueAtTime(musicOn?0.38:0, musicAudioCtx.currentTime);
   btn.textContent=musicOn?'🎵 ON':'🔇 OFF';
   btn.style.color=musicOn?'#FFD700':'#6B7280';
   btn.style.borderColor=musicOn?'#FFD700':'rgba(255,255,255,0.2)';
 }
 
-// ── INIT ──
+// ══════════════════════════════════════════
+// ── INIT — load all persisted state ──
+// ══════════════════════════════════════════
+initTonConnect();
+loadSkinState();
 leaderboardData = loadLeaderboard();
+personalBest = loadPersonalBest();
 renderLeaderboard();
+renderSkinsGrid();
+applyEquippedSkinToGame();
 updateGameUI();
 </script>
 </body>
