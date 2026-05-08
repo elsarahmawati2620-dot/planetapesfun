@@ -1,1390 +1,1332 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-  <meta name="description" content="Planet Apes ($APES) — The most based meme coin on TON. Take bananas, rule the jungle, earn rewards!" />
-  <title>Planet Apes ($APES) — King of the Jungle on TON</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script type="module" src="./src/tonconnect-init.ts"></script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>CHESSIO — Chess Memecoin on TON</title>
+  <meta name="description" content="Chessio is the ultimate chess memecoin on TON blockchain. Play chess, earn points, convert to $CHESSIO!"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+  <script src="https://unpkg.com/@tonconnect/ui@2.0.6/dist/tonconnect-ui.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --gold: #FFD700; --gold2: #F59E0B; --green: #34D399; --purple: #C084FC; --red: #ef4444; --blue: #3b82f6; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', system-ui, sans-serif; background: #000; color: #fff; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-    .pixel-font { font-family: 'Press Start 2P', monospace; }
-    a { color: inherit; text-decoration: none; }
-    button { font-family: inherit; cursor: pointer; }
-    input { font-family: inherit; }
-
-    @keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    @keyframes float-1 { 0%,100% { transform: translateY(0) rotate(-10deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
-    @keyframes float-2 { 0%,100% { transform: translateY(0) rotate(10deg); } 50% { transform: translateY(-28px) rotate(-5deg); } }
-    @keyframes pulse-anim { 0%,100% { opacity:1; } 50% { opacity:.4; } }
-    @keyframes lbPop { 0% { opacity:0; transform:translateX(-8px); } 100% { opacity:1; transform:translateX(0); } }
-    @keyframes toast-in { 0% { opacity:0; transform:translateX(120%); } 100% { opacity:1; transform:translateX(0); } }
-    @keyframes particle-rise { 0% { opacity:1; transform:translateY(0) scale(1); } 100% { opacity:0; transform:translateY(-80px) scale(1.5); } }
-    @keyframes modal-in { 0% { opacity:0; transform:scale(0.9); } 100% { opacity:1; transform:scale(1); } }
-    @keyframes particle-drift {
-      0% { transform: translate(0, 100vh) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.8; }
-      100% { transform: translate(var(--drift-x, 30px), -10vh) rotate(360deg); opacity: 0; }
-    }
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.2; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.2); }
-    }
-
-    .float-1 { animation: float-1 4s ease-in-out infinite; }
-    .float-2 { animation: float-2 5s ease-in-out infinite; }
-    .animate-pulse { animation: pulse-anim 2s cubic-bezier(0.4,0,0.6,1) infinite; }
-    .lb-pop { animation: lbPop 0.5s ease forwards; }
-
-    /* Particles */
-    .particle-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-    .particle {
-      position: absolute; font-size: 1.5rem;
-      animation: particle-drift linear infinite;
-      animation-duration: var(--duration, 12s);
-      animation-delay: var(--delay, 0s);
-      bottom: -5%; opacity: 0;
-      user-select: none; pointer-events: none;
-    }
-    .star-particle {
-      position: absolute; width: 4px; height: 4px;
-      border-radius: 50%;
-      animation: twinkle linear infinite;
-      animation-duration: var(--duration, 2s);
-      animation-delay: var(--delay, 0s);
-      opacity: 0.4;
-    }
-
-    /* Navbar */
-    #navbar {
-      position: fixed; top:0; left:0; right:0; z-index:9000;
-      background: rgba(0,0,0,0.95); border-bottom: 1px solid rgba(250,204,21,0.3);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 68px;
-    }
-    .nav-logo { display:flex; align-items:center; gap:0.75rem; }
-    .nav-logo img { width:40px; height:40px; border-radius:50%; border:2px solid var(--gold); object-fit:cover; }
-    .nav-logo-text { font-family:'Press Start 2P',monospace; font-size:0.75rem; color:var(--gold); letter-spacing:1px; }
-    .nav-links { display:flex; align-items:center; gap:2rem; }
-    .nav-links a { color:#9CA3AF; font-size:0.8rem; font-weight:600; letter-spacing:1px; transition:color 0.2s; }
-    .nav-links a:hover { color:var(--gold); }
-    .nav-actions { display:flex; gap:0.6rem; align-items:center; }
-    .btn-x { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(255,255,255,0.3); background:rgba(255,255,255,0.05); color:#fff; font-size:0.75rem; font-weight:700; transition:all 0.2s; }
-    .btn-x:hover { background:rgba(255,255,255,0.15); }
-    .btn-tg { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(34,158,217,0.5); background:rgba(34,158,217,0.1); color:#229ED9; font-size:0.75rem; font-weight:700; }
-    .btn-wallet { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(131,110,249,0.5); background:rgba(131,110,249,0.1); color:#836EF9; font-size:0.75rem; font-weight:700; transition:all 0.2s; white-space:nowrap; }
-    .btn-wallet:hover { background:rgba(131,110,249,0.2); }
-    .btn-wallet.connected { border-color:rgba(52,211,153,0.6); background:rgba(52,211,153,0.1); color:#34D399; }
-    @media(max-width:900px) { .nav-links { display:none; } }
-    @media(max-width:640px) { .nav-logo-text { display:none; } .btn-x { display:none; } }
-    @media(max-width:400px) { .btn-tg { padding:0.5rem 0.6rem; } }
-
-    /* Hero */
-    .jungle-bg { min-height:100vh; padding-top:68px; background:radial-gradient(ellipse at top,#0a2f1e 0%,#000 60%); position:relative; overflow:hidden; display:flex; align-items:center; }
-    .jungle-bg::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(250,204,21,0.08) 0%,transparent 60%); }
-    .hero-inner { max-width:64rem; margin:0 auto; padding:3rem 1.5rem; text-align:center; position:relative; z-index:10; width:100%; }
-    .ticker-wrap { position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.8); padding:0.75rem 0; border-top:1px solid rgba(234,179,8,0.3); overflow:hidden; }
-    .ticker-inner { display:inline-flex; animation:ticker-scroll 30s linear infinite; white-space:nowrap; }
-    .ticker-inner span { margin:0 3rem; color:var(--gold); font-size:0.8rem; letter-spacing:3px; }
-
-    /* Game */
-    .game-container { position:relative; width:100%; height:400px; border-radius:1.5rem; border:2px solid rgba(250,204,21,0.4); background:radial-gradient(ellipse at center,rgba(10,47,30,0.8) 0%,rgba(0,0,0,0.95) 100%); overflow:hidden; cursor:crosshair; user-select:none; -webkit-user-select:none; }
-    .progress-track { height:8px; background:rgba(255,255,255,0.1); border-radius:9999px; overflow:hidden; }
-    .progress-fill { height:100%; background:linear-gradient(90deg,#FFD700,#22c55e); border-radius:9999px; transition:width 0.3s; }
-    .float-emoji { position:absolute; font-size:3rem; pointer-events:none; animation:particle-rise 0.8s forwards; }
-
-    /* Cards */
-    .lb-card { background:#111; border:1px solid rgba(250,204,21,0.3); border-radius:1.5rem; padding:1.5rem; }
-    .token-card { background:#111; border:1px solid rgba(250,204,21,0.3); border-radius:1.5rem; padding:2rem; text-align:center; }
-    .step { display:flex; align-items:flex-start; gap:1.5rem; background:#111; border-radius:1.5rem; padding:1.5rem; border:1px solid rgba(250,204,21,0.2); }
-    .step-num { min-width:3rem; height:3rem; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#FFD700,#F59E0B); color:#000; font-weight:900; font-size:1.5rem; border-radius:50%; flex-shrink:0; }
-
-    /* FAQ */
-    .faq-item { background:#111; border:1px solid rgba(250,204,21,0.2); border-radius:1rem; margin-bottom:0.75rem; overflow:hidden; }
-    .faq-q { padding:1.25rem 1.5rem; display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-weight:700; }
-    .faq-q:hover { background:rgba(250,204,21,0.05); }
-    .faq-arrow { color:var(--gold); transition:transform 0.3s; font-size:0.75rem; }
-    .faq-arrow.open { transform:rotate(180deg); }
-    .faq-ans { max-height:0; overflow:hidden; transition:max-height 0.35s ease; }
-    .faq-ans.open { max-height:300px; }
-    .faq-ans-inner { padding:0 1.5rem 1.25rem; color:#9CA3AF; line-height:1.7; }
-
-    /* Social / Skin cards */
-    .social-card { background:#111; border:1px solid rgba(250,204,21,0.2); border-radius:1.5rem; padding:2rem; text-align:center; cursor:pointer; transition:all 0.2s; }
-    .social-card:hover { border-color:var(--gold); transform:translateY(-4px); box-shadow:0 10px 40px rgba(250,204,21,0.15); }
-    .skin-card { background:#111; border:1px solid rgba(250,204,21,0.2); border-radius:1.5rem; padding:1.25rem; text-align:center; transition:all 0.2s; cursor:pointer; }
-    .skin-card:hover { transform:translateY(-4px); }
-    .skin-card.equipped { border-width:2px; }
-
-    /* Buttons */
-    .meme-btn { transition:transform 0.2s, box-shadow 0.2s; }
-    .meme-btn:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 8px 30px rgba(255,215,0,0.4); }
-    .btn-buy-ton { background:linear-gradient(90deg,#836EF9,#6d54f0); color:#fff; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
-    .btn-buy-ton:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(131,110,249,0.4); }
-    .btn-equip { background:linear-gradient(90deg,#34D399,#22c55e); color:#000; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
-    .btn-equip:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(52,211,153,0.4); }
-    .btn-equip.active-eq { background:rgba(52,211,153,0.15); border:1px solid #34D399; color:#34D399; }
-    .btn-convert { background:linear-gradient(90deg,#FFD700,#F59E0B); color:#000; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
-    .btn-convert:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(255,215,0,0.4); }
-
-    /* Modal */
-    .modal-overlay { position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:1rem; }
-    .modal-box { background:#111; border:1px solid rgba(250,204,21,0.3); border-radius:1.5rem; padding:2rem; max-width:460px; width:100%; animation:modal-in 0.25s ease; max-height:90vh; overflow-y:auto; }
-    .modal-close { background:none; border:none; color:#9CA3AF; font-size:1.5rem; line-height:1; cursor:pointer; flex-shrink:0; }
-    .modal-close:hover { color:#fff; }
-
-    /* Wallet options */
-    .wallet-opt { display:flex; align-items:center; gap:1rem; padding:1rem; background:#1a1a1a; border:1px solid rgba(255,255,255,0.1); border-radius:1rem; cursor:pointer; transition:all 0.2s; margin-bottom:0.75rem; }
-    .wallet-opt:hover { border-color:rgba(131,110,249,0.5); background:rgba(131,110,249,0.1); }
-    .wallet-opt-icon { width:44px; height:44px; border-radius:0.75rem; display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0; }
-
-    /* Input */
-    input[type=text] { width:100%; padding:0.75rem 1rem; background:rgba(255,255,255,0.07); border:1px solid rgba(255,215,0,0.3); border-radius:0.75rem; color:#fff; font-size:1rem; outline:none; transition:border-color 0.2s; }
-    input[type=text]:focus { border-color:var(--gold); }
-
-    /* Toast */
-    #toast-container { position:fixed; top:5rem; right:1rem; z-index:99999; display:flex; flex-direction:column; gap:0.5rem; pointer-events:none; }
-    .toast { display:flex; align-items:center; gap:0.75rem; padding:0.875rem 1.25rem; border-radius:1rem; font-size:0.875rem; font-weight:600; max-width:340px; animation:toast-in 0.35s cubic-bezier(0.22,1,0.36,1); pointer-events:auto; box-shadow:0 4px 24px rgba(0,0,0,0.4); }
-    .toast-success { background:#022c22; border:1px solid #34D399; color:#34D399; }
-    .toast-error { background:#1f0a0a; border:1px solid #ef4444; color:#ef4444; }
-    .toast-info { background:#0c1a2e; border:1px solid #3b82f6; color:#93c5fd; }
-
-    @media(max-width:640px) { .game-container { height:340px; } .modal-box { padding:1.5rem; } }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',sans-serif;background:#f0f9ff;color:#0f2744;overflow-x:hidden}
+    #particle-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+    .glass{background:rgba(255,255,255,.62);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.5)}
+    nav,section,footer,.z1{position:relative;z-index:1}
+    html{scroll-behavior:smooth}
+    .reveal{opacity:0;transform:translateY(32px);transition:opacity .65s ease,transform .65s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    @keyframes floatPiece{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(14deg)}}
+    .float-piece{animation:floatPiece var(--dur,3s) ease-in-out infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .spin{animation:spin .8s linear infinite}
+    @keyframes slideDown{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+    .slide-down{animation:slideDown .4s ease}
+    .chess-board{display:grid;grid-template-columns:repeat(8,1fr);border-radius:12px;overflow:hidden;box-shadow:0 8px 32px rgba(2,132,199,.3);user-select:none}
+    .chess-square{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:filter .15s}
+    .chess-square:hover{filter:brightness(.85)}
+    .chess-square.selected{outline:4px solid #fbbf24;outline-offset:-4px;z-index:2}
+    .chess-square.possible{background:rgba(250,204,21,.4)!important}
+    .chess-square.possible::after{content:'';position:absolute;width:30%;height:30%;border-radius:50%;background:rgba(250,204,21,.75)}
+    .chess-piece{font-size:clamp(18px,5vw,34px);line-height:1;pointer-events:none;transition:transform .1s}
+    .chess-square:hover .chess-piece{transform:scale(1.12)}
+    .coord-label{position:absolute;font-size:9px;font-weight:700;opacity:.6;font-family:'JetBrains Mono',monospace}
+    .coord-rank{bottom:2px;right:3px}.coord-file{top:2px;left:3px}
+    .page{display:none}.page.active{display:block}
+    nav a{transition:color .2s}
+    button{cursor:pointer;transition:all .2s}
+    button:hover:not(:disabled){transform:scale(1.03)}
+    button:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+    .tok-bar{height:14px;border-radius:999px;overflow:hidden;background:#bae6fd}
+    .tok-fill{height:100%;border-radius:999px;width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+    .roadmap-line{position:absolute;left:30px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,#0ea5e9,#bae6fd)}
+    .move-history{max-height:180px;overflow-y:auto}
+    .move-history::-webkit-scrollbar{width:4px}
+    .move-history::-webkit-scrollbar-thumb{background:#7dd3fc;border-radius:4px}
+    .skin-card{border:2px solid transparent;transition:all .25s;cursor:default}
+    .skin-card:hover{border-color:#7dd3fc;transform:translateY(-3px);box-shadow:0 8px 24px rgba(14,165,233,.15)}
+    .skin-card.owned{border-color:#22c55e}
+    .skin-card.equipped{border-color:#0ea5e9;box-shadow:0 0 0 3px rgba(14,165,233,.25)}
+    .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px}
+    .modal-box{background:#fff;border-radius:24px;padding:32px;max-width:440px;width:100%;position:relative;box-shadow:0 30px 70px rgba(0,0,0,.25)}
+    .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+    .dot-green{background:#22c55e;box-shadow:0 0 8px #22c55e}
+    .preview-grid{display:grid;grid-template-columns:repeat(4,22px);gap:2px;margin:0 auto;width:fit-content}
+    .piece-preview{font-size:34px}
+    .pts-bar-wrap{height:10px;border-radius:999px;overflow:hidden;background:#fef3c7}
+    .pts-bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#fbbf24,#f59e0b);transition:width .7s ease}
+    #pts-toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:200;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#fff;font-weight:900;font-size:18px;padding:12px 28px;border-radius:20px;box-shadow:0 8px 32px rgba(245,158,11,.5);pointer-events:none}
+    .wallet-gate{background:rgba(251,191,36,.12);border:1.5px dashed #fbbf24;border-radius:14px;padding:10px 14px;text-align:center;font-size:12px;color:#92400e;font-weight:600;margin-top:6px}
+    .lb-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:14px;transition:background .15s}
+    .lb-row:hover{background:rgba(14,165,233,.07)}
+    .lb-row.lb-me{background:linear-gradient(90deg,rgba(251,191,36,.18),rgba(245,158,11,.10));border:1.5px solid rgba(251,191,36,.45)}
+    .lb-rank{font-family:'JetBrains Mono',monospace;font-weight:900;font-size:13px;min-width:26px;text-align:center}
+    .lb-addr{font-family:'JetBrains Mono',monospace;font-size:11px;color:#0369a1;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .lb-pts{font-weight:900;font-size:13px;color:#d97706;white-space:nowrap}
+    .verify-bar{height:6px;border-radius:999px;overflow:hidden;background:#bae6fd;margin-top:8px}
+    .verify-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#0ea5e9,#3b82f6);width:0%;transition:width .4s ease}
+    .turn-timer{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;font-weight:700;font-size:13px;transition:all .3s}
+    .turn-timer.urgent{background:rgba(239,68,68,.12);color:#dc2626}
+    .turn-timer.normal{background:rgba(14,165,233,.1);color:#0369a1}
+    .turn-timer.warning{background:rgba(245,158,11,.12);color:#d97706}
+    @keyframes urgentPulse{0%,100%{opacity:1}50%{opacity:.55}}
+    .turn-timer.urgent{animation:urgentPulse .6s ease-in-out infinite}
+    .timer-ring{width:28px;height:28px;position:relative;flex-shrink:0}
+    .timer-ring svg{transform:rotate(-90deg)}
+    .timer-ring .bg{fill:none;stroke:#e2e8f0;stroke-width:3}
+    .timer-ring .fg{fill:none;stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset .9s linear,stroke .3s}
+    .timer-skipped{font-size:11px;font-weight:700;padding:3px 8px;border-radius:8px;background:rgba(239,68,68,.12);color:#dc2626}
+    /* TonConnect button wrappers */
+    #tc-btn-nav,#tc-btn-shop{display:flex;align-items:center}
+    #tc-btn-nav tc-root,#tc-btn-shop tc-root{--tc-colors-background:linear-gradient(135deg,#0284c7,#0ea5e9)}
+    .shop-conn-btn{background:linear-gradient(135deg,#7c3aed,#6366f1);color:#fff;border:none;border-radius:12px;padding:8px 18px;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s}
+    .shop-conn-btn:hover{background:linear-gradient(135deg,#6d28d9,#4f46e5);transform:scale(1.03)}
   </style>
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter'],mono:['JetBrains Mono']}}}}</script>
 </head>
 <body>
 
-<!-- Toast -->
-<div id="toast-container"></div>
+<canvas id="particle-canvas"></canvas>
+<div id="pts-toast" class="hidden"></div>
 
-<!-- Particle Background -->
-<div class="particle-bg" id="particle-bg" aria-hidden="true"></div>
+<!-- ══════════════ LANDING ══════════════ -->
+<div id="page-landing" class="page active">
+  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-sky-200/60">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <img src="https://i.imgur.com/KfYwnPE.png" class="w-9 h-9 rounded-full" onerror="this.style.display='none'" alt=""/>
+        <span class="text-xl font-extrabold text-sky-700 tracking-tight">CHESSIO</span>
+      </div>
+      <div class="hidden md:flex items-center gap-5 text-sm font-medium text-sky-800">
+        <a href="#about" class="hover:text-sky-600">About</a>
+        <a href="#tokenomics" class="hover:text-sky-600">Tokenomics</a>
+        <a href="#roadmap" class="hover:text-sky-600">Roadmap</a>
+        <a href="#" onclick="goto('shop',event)" class="text-purple-600 font-semibold hover:text-purple-800">Shop</a>
+        <a href="#" onclick="goto('play',event)" class="text-sky-600 font-semibold hover:text-sky-800">Play</a>
+      </div>
+      <!-- TonConnect UI button rendered here -->
+      <div id="tc-btn-nav"></div>
+    </div>
+  </nav>
 
-<!-- NAVBAR -->
-<nav id="navbar">
-  <div class="nav-logo">
-    <img src="https://i.imgur.com/KlM5HWE.jpg" alt="APES" />
-    <span class="nav-logo-text">PLANET&nbsp;APES</span>
-  </div>
-  <div class="nav-links">
-    <a href="#game" onclick="smoothScroll('game');return false;">TAKE BANANA</a>
-    <a href="#skins" onclick="smoothScroll('skins');return false;">SKINS</a>
-    <a href="#tokenomics" onclick="smoothScroll('tokenomics');return false;">TOKENOMICS</a>
-    <a href="#how" onclick="smoothScroll('how');return false;">HOW TO BUY</a>
-    <a href="#roadmap" onclick="smoothScroll('roadmap');return false;">ROADMAP</a>
-    <a href="#community" onclick="smoothScroll('community');return false;">COMMUNITY</a>
-  </div>
-  <div class="nav-actions">
-    <button class="btn-wallet" id="wallet-btn" onclick="openWalletModal()">
-      <span>💎</span><span id="wallet-btn-txt">Connect Wallet</span>
-    </button>
-    <button class="btn-x" onclick="window.open('https://groypfi.io/','_blank')">𝕏 @planetapesxyz</button>
-    <button class="btn-tg" onclick="window.open('https://t.me/planetapesfun','_blank')">📱 TG</button>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="jungle-bg" id="hero">
-  <div class="hero-inner">
-    <div class="float-1" style="position:absolute;top:-2.5rem;left:25%;font-size:3.5rem;pointer-events:none;user-select:none">🍌</div>
-    <div class="float-2" style="position:absolute;top:5rem;right:22%;font-size:2.75rem;pointer-events:none;user-select:none">🍌</div>
-
-    <div style="display:flex;justify-content:center;margin-bottom:2rem">
-      <div style="position:relative">
-        <img src="https://i.imgur.com/KlM5HWE.jpg" alt="Planet Apes" style="width:min(20rem,80vw);height:min(20rem,80vw);border-radius:50%;border:12px solid #FFD700;box-shadow:0 0 120px #FFD700;object-fit:cover" />
-        <div class="animate-pulse" style="position:absolute;inset:-1rem;border-radius:50%;border:4px solid rgba(168,85,247,0.5)"></div>
+  <section class="pt-28 pb-20 px-4 relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+      <span class="float-piece absolute text-sky-400 opacity-50 text-5xl" style="left:4%;top:12%;--dur:3.2s">♟</span>
+      <span class="float-piece absolute text-blue-400 opacity-40 text-7xl" style="left:16%;top:42%;--dur:4.1s;animation-delay:.5s">♞</span>
+      <span class="float-piece absolute text-sky-500 opacity-45 text-4xl" style="left:28%;top:20%;--dur:3.7s;animation-delay:1s">♝</span>
+      <span class="float-piece absolute text-sky-300 opacity-50 text-6xl" style="left:53%;top:8%;--dur:2.9s;animation-delay:.3s">♜</span>
+      <span class="float-piece absolute text-blue-400 opacity-45 text-5xl" style="left:70%;top:36%;--dur:3.5s;animation-delay:.8s">♛</span>
+      <span class="float-piece absolute text-sky-400 opacity-40 text-6xl" style="left:83%;top:15%;--dur:4.3s;animation-delay:1.5s">♚</span>
+      <span class="float-piece absolute text-sky-300 opacity-50 text-4xl" style="left:91%;top:58%;--dur:3.1s;animation-delay:.2s">♟</span>
+      <span class="float-piece absolute text-blue-300 opacity-45 text-5xl" style="left:41%;top:63%;--dur:3.8s;animation-delay:1.2s">♞</span>
+      <span class="float-piece absolute text-sky-400 opacity-40 text-7xl" style="left:7%;top:66%;--dur:4.5s;animation-delay:.7s">♝</span>
+      <span class="float-piece absolute text-sky-300 opacity-50 text-4xl" style="left:61%;top:71%;--dur:3.4s;animation-delay:1.8s">♜</span>
+      <span class="float-piece absolute text-blue-400 opacity-45 text-6xl" style="left:23%;top:77%;--dur:2.8s;animation-delay:.4s">♛</span>
+      <span class="float-piece absolute text-sky-400 opacity-40 text-5xl" style="left:77%;top:79%;--dur:3.9s;animation-delay:1.1s">♟</span>
+    </div>
+    <div class="max-w-3xl mx-auto text-center relative z-10">
+      <img src="https://i.imgur.com/KfYwnPE.png" class="w-28 h-28 mx-auto mb-6 rounded-full shadow-2xl border-4 border-white/70 object-cover" onerror="this.style.display='none'" alt="Chessio"/>
+      <h1 class="text-6xl sm:text-7xl font-black text-sky-700 mb-4 tracking-tight">CHESSIO</h1>
+      <p class="text-xl text-sky-600 mb-2 font-medium">The Ultimate Chess Memecoin on TON Blockchain</p>
+      <p class="text-base text-sky-500 mb-8">Play chess. Earn points. Convert to $CHESSIO.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
+        <button onclick="goto('play')" class="px-8 py-4 bg-sky-600 hover:bg-sky-700 text-white font-bold text-lg rounded-2xl shadow-lg flex items-center justify-center gap-2">♞ Play Chess</button>
+        <button onclick="goto('shop')" class="px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white font-bold text-lg rounded-2xl shadow-lg">Shop Skins</button>
+        <a href="https://groypfi.io" target="_blank" rel="noopener noreferrer">
+          <button class="px-8 py-4 bg-white/80 hover:bg-white text-sky-700 font-bold text-lg rounded-2xl shadow-md border border-sky-200 w-full">Buy $CHESSIO on Groypfi</button>
+        </a>
+      </div>
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <div class="glass rounded-2xl px-5 py-3 text-center"><p class="text-xs text-sky-500 uppercase tracking-widest font-semibold">Contract</p><p class="text-sky-700 font-bold text-sm mt-1">Soon</p></div>
+        <div class="glass rounded-2xl px-5 py-3 text-center"><p class="text-xs text-sky-500 uppercase tracking-widest font-semibold">Network</p><p class="text-sky-700 font-bold text-sm mt-1">TON Blockchain</p></div>
+        <div class="glass rounded-2xl px-5 py-3 text-center"><p class="text-xs text-sky-500 uppercase tracking-widest font-semibold">Total Supply</p><p class="text-sky-700 font-bold text-sm mt-1">1,000,000,000 $CHESSIO</p></div>
+        <div class="glass rounded-2xl px-5 py-3 text-center"><p class="text-xs text-sky-500 uppercase tracking-widest font-semibold">Skins</p><p class="text-sky-700 font-bold text-sm mt-1">12 Collectibles</p></div>
       </div>
     </div>
+  </section>
 
-    <div style="display:inline-flex;align-items:center;gap:0.75rem;padding:0.5rem 1.5rem;background:#FFD700;color:#000;border-radius:9999px;margin-bottom:1rem">
-      <div class="animate-pulse" style="width:0.75rem;height:0.75rem;background:#22c55e;border-radius:50%"></div>
-      <span style="font-weight:900;font-size:0.875rem;letter-spacing:3px">LIVE ON TON</span>
+  <section id="about" class="py-16 px-4 z1">
+    <div class="max-w-5xl mx-auto">
+      <div class="reveal text-center mb-12">
+        <h2 class="text-4xl font-black text-sky-700 mb-3">What is Chessio?</h2>
+        <p class="text-sky-600 max-w-2xl mx-auto">Chessio is the first chess-powered memecoin on the TON blockchain. Win games to earn points, convert them to $CHESSIO, collect exclusive skins, and battle friends in real-time P2P matches.</p>
+      </div>
+      <div class="grid md:grid-cols-4 gap-5">
+        <div class="reveal glass rounded-2xl p-5 text-center hover:scale-105 transition-transform"><div class="text-4xl mb-3">♟</div><h3 class="font-bold text-sky-700 mb-1 text-sm">Chess vs AI</h3><p class="text-sky-600 text-xs">3 difficulty levels — 15s timer every turn!</p></div>
+        <div class="reveal glass rounded-2xl p-5 text-center hover:scale-105 transition-transform" style="transition-delay:.08s"><div class="text-4xl mb-3">⭐</div><h3 class="font-bold text-sky-700 mb-1 text-sm">Earn Points</h3><p class="text-sky-600 text-xs">Win games → earn points → convert to $CHESSIO</p></div>
+        <div class="reveal glass rounded-2xl p-5 text-center hover:scale-105 transition-transform" style="transition-delay:.16s"><div class="text-4xl mb-3">🎨</div><h3 class="font-bold text-sky-700 mb-1 text-sm">12 Skins</h3><p class="text-sky-600 text-xs">6 board + 6 piece skins, buyable with TON</p></div>
+        <div class="reveal glass rounded-2xl p-5 text-center hover:scale-105 transition-transform" style="transition-delay:.24s"><div class="text-4xl mb-3">🌐</div><h3 class="font-bold text-sky-700 mb-1 text-sm">WebRTC PvP</h3><p class="text-sky-600 text-xs">Direct P2P play with friends — no server needed</p></div>
+      </div>
     </div>
+  </section>
 
-    <h1 class="pixel-font" style="font-size:clamp(3rem,10vw,5rem);line-height:1;color:#fff;margin-bottom:0.5rem">PLANET<br>APES</h1>
-    <p style="font-size:2rem;font-weight:900;color:#FACC15;letter-spacing:4px;margin-top:-0.25rem;margin-bottom:1.5rem">KING OF THE JUNGLE</p>
-
-    <p style="max-width:42rem;margin:0 auto 2rem;font-size:1.2rem;color:#D1D5DB">
-      The most based meme coin on <span style="color:#836EF9;font-weight:700">TON</span>.<br>
-      Take bananas. Rule the jungle. <span style="color:#FACC15">To the moon.</span>
-    </p>
-
-    <div style="max-width:36rem;margin:0 auto 2rem;display:flex;align-items:center">
-      <div style="flex:1;background:rgba(131,110,249,0.1);border:1px solid rgba(131,110,249,0.4);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">CA: SOON</div>
-      <div style="background:linear-gradient(90deg,#836EF9,#6d54f0);color:#fff;font-weight:900;font-size:0.78rem;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;white-space:nowrap;display:flex;align-items:center">⏳ SOON</div>
+  <section id="tokenomics" class="py-16 px-4 bg-sky-50/80 z1">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="reveal text-4xl font-black text-sky-700 text-center mb-3">Tokenomics</h2>
+      <p class="reveal text-center text-sky-500 text-sm mb-10">Total Supply: 1,000,000,000 $CHESSIO</p>
+      <div class="max-w-lg mx-auto">
+        <div class="reveal glass rounded-2xl p-8">
+          <p class="text-sky-500 text-xs uppercase tracking-widest font-semibold mb-5 text-center">Token Details</p>
+          <div class="divide-y divide-sky-100">
+            <div class="flex justify-between items-center py-3"><span class="text-sky-600 font-medium">Symbol</span><span class="font-black text-sky-700">$CHESSIO</span></div>
+            <div class="flex justify-between items-center py-3"><span class="text-sky-600 font-medium">Network</span><span class="font-bold text-sky-700">TON Blockchain</span></div>
+            <div class="flex justify-between items-center py-3"><span class="text-sky-600 font-medium">Type</span><span class="font-bold text-sky-700">Jetton (TEP-74)</span></div>
+            <div class="flex justify-between items-center py-3"><span class="text-sky-600 font-medium">Launch</span><span class="font-bold text-sky-700">Groypfi.io</span></div>
+            <div class="flex justify-between items-center py-3"><span class="text-sky-600 font-medium">Tax</span><span class="font-black text-green-600">0%</span></div>
+            <div class="flex justify-between items-center py-3"><span class="text-sky-600 font-medium">Total Supply</span><span class="font-black text-sky-700">1,000,000,000</span></div>
+          </div>
+          <a href="https://groypfi.io" target="_blank" class="mt-6 block w-full py-3.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-center rounded-xl">Buy $CHESSIO on Groypfi →</a>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;align-items:center">
-      <button class="meme-btn" onclick="window.open('https://groypfi.io/','_blank')" style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;display:flex;align-items:center;gap:0.75rem;box-shadow:0 10px 40px rgba(255,215,0,0.5)">
-        <span>BUY $APES</span><span>🚀</span>
-      </button>
-      <button onclick="smoothScroll('game')" style="padding:1.25rem 2.5rem;border:4px solid #FFD700;background:transparent;color:#fff;font-weight:900;font-size:1.1rem;border-radius:1rem">
-        🎮 PLAY TAKE BANANA
-      </button>
+  <section id="roadmap" class="py-16 px-4 z1">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="reveal text-4xl font-black text-sky-700 text-center mb-3">Roadmap</h2>
+      <p class="reveal text-center text-sky-500 text-sm mb-10">Our journey to becoming the #1 chess memecoin on TON</p>
+      <div class="relative"><div class="roadmap-line hidden md:block"></div><div class="space-y-6" id="roadmap-items"></div></div>
     </div>
+  </section>
 
-    <div style="margin-top:2.5rem;display:flex;justify-content:center;gap:2rem;font-size:0.875rem;opacity:0.75;flex-wrap:wrap">
-      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#34D399">✔</span>FAIR LAUNCH</div>
-      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#34D399">✔</span>0 TAX</div>
-      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#34D399">✔</span>LP BURNED</div>
-      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#836EF9">💎</span>TON MAINNET</div>
+  <section class="py-16 px-4 bg-gradient-to-br from-sky-500 via-blue-600 to-purple-700 text-white z1">
+    <div class="max-w-2xl mx-auto text-center">
+      <div class="reveal">
+        <div class="text-6xl mb-4">♛</div>
+        <h2 class="text-4xl font-black mb-3">Join the Chess Revolution</h2>
+        <p class="text-sky-100 mb-8 text-lg">Play. Earn. Convert. The first chess memecoin on TON awaits you.</p>
+        <div class="flex gap-4 justify-center flex-wrap">
+          <button onclick="goto('play')" class="px-8 py-4 bg-white text-sky-600 font-black text-lg rounded-2xl hover:scale-105 shadow-2xl">Play &amp; Earn Now</button>
+          <button onclick="goto('shop')" class="px-8 py-4 bg-white/20 hover:bg-white/30 text-white font-black text-lg rounded-2xl hover:scale-105 border border-white/40">Browse Skins</button>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="ticker-wrap">
-    <div class="ticker-inner">
-      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON TON MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON GROYPFI.IO 🚀</span><span>🦍 KING OF THE JUNGLE ON TON 🦍</span><span>💎 APE SKINS FROM 0.3 TON 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
-      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON TON MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON GROYPFI.IO 🚀</span><span>🦍 KING OF THE JUNGLE ON TON 🦍</span><span>💎 APE SKINS FROM 0.3 TON 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
+  <footer class="py-10 px-4 bg-sky-900 text-white z1">
+    <div class="max-w-5xl mx-auto">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-3">
+          <img src="https://i.imgur.com/KfYwnPE.png" class="w-8 h-8 rounded-full" onerror="this.style.display='none'" alt=""/>
+          <span class="text-lg font-black">CHESSIO</span>
+        </div>
+        <div class="flex gap-6 flex-wrap justify-center">
+          <a href="https://x.com/chessiooxyz" target="_blank" class="text-sky-300 hover:text-white text-sm font-medium">X @chessiooxyz</a>
+          <a href="https://t.me/Chessioportal" target="_blank" class="text-sky-300 hover:text-white text-sm font-medium">Chessioportal</a>
+          <a href="https://groypfi.io" target="_blank" class="text-sky-300 hover:text-white text-sm font-medium">Groypfi.io</a>
+        </div>
+      </div>
+      <div class="mt-6 pt-6 border-t border-sky-800 text-center text-sky-500 text-sm space-y-1">
+        <p class="text-xs">Contract: <span class="font-bold text-sky-300">Soon</span></p>
+        <p>Chessio is a memecoin. Not financial advice. DYOR. © 2025 Chessio.</p>
+      </div>
     </div>
-  </div>
-</section>
-
-<!-- Available on bar -->
-<div onclick="window.open('https://groypfi.io/','_blank')" style="background:#0a0a0a;border-bottom:1px solid rgba(234,179,8,0.2);padding:1.25rem;text-align:center;cursor:pointer;position:relative;z-index:1">
-  <div style="color:#FACC15;font-size:0.75rem;letter-spacing:0.2em">AVAILABLE ON</div>
-  <div style="font-size:2.25rem;font-weight:900;color:#836EF9">GROYPFI.IO 🚀</div>
+  </footer>
 </div>
 
-<!-- GAME -->
-<section id="game" style="max-width:64rem;margin:0 auto;padding:5rem 1.5rem;position:relative;z-index:1">
-  <div style="text-align:center;margin-bottom:3rem">
-    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(168,85,247,0.2);color:#C084FC;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">INTERACTIVE EXPERIENCE</div>
-    <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem">TAKE BANANA</h2>
-    <p style="margin-top:0.75rem;font-size:1.15rem;color:#9CA3AF;max-width:32rem;margin-left:auto;margin-right:auto">Click the bananas to feed the King Ape. Equip skins for powerful <strong style="color:#34D399">tap boost multipliers!</strong></p>
-  </div>
-
-  <!-- Equipped skin boost bar -->
-  <div id="boost-bar" style="display:none;text-align:center;margin-bottom:1.25rem">
-    <div style="display:inline-flex;align-items:center;gap:0.75rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.4);border-radius:9999px;padding:0.5rem 1.5rem">
-      <span id="boost-bar-label" style="font-weight:700;font-size:0.875rem;color:#34D399"></span>
-      <span id="boost-bar-tag" style="font-size:0.7rem;color:#34D399;background:rgba(52,211,153,0.2);border-radius:9999px;padding:0.2rem 0.6rem;font-weight:900"></span>
+<!-- ══════════════ SHOP ══════════════ -->
+<div id="page-shop" class="page">
+  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-sky-200/60">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <button onclick="goto('landing')" class="text-sky-700 hover:text-sky-900 font-semibold text-sm">← Back</button>
+      <span class="text-lg font-black text-purple-700">Skin Shop</span>
+      <!-- TonConnect UI button (shared instance) -->
+      <div id="tc-btn-shop"></div>
     </div>
-  </div>
-
-  <div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center">
-    <!-- Game box -->
-    <div style="flex:1;min-width:280px;max-width:620px">
-      <div class="game-container" id="game-container" onclick="handleGameClick(event)" ontouchstart="handleGameTouch(event)">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.18;pointer-events:none;font-size:180px">🌴</div>
-        <!-- In-game equipped badge -->
-        <div id="game-skin-badge" style="display:none;position:absolute;top:1.5rem;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);padding:0.3rem 0.9rem;border-radius:9999px;font-size:0.6rem;font-weight:700;z-index:30;pointer-events:none;white-space:nowrap"></div>
-        <div id="ape-wrap" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;pointer-events:none;text-align:center">
-          <div style="position:relative">
-            <img id="ape-img" src="https://i.imgur.com/KlM5HWE.jpg" style="width:10rem;height:10rem;border-radius:50%;border:8px solid #FFD700;box-shadow:0 0 60px #FFD700;object-fit:cover;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1)" alt="Ape" />
-            <div style="position:absolute;top:-0.75rem;left:50%;transform:translateX(-50%);font-size:2rem">👑</div>
-          </div>
+  </nav>
+  <div class="pt-20 pb-16 px-4 min-h-screen" style="background:linear-gradient(135deg,#faf5ff 0%,#f0f9ff 50%,#eff6ff 100%)">
+    <div class="max-w-6xl mx-auto">
+      <div class="glass rounded-2xl p-4 mb-8 flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <p class="text-xs text-purple-500 uppercase tracking-widest font-semibold">TON Wallet</p>
+          <p id="shop-wallet-txt" class="text-sky-700 font-bold text-sm mt-0.5">Not connected — connect wallet to purchase skins</p>
         </div>
-        <div style="position:absolute;top:1.5rem;right:1.5rem;background:rgba(0,0,0,0.85);padding:0.75rem 1.5rem;border-radius:1rem;border:1px solid #FFD700;z-index:30;pointer-events:none;text-align:center">
-          <div style="font-size:0.65rem;color:#FACC15;letter-spacing:0.1em">BANANAS COLLECTED</div>
-          <div id="score-display" style="font-size:2.5rem;font-weight:900;color:#FACC15;font-family:monospace">0</div>
-          <div id="boost-indicator" style="display:none;font-size:0.6rem;color:#34D399;margin-top:2px;font-weight:700"></div>
-        </div>
-        <div style="position:absolute;top:1.5rem;left:1.5rem;background:rgba(0,0,0,0.85);padding:0.5rem 1.25rem;border-radius:1rem;border:1px solid #a855f7;z-index:30;pointer-events:none">
-          <div style="font-size:0.65rem;color:#C084FC">KING LEVEL</div>
-          <div id="level-display" style="font-size:1.75rem;font-weight:900;color:#C084FC">1</div>
-        </div>
-        <button id="music-btn" onclick="toggleMusic()" style="position:absolute;bottom:1.5rem;right:1.5rem;z-index:40;background:rgba(0,0,0,0.75);border:1px solid #FFD700;border-radius:9999px;padding:0.35rem 0.9rem;color:#FFD700;font-size:0.75rem;font-weight:700;display:flex;align-items:center;gap:0.35rem;cursor:pointer">🎵 ON</button>
-        <div id="level-msg" style="display:none;position:absolute;top:33%;left:50%;transform:translateX(-50%);background:#FFD700;color:#000;padding:0.5rem 2rem;border-radius:2rem;font-weight:900;font-size:1.25rem;z-index:50;box-shadow:0 0 40px #FFD700;white-space:nowrap;pointer-events:none"></div>
-        <div id="floats" style="position:absolute;inset:0;pointer-events:none;z-index:40;overflow:hidden"></div>
-        <div style="position:absolute;bottom:1.5rem;left:1.5rem;right:1.5rem;z-index:30;pointer-events:none">
-          <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-          <div style="display:flex;justify-content:space-between;font-size:0.6rem;color:rgba(250,204,21,0.7);margin-top:0.25rem;font-family:monospace">
-            <span id="progress-lvl">LVL 1</span><span id="progress-txt">0/10,000</span>
-          </div>
-        </div>
-        <div id="game-instruction" style="position:absolute;bottom:5.5rem;left:50%;transform:translateX(-50%);text-align:center;z-index:30;pointer-events:none">
-          <div style="color:#FACC15;font-size:0.875rem;letter-spacing:2px">👆 CLICK ANYWHERE TO TAKE BANANAS!</div>
-        </div>
+        <button onclick="shopConnClick()" id="shop-conn-btn" class="shop-conn-btn">Connect Wallet</button>
       </div>
-      <div style="display:flex;justify-content:center;gap:0.75rem;margin-top:1.5rem;flex-wrap:wrap">
-        <button onclick="resetGame()" style="padding:0.75rem 1.75rem;border:1px solid rgba(255,255,255,0.3);background:transparent;color:#fff;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">↺ RESET JUNGLE</button>
-        <button onclick="openConvertModal()" style="padding:0.75rem 1.75rem;border:1px solid rgba(255,215,0,0.4);background:rgba(255,215,0,0.08);color:#FFD700;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">🍌 Convert to $APES</button>
-        <button onclick="smoothScroll('skins')" style="padding:0.75rem 1.75rem;border:1px solid rgba(131,110,249,0.4);background:rgba(131,110,249,0.08);color:#836EF9;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">💎 Get Skin Boost</button>
+      <div class="flex items-center gap-3 mb-2">
+        <h2 class="text-2xl font-black text-sky-700">Board Skins</h2>
+        <span class="text-xs bg-sky-100 text-sky-600 font-bold px-2 py-0.5 rounded-full">6 designs</span>
       </div>
-      <div style="text-align:center;margin-top:1rem;font-size:0.75rem;color:#6B7280">Every 10,000 bananas × level = level up • Equip a skin for tap boost multipliers!</div>
-    </div>
-
-    <!-- Leaderboard -->
-    <div style="width:100%;max-width:320px;flex-shrink:0">
-      <div class="lb-card">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-          <div>
-            <div style="font-weight:900;font-size:1.4rem">🏆 LEADERBOARD</div>
-            <div style="font-size:0.6rem;color:#FACC15;letter-spacing:1px;margin-top:-2px">TOP APES • CONVERT TO $APES • WEEKLY</div>
-          </div>
-          <button onclick="openSubmitModal()" style="padding:0.5rem 1.25rem;font-size:0.75rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;border-radius:1rem;border:none;white-space:nowrap">SUBMIT</button>
-        </div>
-        <div id="leaderboard-list" style="font-size:0.875rem;max-height:200px;overflow-y:auto;padding-right:0.5rem;display:flex;flex-direction:column;gap:0.375rem"></div>
-        <div style="margin-top:1.25rem;background:rgba(0,0,0,0.4);padding:0.75rem;border-radius:0.75rem">
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <div>
-              <div style="color:#9CA3AF;font-size:0.75rem">YOUR BEST</div>
-              <div style="font-size:0.65rem;color:#6B7280">Submit to enter leaderboard</div>
-            </div>
-            <div id="personal-best" style="font-family:monospace;font-weight:900;color:#FACC15;font-size:1.5rem">0</div>
-          </div>
-        </div>
-        <div style="margin-top:1rem">
-          <button onclick="openConvertModal()" class="btn-convert">🍌 Convert Bananas to $APES</button>
-        </div>
+      <p class="text-sky-400 text-sm mb-5">1 free starter • 5 premium at <strong class="text-sky-600">0.3 TON</strong> each</p>
+      <div class="grid sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-12" id="board-skin-cards"></div>
+      <div class="flex items-center gap-3 mb-2">
+        <h2 class="text-2xl font-black text-sky-700">Piece Skins</h2>
+        <span class="text-xs bg-purple-100 text-purple-600 font-bold px-2 py-0.5 rounded-full">6 styles</span>
       </div>
-      <div style="text-align:center;font-size:0.65rem;color:#6B7280;margin-top:0.5rem">Submit your high score to climb the ranks! Scores are saved permanently.</div>
-      <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.1);font-size:0.6rem;color:#6B7280;line-height:1.5">
-        <strong>LEADERBOARD RULES:</strong> Top banana collectors each week can convert to $APES. Fair play only. <span style="color:#FACC15">Resets every Sunday 00:00 UTC.</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- APE SKINS -->
-<section id="skins" style="max-width:64rem;margin:0 auto;padding:5rem 1.5rem;background:#0a0a0a;position:relative;z-index:1">
-  <div style="text-align:center;margin-bottom:3rem">
-    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(131,110,249,0.2);color:#836EF9;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">💎 BUY WITH TON — FROM 0.3 TON</div>
-    <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem">APE SKINS</h2>
-    <p style="color:#9CA3AF;font-size:1.05rem;margin-top:0.5rem">Buy with TON Mainnet. Each skin gives you a <strong style="color:#34D399">tap boost multiplier</strong> that applies instantly when equipped in-game!</p>
-    <div style="display:flex;justify-content:center;gap:1rem;margin-top:1rem;flex-wrap:wrap">
-      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#34D399">⚡ Equipped skin multiplies every tap</div>
-      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(131,110,249,0.1);border:1px solid rgba(131,110,249,0.3);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#836EF9">💎 TON Mainnet payments</div>
-    </div>
-  </div>
-  <div id="skins-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.75rem"></div>
-  <div style="text-align:center;margin-top:2.5rem">
-    <div style="display:inline-flex;align-items:center;gap:0.5rem;background:#111;border:1px solid rgba(250,204,21,0.3);border-radius:9999px;padding:0.5rem 1.25rem">
-      <span style="color:#FACC15">🦍</span>
-      <span style="font-size:0.875rem;color:#9CA3AF">Connect TON wallet to purchase • Skins are saved permanently</span>
-    </div>
-  </div>
-</section>
-
-<!-- TOKENOMICS -->
-<section id="tokenomics" style="background:linear-gradient(180deg,#000 0%,#0a0a0a 100%);padding:5rem 1.5rem;position:relative;z-index:1">
-  <div style="max-width:64rem;margin:0 auto">
-    <div style="text-align:center;margin-bottom:3rem">
-      <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(250,204,21,0.15);color:#FACC15;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">TOKENOMICS</div>
-      <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem">THE ECONOMICS</h2>
-      <p style="color:#9CA3AF;font-size:1rem;margin-top:0.5rem">Simple, fair, and transparent.</p>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-bottom:3rem">
-      <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">TOTAL SUPPLY</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#FFD700">1,000,000,000</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">$APES forever</div></div>
-      <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">BUY/SELL TAX</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#34D399">0%</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">Zero tax — keep every banana</div></div>
-      <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">LP BURNED</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#C084FC">100%</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">Liquidity locked forever</div></div>
-      <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">OWNER</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#F59E0B">Renounced</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">No control, true community coin</div></div>
-    </div>
-    <div style="margin-bottom:2rem;display:flex;align-items:center;max-width:640px;margin-left:auto;margin-right:auto">
-      <div style="flex:1;background:rgba(131,110,249,0.1);border:1px solid rgba(131,110,249,0.4);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">CA: SOON</div>
-      <div style="background:linear-gradient(90deg,#836EF9,#6d54f0);color:#fff;font-weight:900;font-size:0.78rem;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;white-space:nowrap;display:flex;align-items:center">⏳ SOON</div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW TO BUY -->
-<section id="how" style="max-width:64rem;margin:0 auto;padding:5rem 1.5rem;position:relative;z-index:1">
-  <div style="text-align:center;margin-bottom:3rem">
-    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(52,211,153,0.2);color:#34D399;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">GET STARTED</div>
-    <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff">HOW TO BUY $APES</h2>
-  </div>
-  <div style="display:flex;flex-direction:column;gap:1rem">
-    <div class="step"><div class="step-num">1</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Get a TON-Compatible Wallet</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Download Tonkeeper, Tonhub, or any TON-compatible wallet. Click <strong style="color:#836EF9">Connect Wallet</strong> in the navbar to link it and buy Ape Skins with TON Mainnet.</div></div></div>
-    <div class="step"><div class="step-num">2</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Fund with TON</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Load your TON wallet with at least <strong style="color:#FFD700">0.3 TON</strong> to buy the starter Jungle Chad skin, plus a tiny amount for gas. Skins give tap boost multipliers in the game!</div></div></div>
-    <div class="step"><div class="step-num">3</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy Skins &amp; Play</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Head to the <strong style="color:#C084FC">APE SKINS</strong> section, choose your skin, and buy with TON. Equip it in-game for an instant tap boost. Stack banana scores and convert them to $APES!</div></div></div>
-    <div class="step"><div class="step-num">4</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy $APES on groypfi.io</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Visit <strong style="color:#836EF9">groypfi.io</strong> — the premier platform to buy $APES. Connect your wallet and swap instantly.<br><span style="color:#FACC15;font-size:0.8rem">CA: SOON</span></div></div></div>
-  </div>
-  <div style="margin-top:2rem;text-align:center">
-    <button class="meme-btn" onclick="window.open('https://groypfi.io/','_blank')" style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;box-shadow:0 10px 40px rgba(255,215,0,0.4)">🚀 BUY $APES ON GROYPFI.IO</button>
-  </div>
-</section>
-
-<!-- ROADMAP -->
-<section id="roadmap" style="background:#0a0a0a;padding:5rem 1.5rem;position:relative;z-index:1">
-  <div style="max-width:64rem;margin:0 auto">
-    <div style="text-align:center;margin-bottom:3rem">
-      <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(250,204,21,0.15);color:#FACC15;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">THE PLAN</div>
-      <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem">ROADMAP</h2>
-      <p style="color:#9CA3AF;font-size:1rem;margin-top:0.5rem">From jungle to the moon — one banana at a time.</p>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem">
-      <div style="background:#111;border:2px solid #FFD700;border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#FFD700,#F59E0Bcc)"></div>
-        <div style="display:inline-block;padding:0.25rem 0.875rem;background:rgba(34,197,94,0.2);color:#22c55e;border-radius:9999px;font-size:0.7rem;font-weight:900;letter-spacing:1px;margin-bottom:1rem">✅ LIVE NOW</div>
-        <div class="pixel-font" style="font-size:0.7rem;color:#FFD700;margin-bottom:0.5rem">PHASE 1</div>
-        <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🚀 LAUNCH</div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Token launch on TON</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Website &amp; Take Banana game live</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Persistent leaderboard</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Skin shop with TON payments</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Community Twitter launch</li>
-        </ul>
-      </div>
-      <div style="background:#111;border:1px solid rgba(131,110,249,0.4);border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#836EF9,#6d54f0cc)"></div>
-        <div style="display:inline-block;padding:0.25rem 0.875rem;background:rgba(131,110,249,0.2);color:#836EF9;border-radius:9999px;font-size:0.7rem;font-weight:900;letter-spacing:1px;margin-bottom:1rem">⏳ COMING SOON</div>
-        <div class="pixel-font" style="font-size:0.7rem;color:#836EF9;margin-bottom:0.5rem">PHASE 2</div>
-        <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🌿 GROWTH</div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>CoinGecko &amp; CMC listing</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>Convert bananas to $APES live</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>Major influencer partnerships</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>Telegram community 5,000+</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>Cross-platform marketing blitz</li>
-        </ul>
-      </div>
-      <div style="background:#111;border:1px solid rgba(192,132,252,0.4);border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#C084FC,#a855f7cc)"></div>
-        <div style="display:inline-block;padding:0.25rem 0.875rem;background:rgba(168,85,247,0.2);color:#C084FC;border-radius:9999px;font-size:0.7rem;font-weight:900;letter-spacing:1px;margin-bottom:1rem">🔮 COMING</div>
-        <div class="pixel-font" style="font-size:0.7rem;color:#C084FC;margin-bottom:0.5rem">PHASE 3</div>
-        <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🦍 NFT DROP</div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>NFT Ape Skin collection (TON)</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>1,000 NFT holder milestone</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>Holder-only events &amp; giveaways</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>$APES weekly prize pool</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>Strategic CEX talks begin</li>
-        </ul>
-      </div>
-      <div style="background:#111;border:1px solid rgba(52,211,153,0.4);border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#34D399,#22c55ecc)"></div>
-        <div style="display:inline-block;padding:0.25rem 0.875rem;background:rgba(52,211,153,0.1);color:#34D399;border-radius:9999px;font-size:0.7rem;font-weight:900;letter-spacing:1px;margin-bottom:1rem">🌙 THE MOON</div>
-        <div class="pixel-font" style="font-size:0.7rem;color:#34D399;margin-bottom:0.5rem">PHASE 4</div>
-        <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🦍 ECOSYSTEM</div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#34D399">◆</span>Planet Apes mobile game</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#34D399">◆</span>CEX listings (major exchanges)</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#34D399">◆</span>$APES merch store</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#34D399">◆</span>Cross-chain bridge to other networks</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#34D399">◆</span>10,000 holder celebration event</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- COMMUNITY -->
-<section id="community" style="max-width:64rem;margin:0 auto;padding:5rem 1.5rem;position:relative;z-index:1">
-  <div style="text-align:center;margin-bottom:3rem">
-    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(168,85,247,0.2);color:#C084FC;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">JOIN US</div>
-    <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff">JOIN THE JUNGLE</h2>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem">
-    <div class="social-card" onclick="window.open('https://groypfi.io/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">𝕏</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Twitter / X</div><div style="color:#9CA3AF;font-size:0.875rem">Follow for alpha, memes &amp; updates</div></div>
-    <div class="social-card" onclick="window.open('https://t.me/planetapesfun','_blank')"><div style="font-size:3rem;margin-bottom:1rem">📱</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Telegram</div><div style="color:#9CA3AF;font-size:0.875rem">Join the jungle chat • alpha &amp; memes</div></div>
-    <div class="social-card" onclick="window.open('https://groypfi.io/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">🚀</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">groypfi.io</div><div style="color:#9CA3AF;font-size:0.875rem">Buy $APES now on groypfi.io</div></div>
-    <div class="social-card" onclick="window.open('https://groypfi.io/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">📊</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Dexscreener</div><div style="color:#9CA3AF;font-size:0.875rem">Track $APES price live</div></div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section style="background:#0a0a0a;padding:5rem 1.5rem;position:relative;z-index:1">
-  <div style="max-width:48rem;margin:0 auto">
-    <div style="text-align:center;margin-bottom:3rem">
-      <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,2.5rem);font-weight:900;color:#fff">FAQ</h2>
-    </div>
-    <div id="faq-list"></div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer style="background:#000;border-top:1px solid rgba(250,204,21,0.2);padding:3rem 1.5rem;text-align:center;position:relative;z-index:1">
-  <div style="display:flex;justify-content:center;margin-bottom:1.5rem">
-    <img src="https://i.imgur.com/KlM5HWE.jpg" alt="APES" style="width:56px;height:56px;border-radius:50%;border:2px solid #FFD700;object-fit:cover" />
-  </div>
-  <div class="pixel-font" style="font-size:1rem;color:#FFD700;margin-bottom:0.5rem">PLANET APES</div>
-  <div style="color:#6B7280;font-size:0.875rem;margin-bottom:1.5rem">The most based meme coin on TON.</div>
-  <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap">
-    <a href="https://groypfi.io/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#FFD700'" onmouseout="this.style.color='#9CA3AF'">Twitter</a>
-    <a href="https://t.me/planetapesfun" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#229ED9'" onmouseout="this.style.color='#9CA3AF'">Telegram</a>
-    <a href="https://groypfi.io/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#836EF9'" onmouseout="this.style.color='#9CA3AF'">Buy $APES</a>
-  </div>
-  <div style="color:#4B5563;font-size:0.75rem">$APES is a meme coin with no intrinsic value. Always do your own research. Not financial advice.</div>
-  <div style="color:#374151;font-size:0.65rem;margin-top:0.5rem">TON Network | High-Performance Blockchain</div>
-</footer>
-
-<!-- ═══════════ MODALS ═══════════ -->
-
-<!-- WALLET INFO MODAL (shown when wallet is already connected) -->
-<div id="wallet-info-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeWalletInfoModal()">
-  <div class="modal-box" style="max-width:420px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
-      <div>
-        <div style="font-weight:900;font-size:1.4rem">💎 TON Wallet</div>
-        <div style="font-size:0.75rem;color:#34D399;margin-top:0.2rem">Connected to TON Mainnet</div>
-      </div>
-      <button class="modal-close" onclick="closeWalletInfoModal()">✕</button>
-    </div>
-    <div style="text-align:center;padding:0.5rem 0 1.5rem">
-      <div style="font-size:3rem;margin-bottom:0.75rem">✅</div>
-      <div style="font-weight:900;font-size:1.1rem;color:#34D399;margin-bottom:0.35rem">Wallet Connected</div>
-      <div id="wallet-info-short" style="font-size:1rem;font-weight:700;color:#836EF9;margin-bottom:0.6rem;font-family:monospace"></div>
-      <div id="wallet-info-addr" style="font-family:monospace;font-size:0.62rem;color:#9CA3AF;background:#1a1a1a;padding:0.6rem 0.75rem;border-radius:0.75rem;word-break:break-all;margin-bottom:1.25rem;text-align:left"></div>
-      <div style="background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.2);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;text-align:left;line-height:1.6">
-        ✅ You can submit scores to the leaderboard<br>✅ Buy skins with TON payments<br>✅ Convert bananas to $APES at launch
-      </div>
-      <button onclick="disconnectWallet()" style="padding:0.75rem 2rem;border:1px solid rgba(239,68,68,0.4);background:rgba(239,68,68,0.1);color:#ef4444;font-weight:700;border-radius:0.75rem;width:100%;cursor:pointer;font-size:0.9rem">🔌 Disconnect Wallet</button>
+      <p class="text-sky-400 text-sm mb-5">1 free starter • 5 premium at <strong class="text-sky-600">0.3 TON</strong> each</p>
+      <div class="grid sm:grid-cols-3 lg:grid-cols-6 gap-4" id="piece-skin-cards"></div>
     </div>
   </div>
 </div>
 
-<!-- SUBMIT MODAL -->
-<div id="submit-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this&&!submitting)closeSubmitModal()">
+<!-- Buy Modal -->
+<div id="modal-buy" class="modal-bg hidden">
   <div class="modal-box">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
-      <div style="font-weight:900;font-size:1.5rem">🏆 Submit Score</div>
-      <button class="modal-close" onclick="closeSubmitModal()">✕</button>
+    <h3 id="buy-title" class="text-xl font-black text-sky-700 mb-1">Buy Skin</h3>
+    <p id="buy-desc" class="text-sky-400 text-sm mb-4"></p>
+    <div class="bg-sky-50 rounded-2xl p-4 text-center mb-5">
+      <p class="text-sky-400 text-xs uppercase tracking-widest font-semibold mb-1">Price</p>
+      <p id="buy-price" class="text-3xl font-black text-sky-700"></p>
     </div>
-    <div style="text-align:center;margin-bottom:1rem">
-      <div style="font-size:0.75rem;color:#9CA3AF;margin-bottom:0.25rem">YOUR SCORE</div>
-      <div id="submit-score-display" style="font-family:monospace;font-weight:900;font-size:3rem;color:#FACC15">0</div>
+    <div id="buy-error" class="hidden mb-3 p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm"></div>
+    <div id="buy-success" class="hidden mb-3 p-3 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm font-semibold"></div>
+    <div id="verify-status" class="hidden mb-3">
+      <p id="verify-msg" class="text-sky-600 text-sm mb-2"></p>
+      <div class="verify-bar"><div id="verify-fill" class="verify-fill"></div></div>
     </div>
-    <div style="background:rgba(131,110,249,0.1);border:1px solid rgba(131,110,249,0.3);border-radius:0.75rem;padding:0.6rem 0.9rem;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem">
-      <span style="font-size:0.8rem">💎</span>
-      <span id="submit-wallet-display" style="font-family:monospace;font-size:0.72rem;color:#836EF9;font-weight:700"></span>
-    </div>
-    <input type="text" id="submit-name-input" placeholder="Enter your ape name..." maxlength="20" onkeydown="if(event.key==='Enter')submitScore();if(event.key==='Escape')closeSubmitModal()" style="margin-bottom:0.5rem" />
-    <p style="font-size:0.7rem;color:#6B7280;text-align:center;margin-bottom:1rem">Score saved permanently to leaderboard — linked to your wallet!</p>
-    <div style="display:flex;gap:0.75rem">
-      <button onclick="closeSubmitModal()" style="flex:1;padding:0.75rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CANCEL</button>
-      <button id="submit-btn" onclick="submitScore()" style="flex:1;padding:0.75rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;border-radius:0.75rem;border:none;cursor:pointer">🏆 SUBMIT</button>
+    <div class="flex gap-3">
+      <button id="buy-btn" onclick="confirmBuy()" class="flex-1 py-3 text-white font-bold rounded-xl flex items-center justify-center gap-2" style="background:linear-gradient(135deg,#0ea5e9,#3b82f6)"><span>💎</span><span>Buy with TON</span></button>
+      <button id="cancel-btn" onclick="closeBuyModal()" class="px-5 py-3 bg-sky-100 text-sky-600 font-bold rounded-xl">Cancel</button>
     </div>
   </div>
 </div>
 
-<!-- SKIN MODAL -->
-<div id="skin-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeSkinModal()">
-  <div class="modal-box" style="max-width:480px">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem">
-      <div id="skin-modal-title" style="font-weight:900;font-size:1.5rem"></div>
-      <button class="modal-close" onclick="closeSkinModal()">✕</button>
+<!-- Convert Modal -->
+<div id="modal-convert" class="modal-bg hidden">
+  <div class="modal-box max-w-sm">
+    <h3 class="text-xl font-black text-sky-700 mb-4">Convert Points → $CHESSIO</h3>
+    <div class="bg-amber-50 rounded-2xl p-4 text-center mb-4">
+      <p class="text-amber-500 text-xs uppercase tracking-widest font-semibold mb-1">Your Points</p>
+      <p id="conv-pts" class="text-3xl font-black text-amber-600">0</p>
     </div>
-    <div style="text-align:center;margin-bottom:1rem">
-      <img id="skin-modal-img" style="width:180px;height:180px;object-fit:cover;border-radius:50%;border:8px solid #FFD700;box-shadow:0 0 60px #FFD700" alt="Skin" />
+    <p class="text-sky-400 text-xs text-center mb-4">10,000 pts = 1 $CHESSIO</p>
+    <div id="conv-no-wallet" class="hidden p-3 bg-amber-50 rounded-xl text-amber-700 text-sm font-semibold mb-3">Connect wallet to convert</div>
+    <div id="conv-low" class="hidden p-3 bg-sky-50 rounded-xl text-sky-600 text-sm mb-3">Need 10,000+ pts to convert</div>
+    <div id="conv-done" class="hidden p-3 bg-green-50 rounded-xl text-green-700 text-sm font-semibold mb-3">Conversion request sent!</div>
+    <div class="flex gap-3">
+      <button id="conv-btn" onclick="doConvert()" class="hidden flex-1 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl"></button>
+      <button onclick="closeConvert()" class="flex-1 py-3 bg-sky-100 text-sky-600 font-bold rounded-xl">Close</button>
     </div>
-    <div id="skin-modal-rarity" style="text-align:center;margin-bottom:0.5rem;font-weight:900"></div>
-    <div style="text-align:center;margin-bottom:0.75rem">
-      <span id="skin-modal-boost" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.4);border-radius:0.5rem;padding:0.3rem 0.8rem;font-size:0.8rem;font-weight:900;color:#34D399"></span>
-    </div>
-    <div id="skin-modal-desc" style="color:#9CA3AF;font-size:0.9rem;line-height:1.6;text-align:center;margin-bottom:1rem"></div>
-    <div style="background:#1a1a1a;border:1px solid rgba(250,204,21,0.2);border-radius:1rem;padding:1rem;margin-bottom:1.25rem">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
-        <div style="font-size:0.75rem;color:#9CA3AF">PRICE (TON MAINNET)</div>
-        <div id="skin-modal-price" style="font-weight:900;color:#836EF9;font-size:1.1rem"></div>
+  </div>
+</div>
+
+<!-- ══════════════ PLAY ══════════════ -->
+<div id="page-play" class="page">
+  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-sky-200/60">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <button onclick="goto('landing')" class="text-sky-700 hover:text-sky-900 font-semibold text-sm">← Back</button>
+      <div class="flex items-center gap-3">
+        <span class="text-lg font-black text-sky-700">Play Chess</span>
+        <span class="hidden sm:flex items-center gap-1 text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-1 rounded-lg border border-amber-200">⭐ <span id="nav-pts">0</span> pts</span>
       </div>
-      <div style="font-size:0.7rem;color:#FACC15;margin-bottom:0.25rem">BOOST UTILITY</div>
-      <div id="skin-modal-unlock" style="font-weight:700;color:#fff;font-size:0.85rem"></div>
+      <button onclick="openConvert()" class="px-3 py-1.5 text-xs font-bold bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200">Convert</button>
     </div>
-    <div id="skin-modal-actions" style="display:flex;gap:0.75rem;flex-wrap:wrap"></div>
-    <div style="text-align:center;margin-top:0.75rem;font-size:0.65rem;color:#6B7280">TON Mainnet • Permanent Ownership • Equip in Game</div>
-  </div>
-</div>
+  </nav>
 
-<!-- PAYMENT MODAL -->
-<div id="payment-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closePaymentModal()">
-  <div class="modal-box" style="max-width:460px">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem">
-      <div>
-        <div style="font-weight:900;font-size:1.4rem">💎 Pay with TON</div>
-        <div id="pay-skin-name" style="font-size:0.8rem;color:#836EF9;font-weight:700;margin-top:0.15rem"></div>
+  <div class="pt-20 pb-10 px-4">
+    <!-- MENU -->
+    <div id="play-menu" class="max-w-4xl mx-auto">
+      <div class="glass rounded-2xl p-6 mb-6">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <h2 class="text-2xl font-black text-sky-700">Your Score</h2>
+            <p class="text-sky-400 text-sm">Earn points by winning — convert to $CHESSIO</p>
+          </div>
+          <button onclick="openConvert()" id="pts-convert-btn" class="hidden px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm">Convert Points</button>
+        </div>
+        <div class="mt-4">
+          <div class="flex justify-between items-end mb-2">
+            <p class="text-3xl font-black text-amber-600">⭐ <span class="pts-total">0</span></p>
+            <p class="text-xs text-sky-400 font-mono"><span id="pts-rem">0 / 10,000</span></p>
+          </div>
+          <div class="pts-bar-wrap"><div id="pts-bar" class="pts-bar-fill" style="width:0%"></div></div>
+          <p class="text-xs text-sky-400 mt-2">= <span class="pts-chess">0</span> $CHESSIO convertible</p>
+          <div id="pts-wallet-gate" class="wallet-gate">Connect wallet to save points across sessions</div>
+        </div>
       </div>
-      <button class="modal-close" onclick="closePaymentModal()">✕</button>
-    </div>
-
-    <!-- Amount box -->
-    <div style="background:linear-gradient(135deg,rgba(131,110,249,0.15),rgba(131,110,249,0.05));border:2px solid rgba(131,110,249,0.5);border-radius:1rem;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <div style="font-size:0.65rem;color:#9CA3AF;letter-spacing:0.1em">SEND EXACTLY</div>
-        <div id="pay-amount-display" style="font-size:2rem;font-weight:900;color:#836EF9;font-family:monospace"></div>
-        <div style="font-size:0.65rem;color:#6B7280;margin-top:0.1rem">to Planet Apes wallet</div>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="glass rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-2">
+            <h2 class="text-xl font-bold text-sky-700">vs AI</h2>
+            <span class="text-xs bg-red-100 text-red-600 font-bold px-2 py-0.5 rounded-full">15s Timer</span>
+          </div>
+          <p class="text-sky-400 text-sm mb-4">15-second timer per move, all modes. Auto-move on timeout!</p>
+          <div class="flex gap-2 mb-4">
+            <button onclick="setDiff('easy')" id="btn-easy" class="flex-1 py-2 rounded-xl text-sm font-bold bg-sky-100 text-sky-600">Easy</button>
+            <button onclick="setDiff('normal')" id="btn-normal" class="flex-1 py-2 rounded-xl text-sm font-bold bg-sky-600 text-white">Normal</button>
+            <button onclick="setDiff('hard')" id="btn-hard" class="flex-1 py-2 rounded-xl text-sm font-bold bg-sky-100 text-sky-600">Hard</button>
+          </div>
+          <div id="streak-badge" class="hidden mb-3 px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2" style="background:rgba(239,68,68,.12);color:#dc2626"></div>
+          <button onclick="startAI()" class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl">Play vs AI</button>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-2">
+            <h2 class="text-xl font-bold text-sky-700">PvP Online</h2>
+            <span class="text-xs bg-green-100 text-green-700 font-bold px-2 py-0.5 rounded-full">WebRTC</span>
+          </div>
+          <p class="text-sky-400 text-sm mb-4">Direct P2P with a friend — 15s timer per move!</p>
+          <button onclick="startPvP()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl">Play PvP Online</button>
+        </div>
       </div>
-      <div style="font-size:3rem">💎</div>
     </div>
 
-    <!-- Destination address -->
-    <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:0.75rem;padding:0.75rem 1rem;margin-bottom:1rem">
-      <div style="font-size:0.65rem;color:#9CA3AF;margin-bottom:0.3rem;letter-spacing:0.1em">DESTINATION ADDRESS (TON MAINNET)</div>
-      <div style="font-family:monospace;font-size:0.72rem;color:#FFD700;word-break:break-all;line-height:1.5">UQB0V-E4hIglz-OylGnNTmvec-U4blugU7yZMeT1siTaU3Xv</div>
+    <!-- AI GAME -->
+    <div id="play-ai" class="hidden max-w-5xl mx-auto mt-4">
+      <div class="flex flex-col lg:flex-row gap-6 items-start justify-center">
+        <div class="flex-shrink-0 w-full" style="max-width:480px;margin:0 auto">
+          <div class="glass rounded-2xl p-3 shadow-xl"><div id="ai-board" class="chess-board"></div></div>
+        </div>
+        <div class="flex-1 space-y-4" style="min-width:230px">
+          <div class="glass rounded-2xl p-3 flex items-center justify-between" style="background:linear-gradient(135deg,rgba(251,191,36,.13),rgba(245,158,11,.09))">
+            <div>
+              <p class="text-xs text-amber-500 font-semibold uppercase tracking-widest">Points</p>
+              <p class="text-xl font-black text-amber-600" id="ai-pts-mini">⭐ 0</p>
+            </div>
+            <div class="text-right" id="ai-diff-badge"></div>
+          </div>
+          <!-- Turn Timer -->
+          <div class="glass rounded-2xl p-4">
+            <p class="text-xs uppercase tracking-widest text-sky-400 font-semibold mb-2">Turn Timer</p>
+            <div id="ai-timer-display" class="turn-timer normal">
+              <div class="timer-ring">
+                <svg viewBox="0 0 28 28" width="28" height="28">
+                  <circle class="bg" cx="14" cy="14" r="11"/>
+                  <circle id="ai-timer-ring-fg" class="fg" cx="14" cy="14" r="11" stroke="#0ea5e9" stroke-dasharray="69.12" stroke-dashoffset="0"/>
+                </svg>
+              </div>
+              <span id="ai-timer-text">15s</span>
+              <span id="ai-timer-skipped" class="hidden timer-skipped ml-2">Auto-move!</span>
+            </div>
+          </div>
+          <div class="glass rounded-2xl p-4">
+            <p class="text-xs uppercase tracking-widest text-sky-400 font-semibold mb-1">Status</p>
+            <p id="ai-status" class="font-bold text-lg text-sky-700">Your turn (White)</p>
+            <div id="ai-thinking" class="hidden mt-2 flex items-center gap-2 text-sky-400 text-sm">
+              <div class="w-4 h-4 border-2 border-sky-400 border-t-transparent rounded-full spin"></div>AI thinking…
+            </div>
+          </div>
+          <div class="glass rounded-2xl p-4">
+            <p class="text-xs uppercase tracking-widest text-sky-400 font-semibold mb-2">Difficulty</p>
+            <div class="flex gap-2">
+              <button onclick="changeAIDiff('easy')" id="ai-btn-easy" class="flex-1 py-1.5 rounded-lg text-xs font-bold bg-sky-100 text-sky-600">Easy</button>
+              <button onclick="changeAIDiff('normal')" id="ai-btn-normal" class="flex-1 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white">Normal</button>
+              <button onclick="changeAIDiff('hard')" id="ai-btn-hard" class="flex-1 py-1.5 rounded-lg text-xs font-bold bg-sky-100 text-sky-600">Hard</button>
+            </div>
+          </div>
+          <div class="glass rounded-2xl p-4">
+            <p class="text-xs uppercase tracking-widest text-sky-400 font-semibold mb-2">Move History</p>
+            <div id="ai-history" class="move-history space-y-1"><p class="text-sky-300 text-sm">No moves yet</p></div>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="resetAI()" class="flex-1 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl">New Game</button>
+            <button onclick="SFX.toggle()" class="sfx-mute-btn py-2.5 px-3 bg-sky-100 hover:bg-sky-200 text-sky-700 font-bold rounded-xl text-base">🔊</button>
+            <button onclick="backToMenu()" class="flex-1 py-2.5 bg-sky-100 hover:bg-sky-200 text-sky-700 font-bold rounded-xl">Menu</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- QR code -->
-    <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:1rem">
-      <div style="font-size:0.7rem;color:#9CA3AF;margin-bottom:0.5rem">SCAN WITH YOUR TON WALLET</div>
-      <div id="pay-qr-box" style="background:#fff;padding:10px;border-radius:0.75rem;width:fit-content"></div>
+    <!-- PvP -->
+    <div id="play-pvp" class="hidden max-w-5xl mx-auto mt-4">
+      <div id="pvp-lobby">
+        <div class="max-w-md mx-auto glass rounded-2xl p-8 text-center">
+          <div class="text-5xl mb-4">🌐</div>
+          <h2 class="text-2xl font-black text-sky-700 mb-2">PvP Online</h2>
+          <p class="text-sky-400 text-sm mb-6">WebRTC peer-to-peer — 15s timer per turn!</p>
+          <div class="space-y-3">
+            <button onclick="pvpCreate()" class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl">♟ Create Room</button>
+            <div class="relative"><div class="absolute inset-0 flex items-center"><div class="w-full border-t border-sky-200"></div></div><div class="relative flex justify-center"><span class="bg-white/80 px-3 text-sky-300 text-xs">or join existing room</span></div></div>
+            <div class="flex gap-2">
+              <input id="pvp-join-input" placeholder="Enter 6-letter code" maxlength="6" class="flex-1 px-4 py-3 rounded-xl border border-sky-200 bg-white/70 text-sky-700 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 uppercase" oninput="this.value=this.value.toUpperCase()"/>
+              <button onclick="pvpJoin()" class="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl">Join</button>
+            </div>
+            <div id="pvp-err" class="hidden p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm"></div>
+            <button onclick="backToMenu()" class="w-full py-2 text-sky-300 hover:text-sky-600 text-sm">← Back to Menu</button>
+          </div>
+        </div>
+      </div>
+      <div id="pvp-waiting" class="hidden">
+        <div class="max-w-md mx-auto glass rounded-2xl p-8 text-center">
+          <div class="text-5xl mb-4">⏳</div>
+          <h2 class="text-2xl font-black text-sky-700 mb-2">Waiting for Opponent</h2>
+          <p class="text-sky-400 mb-5 text-sm">Share this code with your friend:</p>
+          <div class="bg-sky-50 border-2 border-sky-300 rounded-2xl py-6 px-8 mb-4">
+            <p id="pvp-code-display" class="text-4xl font-black font-mono text-sky-700 tracking-widest"></p>
+          </div>
+          <button onclick="copyCode()" class="px-6 py-2 bg-sky-100 hover:bg-sky-200 text-sky-700 font-semibold rounded-xl text-sm mb-4">Copy Code</button>
+          <div class="text-sky-400 text-sm flex items-center justify-center gap-2 mt-2">
+            <div class="w-3 h-3 border-2 border-sky-400 border-t-transparent rounded-full spin"></div>
+            <span id="pvp-wait-status"></span>
+          </div>
+          <button onclick="pvpReset()" class="mt-5 text-sky-300 hover:text-sky-600 text-sm underline block mx-auto">Cancel</button>
+        </div>
+      </div>
+      <div id="pvp-game" class="hidden">
+        <div class="flex flex-col lg:flex-row gap-6 items-start justify-center">
+          <div class="flex-shrink-0 w-full" style="max-width:480px;margin:0 auto">
+            <div class="glass rounded-2xl p-3 shadow-xl"><div id="pvp-board" class="chess-board"></div></div>
+          </div>
+          <div class="flex-1 space-y-4" style="min-width:230px">
+            <div class="glass rounded-2xl p-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="dot dot-green"></span>
+                <p class="text-xs uppercase tracking-widest text-sky-400 font-semibold">Connected via WebRTC</p>
+              </div>
+              <p id="pvp-status" class="font-bold text-lg text-sky-700"></p>
+              <div class="mt-2 flex gap-2 flex-wrap text-xs font-semibold">
+                <span id="pvp-color-badge" class="px-2 py-1 bg-sky-100 text-sky-600 rounded-lg"></span>
+                <span id="pvp-room-badge" class="px-2 py-1 bg-blue-50 text-blue-500 rounded-lg"></span>
+              </div>
+            </div>
+            <!-- PvP Turn Timer -->
+            <div class="glass rounded-2xl p-4">
+              <p class="text-xs uppercase tracking-widest text-sky-400 font-semibold mb-2">Turn Timer</p>
+              <div id="pvp-timer-display" class="turn-timer normal">
+                <div class="timer-ring">
+                  <svg viewBox="0 0 28 28" width="28" height="28">
+                    <circle class="bg" cx="14" cy="14" r="11"/>
+                    <circle id="pvp-timer-ring-fg" class="fg" cx="14" cy="14" r="11" stroke="#0ea5e9" stroke-dasharray="69.12" stroke-dashoffset="0"/>
+                  </svg>
+                </div>
+                <span id="pvp-timer-text">15s</span>
+                <span id="pvp-timer-skipped" class="hidden timer-skipped ml-2">Auto-move!</span>
+              </div>
+            </div>
+            <div class="glass rounded-2xl p-4">
+              <p class="text-xs uppercase tracking-widest text-sky-400 font-semibold mb-2">Move History</p>
+              <div id="pvp-history" class="move-history space-y-1"><p class="text-sky-300 text-sm">No moves yet</p></div>
+            </div>
+            <div class="flex gap-3">
+              <button id="pvp-leave-btn" onclick="pvpReset()" class="flex-1 py-2.5 bg-sky-100 hover:bg-sky-200 text-sky-700 font-bold rounded-xl">Leave Game</button>
+              <button onclick="SFX.toggle()" class="sfx-mute-btn py-2.5 px-3 bg-sky-100 hover:bg-sky-200 text-sky-700 font-bold rounded-xl text-base">🔊</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- Wallet buttons -->
-    <div style="font-size:0.7rem;color:#9CA3AF;text-align:center;margin-bottom:0.6rem">OR OPEN DIRECTLY IN YOUR WALLET</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;margin-bottom:1rem">
-      <button id="pay-btn-tonkeeper" onclick="openTonPayment('tonkeeper')" style="padding:0.6rem 0.25rem;background:rgba(0,152,234,0.15);border:1px solid rgba(0,152,234,0.4);border-radius:0.75rem;color:#0098EA;font-size:0.65rem;font-weight:900;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.25rem;transition:all 0.2s">
-        <span style="font-size:1.25rem">💎</span><span>Tonkeeper</span>
-      </button>
-      <button onclick="openTonPayment('tonhub')" style="padding:0.6rem 0.25rem;background:rgba(75,107,245,0.15);border:1px solid rgba(75,107,245,0.4);border-radius:0.75rem;color:#4B6BF5;font-size:0.65rem;font-weight:900;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.25rem;transition:all 0.2s">
-        <span style="font-size:1.25rem">🔷</span><span>TonHub</span>
-      </button>
-      <button onclick="openTonPayment('mytonwallet')" style="padding:0.6rem 0.25rem;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.4);border-radius:0.75rem;color:#FFD700;font-size:0.65rem;font-weight:900;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.25rem;transition:all 0.2s">
-        <span style="font-size:1.25rem">🔑</span><span>MyTonWallet</span>
-      </button>
-    </div>
-
-    <!-- Countdown + Confirm -->
-    <div style="background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.3);border-radius:0.75rem;padding:0.75rem;margin-bottom:1rem;font-size:0.75rem;color:#34D399;text-align:center;line-height:1.5">
-      After sending, click <strong>✅ I've Paid</strong> below to unlock your skin instantly.<br>
-      <span style="color:#6B7280;font-size:0.65rem">Your purchase is stored permanently in this browser.</span>
-    </div>
-    <div style="display:flex;gap:0.75rem">
-      <button onclick="closePaymentModal()" style="flex:1;padding:0.85rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CANCEL</button>
-      <button id="pay-confirm-btn" onclick="confirmPayment()" style="flex:2;padding:0.85rem;background:linear-gradient(90deg,#34D399,#22c55e);color:#000;font-weight:900;border-radius:0.75rem;border:none;cursor:pointer;font-size:0.95rem">✅ I've Paid — Unlock Skin</button>
-    </div>
-    <div style="text-align:center;margin-top:0.75rem;font-size:0.6rem;color:#6B7280">TON Mainnet only • Send from any TON-compatible wallet • 1 TON ≈ gas included</div>
   </div>
 </div>
 
-<!-- CONVERT MODAL -->
-<div id="convert-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeConvertModal()">
-  <div class="modal-box" style="max-width:420px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
-      <div style="font-weight:900;font-size:1.5rem">🍌 Convert to $APES</div>
-      <button class="modal-close" onclick="closeConvertModal()">✕</button>
-    </div>
-    <div style="text-align:center;margin-bottom:1.5rem;background:#1a1a1a;border-radius:1rem;padding:1.5rem">
-      <div style="font-size:0.75rem;color:#9CA3AF;margin-bottom:0.25rem">YOUR BANANAS</div>
-      <div id="convert-score-display" style="font-family:monospace;font-weight:900;font-size:3rem;color:#FACC15;margin-bottom:0.5rem">0</div>
-      <div style="font-size:0.85rem;color:#6B7280;margin-bottom:0.5rem">converts to</div>
-      <div id="convert-apes-display" style="font-family:monospace;font-weight:900;font-size:2rem;color:#34D399;margin-bottom:0.25rem">0 $APES</div>
-      <div style="font-size:0.7rem;color:#6B7280">Rate: 1,000 bananas = 1 $APES</div>
-    </div>
-    <div id="convert-boost-note" style="display:none;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#34D399;text-align:center"></div>
-    <div style="background:#1a1a1a;border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;line-height:1.6">
-      <strong style="color:#fff">How it works:</strong> Submit your score above, then connect your TON wallet. When $APES token launches, your banana score converts to real $APES tokens — the more bananas (boosted by skins!), the more $APES you earn.
-    </div>
-    <div style="display:flex;gap:0.75rem">
-      <button onclick="closeConvertModal()" style="flex:1;padding:0.75rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CLOSE</button>
-      <button onclick="claimConvert()" style="flex:1;padding:0.75rem;background:linear-gradient(90deg,#34D399,#22c55e);color:#000;font-weight:900;border-radius:0.75rem;border:none;cursor:pointer">🍌 Convert (SOON)</button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════ SCRIPTS ═══════════ -->
 <script>
 'use strict';
 
-// ── PARTICLES ──
-(function() {
-  var bg = document.getElementById('particle-bg');
-  var EMOJIS = ['🍌','🍌','🍌','🦍','🐵','✨','⭐','💫'];
-  var COLORS = ['#FFD700','#C084FC','#34D399'];
-  for (var i = 0; i < 40; i++) {
-    var star = document.createElement('div');
-    star.className = 'star-particle';
-    star.style.cssText = 'left:' + (Math.random()*100) + '%;top:' + (Math.random()*100) + '%;--duration:' + (2+Math.random()*3) + 's;--delay:-' + (Math.random()*3) + 's;background:' + COLORS[i%3];
-    bg.appendChild(star);
-  }
-  for (var j = 0; j < 22; j++) {
-    var p = document.createElement('div');
-    p.className = 'particle';
-    p.textContent = EMOJIS[j % EMOJIS.length];
-    var driftX = (Math.random()-0.5)*120;
-    p.style.cssText = 'left:' + (Math.random()*100) + '%;font-size:' + (1+Math.random()*1.2) + 'rem;--duration:' + (10+Math.random()*14) + 's;--delay:-' + (Math.random()*14) + 's;--drift-x:' + driftX + 'px';
-    bg.appendChild(p);
-  }
-})();
+// ══════════════════════════════════════════════════════════════
+// WEB WORKER — AI runs off main thread, page stays responsive
+// ══════════════════════════════════════════════════════════════
+var AI_WORKER_CODE = [
+"importScripts('https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js');",
+"var PV={p:100,n:320,b:330,r:500,q:900,k:20000};",
+"var PST_P=[0,0,0,0,0,0,0,0,50,50,50,50,50,50,50,50,10,10,20,30,30,20,10,10,5,5,10,25,25,10,5,5,0,0,0,20,20,0,0,0,5,-5,-10,0,0,-10,-5,5,5,10,10,-20,-20,10,10,5,0,0,0,0,0,0,0,0];",
+"var PST_N=[-50,-40,-30,-30,-30,-30,-40,-50,-40,-20,0,0,0,0,-20,-40,-30,0,10,15,15,10,0,-30,-30,5,15,20,20,15,5,-30,-30,0,15,20,20,15,0,-30,-30,5,10,15,15,10,5,-30,-40,-20,0,5,5,0,-20,-40,-50,-40,-30,-30,-30,-30,-40,-50];",
+"var PST_B=[-20,-10,-10,-10,-10,-10,-10,-20,-10,0,0,0,0,0,0,-10,-10,0,5,10,10,5,0,-10,-10,5,5,10,10,5,5,-10,-10,0,10,10,10,10,0,-10,-10,10,10,10,10,10,10,-10,-10,5,0,0,0,0,5,-10,-20,-10,-10,-10,-10,-10,-10,-20];",
+"var PST_R=[0,0,0,0,0,0,0,0,5,10,10,10,10,10,10,5,-5,0,0,0,0,0,0,-5,-5,0,0,0,0,0,0,-5,-5,0,0,0,0,0,0,-5,-5,0,0,0,0,0,0,-5,-5,0,0,0,0,0,0,-5,0,0,0,5,5,0,0,0];",
+"var PST_KM=[-30,-40,-40,-50,-50,-40,-40,-30,-30,-40,-40,-50,-50,-40,-40,-30,-30,-40,-40,-50,-50,-40,-40,-30,-30,-40,-40,-50,-50,-40,-40,-30,-20,-30,-30,-40,-40,-30,-30,-20,-10,-20,-20,-20,-20,-20,-20,-10,20,20,0,0,0,0,20,20,20,30,10,0,0,10,30,20];",
+"function gPST(t,c,r,col){var idx=c==='w'?(7-r)*8+col:r*8+col;if(t==='p')return PST_P[idx]||0;if(t==='n')return PST_N[idx]||0;if(t==='b')return PST_B[idx]||0;if(t==='r')return PST_R[idx]||0;if(t==='k')return PST_KM[idx]||0;return 0;}",
+"function evalH(g){var s=0,bd=g.board(),wB=0,bB=0;for(var r=0;r<8;r++)for(var c=0;c<8;c++){var p=bd[r][c];if(!p)continue;var v=PV[p.type]||0,pst=gPST(p.type,p.color,r,c);if(p.color==='b'){s+=v+pst;if(p.type==='b')bB++;}else{s-=v+pst;if(p.type==='b')wB++;}}if(bB>=2)s+=30;if(wB>=2)s-=30;return s;}",
+"function evalN(g){var s=0,bd=g.board();for(var r=0;r<8;r++)for(var c=0;c<8;c++){var p=bd[r][c];if(!p)continue;var v=(PV[p.type]||0)+(PST_P[p.color==='w'?(7-r)*8+c:r*8+c]||0);s+=p.color==='b'?v:-v;}return s;}",
+"var _abort=false;",
+"function mm(g,d,a,b,mx,hard){",
+"  if(_abort)return mx?-Infinity:Infinity;",
+"  if(d===0||g.game_over())return hard?evalH(g):evalN(g);",
+"  var ms=g.moves();",
+"  if(hard&&ms.length>1)ms=ms.slice().sort(function(x,y){return (y.indexOf('x')>=0?1:0)-(x.indexOf('x')>=0?1:0);});",
+"  if(mx){var m=-Infinity;for(var i=0;i<ms.length;i++){if(_abort)break;g.move(ms[i]);var v=mm(g,d-1,a,b,false,hard);g.undo();if(v>m)m=v;if(v>a)a=v;if(b<=a)break;}return m;}",
+"  else{var m=Infinity;for(var i=0;i<ms.length;i++){if(_abort)break;g.move(ms[i]);var v=mm(g,d-1,a,b,true,hard);g.undo();if(v<m)m=v;if(v<b)b=v;if(b<=a)break;}return m;}",
+"}",
+"self.onmessage=function(e){",
+"  _abort=false;",
+"  var fen=e.data.fen,diff=e.data.diff;",
+"  var g=new Chess(fen);",
+"  var ms=g.moves();",
+"  if(!ms.length){self.postMessage({move:null});return;}",
+"  if(diff==='easy'){",
+"    var r=Math.random();",
+"    if(r<0.65){self.postMessage({move:ms[0|Math.random()*ms.length]});return;}",
+"    else if(r<0.90){var ps=ms.filter(function(m){return m.indexOf('x')===-1;});var pool=ps.length?ps:ms;self.postMessage({move:pool[0|Math.random()*pool.length]});return;}",
+"    else{var wm=null,wv=Infinity;for(var i=0;i<ms.length;i++){g.move(ms[i]);var v=evalN(g);g.undo();if(v<wv){wv=v;wm=ms[i];}}self.postMessage({move:wm||ms[0|Math.random()*ms.length]});return;}",
+"  }",
+"  var depth=diff==='hard'?4:2;",
+"  var sorted=diff==='hard'?ms.slice().sort(function(x,y){return (y.indexOf('x')>=0?1:0)-(x.indexOf('x')>=0?1:0);}):ms;",
+"  var best=null,bv=-Infinity;",
+"  for(var i=0;i<sorted.length;i++){",
+"    if(_abort)break;",
+"    g.move(sorted[i]);",
+"    var v=mm(g,depth-1,-Infinity,Infinity,false,diff==='hard');",
+"    g.undo();",
+"    if(v>bv){bv=v;best=sorted[i];}",
+"  }",
+"  self.postMessage({move:best||ms[0|Math.random()*ms.length]});",
+"};"
+].join('\n');
 
-// ── TOAST ──
-function showToast(msg, type) {
-  type = type || 'info';
-  var c = document.getElementById('toast-container');
-  var t = document.createElement('div');
-  t.className = 'toast toast-' + type;
-  t.textContent = msg;
-  c.appendChild(t);
-  setTimeout(function() { t.style.opacity='0'; t.style.transition='opacity 0.4s'; setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 400); }, 4500);
+var _aiWorker = null;
+var _aiWorkerTimer = null;
+
+function getAIWorker() {
+  if (_aiWorker) return _aiWorker;
+  var blob = new Blob([AI_WORKER_CODE], {type: 'application/javascript'});
+  _aiWorker = new Worker(URL.createObjectURL(blob));
+  return _aiWorker;
 }
 
-// ── SMOOTH SCROLL ──
-function smoothScroll(id) { var el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); return false; }
-
-// ── FAQ ──
-var FAQS = [
-  { q:'🍌 What is Planet Apes?', a:'Planet Apes ($APES) is the most based meme coin on TON. Take bananas, climb the leaderboard, convert your bananas to $APES, and rule the jungle with your fellow apes.' },
-  { q:'🎮 How do I play Take Banana?', a:'Click anywhere in the game area to collect bananas. The more you click, the higher your score. Equip a skin to activate a tap boost multiplier for faster banana collection!' },
-  { q:'💎 How do skins work?', a:'Each Ape Skin costs TON (starting at 0.3 TON). Once purchased, you can equip the skin and it applies a boost multiplier to every tap — from +0.5× all the way up to +2× for the King Ape skin.' },
-  { q:'🍌 How do I convert bananas to $APES?', a:'Play the game to collect bananas, then click "Convert to $APES". When $APES token launches on TON, your banana score converts to real $APES tokens at 1,000 bananas = 1 $APES.' },
-  { q:'🏆 Why does my leaderboard NOT reset when I switch pages?', a:'Your leaderboard is saved permanently in your browser using localStorage. It will persist as long as you use the same browser. The weekly reset only happens every Sunday at 00:00 UTC for the prize cycle.' },
-  { q:'🚀 Where can I buy $APES?', a:'$APES is available on groypfi.io — the premier platform on TON. Follow us on Twitter for the exact launch time and contract address.' },
-  { q:'🔗 What blockchain is $APES on?', a:'Planet Apes ($APES) is on TON — a high-performance blockchain with near-instant transactions and extremely low fees. All skin purchases use TON Mainnet.' },
-];
-(function() {
-  var list = document.getElementById('faq-list');
-  FAQS.forEach(function(faq) {
-    var item = document.createElement('div');
-    item.className = 'faq-item';
-    item.innerHTML = '<div class="faq-q" onclick="toggleFaq(this)"><span>' + faq.q + '</span><span class="faq-arrow">▼</span></div><div class="faq-ans"><div class="faq-ans-inner">' + faq.a + '</div></div>';
-    list.appendChild(item);
-  });
-})();
-function toggleFaq(qEl) {
-  var arrow = qEl.querySelector('.faq-arrow');
-  var ans = qEl.nextElementSibling;
-  var isOpen = ans.classList.contains('open');
-  document.querySelectorAll('.faq-ans').forEach(function(a){ a.classList.remove('open'); });
-  document.querySelectorAll('.faq-arrow').forEach(function(a){ a.classList.remove('open'); });
-  if (!isOpen) { ans.classList.add('open'); arrow.classList.add('open'); }
+function killAIWorker() {
+  if (_aiWorkerTimer) { clearTimeout(_aiWorkerTimer); _aiWorkerTimer = null; }
+  if (_aiWorker) { _aiWorker.terminate(); _aiWorker = null; }
 }
 
-// ══════════════════════════════════════════
-// ── REAL TON WALLET — TonConnect v2 ──
-// Works on mobile (deep link) + browser extension
-// ══════════════════════════════════════════
-var walletAddr=null,tonUI=null;
-function initTonConnect(){
+// ══ Config ══
+var TREASURY = 'UQDsd407dJuB-H6lRIB_BVTL5DI7aZbBN74OYVZuDdMDm4FY';
+var SKIN_PRICE_TON = 0.3;
+var SKIN_PRICE_NANO = String(Math.round(SKIN_PRICE_TON * 1e9));
+var TON_MAINNET = '-239';
+var POINTS_PER_WIN = {easy:10,normal:30,hard:100};
+var STREAK_BONUS = 25;
+var CHESS_RATE = 10000;
+var TURN_LIMIT = 15;
+var CIRC = 69.12;
+
+// ══════════════════════════════════════════════════════════════
+// SOUND ENGINE
+// ══════════════════════════════════════════════════════════════
+var SFX = (function(){
+  var ctx=null, muted=false;
+  function getCtx(){
+    if(ctx)return ctx;
+    try{ctx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}
+    return ctx;
+  }
+  function osc(freq,type,dur,vol,when){
+    var c=getCtx();if(!c||muted)return;
+    try{
+      var o=c.createOscillator(),g=c.createGain();
+      o.connect(g);g.connect(c.destination);
+      o.type=type||'sine';o.frequency.value=freq;
+      var t=when!=null?when:c.currentTime;
+      g.gain.setValueAtTime(vol||0.25,t);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.start(t);o.stop(t+dur+0.02);
+    }catch(e){}
+  }
+  function noise(dur,vol){
+    var c=getCtx();if(!c||muted)return;
+    try{
+      var n=Math.floor(c.sampleRate*dur),buf=c.createBuffer(1,n,c.sampleRate),d=buf.getChannelData(0);
+      for(var i=0;i<n;i++)d[i]=Math.random()*2-1;
+      var src=c.createBufferSource(),g=c.createGain();
+      src.buffer=buf;src.connect(g);g.connect(c.destination);
+      g.gain.setValueAtTime(vol||0.1,c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+dur);
+      src.start();
+    }catch(e){}
+  }
+  function updateBtn(){
+    document.querySelectorAll('.sfx-mute-btn').forEach(function(b){b.textContent=muted?'🔇':'🔊';});
+  }
+  return {
+    toggle:function(){muted=!muted;updateBtn();},
+    isMuted:function(){return muted;},
+    move:function(){
+      var c=getCtx();if(!c||muted)return;
+      osc(900,'square',0.04,0.18);
+      osc(600,'square',0.07,0.09,c.currentTime+0.025);
+    },
+    capture:function(){
+      var c=getCtx();if(!c||muted)return;
+      noise(0.10,0.22);
+      osc(160,'sawtooth',0.14,0.28);
+    },
+    check:function(){
+      var c=getCtx();if(!c||muted)return;
+      osc(523,'sine',0.28,0.32);
+      osc(784,'sine',0.28,0.32,c.currentTime+0.14);
+    },
+    checkmate:function(){
+      var c=getCtx();if(!c||muted)return;
+      var t=c.currentTime;
+      osc(523,'sine',0.38,0.38,t);
+      osc(659,'sine',0.38,0.32,t+0.13);
+      osc(784,'sine',0.38,0.32,t+0.26);
+      osc(1047,'sine',0.55,0.45,t+0.44);
+    },
+    tick:function(){
+      var c=getCtx();if(!c||muted)return;
+      osc(1400,'square',0.05,0.13);
+    },
+    autoMove:function(){
+      var c=getCtx();if(!c||muted)return;
+      var t=c.currentTime;
+      for(var i=0;i<4;i++)osc(380+i*90,'sawtooth',0.07,0.14-i*0.03,t+i*0.035);
+    }
+  };
+})();
+
+function playSFX(r,game){
   try{
-    var base=window.location.origin+window.location.pathname.replace(/\/[^/]*$/,'/');
-    tonUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:base+'tonconnect-manifest.json'});
-    tonUI.onStatusChange(function(w){
-      var prev=walletAddr;walletAddr=w?w.account.address:null;
-      if(walletAddr&&walletAddr!==prev){loadOwnedForWallet(walletAddr);loadPointsForWallet(walletAddr);renderShop();}
-      else if(!walletAddr&&prev){owned={b:['classic'],p:['standard']};resetPointsOnDisconnect();renderShop();}
-      syncWalletUI(walletAddr);renderPoints();
-      if(w&&pendingBuy){var pb=pendingBuy;pendingBuy=null;openBuy(pb.type,pb.id);}
-    });
+    if(game.in_checkmate()){SFX.checkmate();return;}
+    if(game.in_check()){SFX.check();return;}
+    if(r&&r.captured){SFX.capture();return;}
+    SFX.move();
   }catch(e){}
 }
-function syncWalletUI(addr){
-  var s=addr?addr.slice(0,6)+'…'+addr.slice(-4):null,lbl=s||'Connect Wallet';
-  ['ton-lbl','ton-lbl2'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=lbl;});
-  var sw=document.getElementById('shop-wallet-txt');if(sw)sw.textContent=addr?'Connected: '+s+' — your skins are loaded':'Not connected — connect wallet to purchase skins';
-  var cb=document.getElementById('shop-conn-btn');if(cb)cb.textContent=addr?'Disconnect':'Connect Wallet';
-}
-function walletClick(){if(walletAddr){if(tonUI)tonUI.disconnect();return;}if(tonUI)tonUI.openModal();}
-      // Restore session if wallet was previously connected
-      if (tonConnectUI.wallet) { handleWalletChange(tonConnectUI.wallet); }
-      console.log('[APES] TonConnect initialized ✅');
-    } catch(e) {
-      console.warn('[APES] TonConnect init error:', e);
-      tonConnectUI = null;
-    }
-  }
 
-  // Module scripts (type=module) are deferred — they run AFTER inline scripts.
-  // Listen for the ready event + use a polling fallback for robustness.
-  window.addEventListener('ton-connect-ready', doInit, { once: true });
+var totalPoints=0, hardStreak=0, pointsAwarded=false;
 
-  // Polling fallback: check every 200ms for up to 10 seconds
-  var attempts = 0;
-  var poll = setInterval(function() {
-    if (tonConnectUI) { clearInterval(poll); return; }
-    if (window.__TonConnectUI) { clearInterval(poll); doInit(); return; }
-    if (++attempts > 50) {
-      clearInterval(poll);
-      console.warn('[APES] TonConnect did not load within 10s');
-    }
-  }, 200);
+function getPK(a){return a?'chessio_pts_'+a.toLowerCase().replace(/[^a-z0-9]/g,'_'):null;}
+function getSK(a){return a?'chessio_str_'+a.toLowerCase().replace(/[^a-z0-9]/g,'_'):null;}
+function savePts(){var pk=getPK(walletAddr),sk=getSK(walletAddr);if(pk)localStorage.setItem(pk,String(totalPoints));if(sk)localStorage.setItem(sk,String(hardStreak));}
+function loadPointsForWallet(a){if(!a){totalPoints=0;hardStreak=0;renderPoints();return;}totalPoints=parseInt(localStorage.getItem(getPK(a))||'0',10)||0;hardStreak=parseInt(localStorage.getItem(getSK(a))||'0',10)||0;renderPoints();}
+function resetPointsOnDisconnect(){totalPoints=0;hardStreak=0;renderPoints();}
+
+function awardPoints(diff,won){
+  if(pointsAwarded)return;pointsAwarded=true;
+  if(!won){if(diff==='hard'){hardStreak=0;savePts();}renderPoints();return;}
+  var earned=POINTS_PER_WIN[diff]||10;
+  if(diff==='hard'){hardStreak++;if(hardStreak>1)earned+=STREAK_BONUS*(hardStreak-1);}
+  totalPoints+=earned;savePts();showPtsToast(earned,diff,!walletAddr);renderPoints();
 }
 
-function handleWalletChange(wallet) {
-  if (wallet && wallet.account) {
-    walletRawAddress = wallet.account.address;
-    var addr = walletRawAddress || '';
-    walletAddress = addr.length > 12 ? addr.slice(0,8) + '…' + addr.slice(-6) : addr;
-    refreshWalletUI(true);
-    renderSkinsGrid();
-    showToast('💎 Wallet connected! You can now submit scores.', 'success');
-  } else {
-    walletAddress = null;
-    walletRawAddress = null;
-    refreshWalletUI(false);
-    renderSkinsGrid();
-  }
+function showPtsToast(pts,diff,guest){
+  var t=document.getElementById('pts-toast');
+  t.textContent='+'+pts+' pts'+(diff==='hard'&&hardStreak>1?' x'+hardStreak+' WIN STREAK!':' ')+(guest?' (connect wallet to save!)':'');
+  t.classList.remove('hidden');t.classList.add('slide-down');
+  setTimeout(function(){t.classList.add('hidden');t.classList.remove('slide-down');},3800);
 }
 
-function openWalletModal() {
-  if (walletAddress && walletRawAddress) {
-    document.getElementById('wallet-info-short').textContent = walletAddress;
-    document.getElementById('wallet-info-addr').textContent = walletRawAddress;
-    document.getElementById('wallet-info-modal').style.display = 'flex';
-    return;
-  }
-  if (tonConnectUI) {
-    tonConnectUI.openModal();
-    return;
-  }
-  // TonConnect is still loading — wait up to 5s then open
-  showToast('⏳ Loading wallet connection…', 'info');
-  var waited = 0;
-  var waiter = setInterval(function() {
-    waited += 200;
-    if (tonConnectUI) {
-      clearInterval(waiter);
-      tonConnectUI.openModal();
-    } else if (waited >= 5000) {
-      clearInterval(waiter);
-      showToast('⚠️ Could not load wallet. Try refreshing the page.', 'error');
-    }
-  }, 200);
-}
-function closeWalletModal() { closeWalletInfoModal(); }
-function closeWalletInfoModal() {
-  document.getElementById('wallet-info-modal').style.display = 'none';
+function renderPoints(){
+  var chess=Math.floor(totalPoints/CHESS_RATE),rem=totalPoints%CHESS_RATE,pct=Math.round((rem/CHESS_RATE)*100);
+  document.querySelectorAll('.pts-total').forEach(function(el){el.textContent=totalPoints.toLocaleString();});
+  document.querySelectorAll('.pts-chess').forEach(function(el){el.textContent=chess.toLocaleString();});
+  var bar=document.getElementById('pts-bar');if(bar)bar.style.width=pct+'%';
+  var rem2=document.getElementById('pts-rem');if(rem2)rem2.textContent=rem.toLocaleString()+' / 10,000';
+  var cv=document.getElementById('pts-convert-btn');if(cv){chess>0&&walletAddr?cv.classList.remove('hidden'):cv.classList.add('hidden');}
+  var np=document.getElementById('nav-pts');if(np)np.textContent=totalPoints.toLocaleString();
+  var mp=document.getElementById('ai-pts-mini');if(mp)mp.textContent='⭐ '+totalPoints.toLocaleString();
+  var gate=document.getElementById('pts-wallet-gate');if(gate){walletAddr?gate.classList.add('hidden'):gate.classList.remove('hidden');}
+  updateStreakBadge();
 }
 
-function disconnectWallet() {
-  if (tonConnectUI) { tonConnectUI.disconnect(); }
-  closeWalletInfoModal();
-  showToast('Wallet disconnected.', 'info');
-}
-function refreshWalletUI(connected) {
-  var btn = document.getElementById('wallet-btn');
-  var txt = document.getElementById('wallet-btn-txt');
-  if (connected && walletAddress) {
-    btn.classList.add('connected');
-    txt.textContent = walletAddress;
-  } else {
-    btn.classList.remove('connected');
-    txt.textContent = 'Connect Wallet';
-  }
+function updateStreakBadge(){
+  var b=document.getElementById('streak-badge');if(!b)return;
+  if(aiDf==='hard'&&hardStreak>0){b.textContent='🔥 Win streak: '+hardStreak+' (next win +'+(POINTS_PER_WIN.hard+STREAK_BONUS*hardStreak)+' pts)';b.classList.remove('hidden');}
+  else b.classList.add('hidden');
 }
 
-// ══════════════════════════════════════════
-// ── SKINS DATA ──
-// ══════════════════════════════════════════
-// boost = total tap multiplier (e.g. 1.5 = 1.5× points per tap)
-var SKINS = [
-  { id:0, name:'JUNGLE CHAD',  img:'https://i.imgur.com/4rUjNtO.jpg', rarity:'💪 CHAD',      rarityColor:'#F59E0B', border:'#F59E0B', price:0.3, boost:1.5, boostLabel:'+0.5× per tap (1.5× total)', desc:'The alpha starter pack. Maximum gains, never skips banana day. Buy with 0.3 TON and get an immediate +50% tap boost in the game.', unlock:'+0.5× per tap • 1.5× total • Perfect starter boost' },
-  { id:1, name:'DEGEN APE',    img:'https://i.imgur.com/7VFGhCb.jpg', rarity:'🔥 DEGEN',     rarityColor:'#3b82f6', border:'#3b82f6', price:0.8, boost:2.0, boostLabel:'+1× per tap (2× total)',   desc:'Laser eyes activated. This ape never sells. For the true degens who live on the edge of the jungle and want double tap power.', unlock:'+1× per tap • 2× total • Double your banana rate' },
-  { id:2, name:'BANANA GOD',   img:'https://i.imgur.com/eyQoioN.jpg', rarity:'🌟 MYTHIC',    rarityColor:'#34D399', border:'#34D399', price:1.5, boost:2.5, boostLabel:'+1.5× per tap (2.5× total)', desc:'Blessed by the ancient Banana Pantheon. Reserved for those who want to dominate the leaderboard with 2.5× the banana rate.', unlock:'+1.5× per tap • 2.5× total • Dominate the leaderboard' },
-  { id:3, name:'KING APE',     img:'https://i.imgur.com/YestlX1.jpg', rarity:'👑 LEGENDARY', rarityColor:'#FFD700', border:'#FFD700', price:2.5, boost:3.0, boostLabel:'+2× per tap (3× total)',   desc:'The one true ruler of Planet Apes. Maximum boost available. Triple your tap power and convert to more $APES than any other ape.', unlock:'+2× per tap • 3× total • Maximum boost in existence' }
-];
-
-// ── SKIN STATE (localStorage) ──
-var OWNED_SKINS_KEY = 'apes_owned_skins_v2';
-var EQUIPPED_SKIN_KEY = 'apes_equipped_skin_v2';
-var ownedSkins = [];
-var equippedSkinId = -1;
-
-function loadSkinState() {
-  try {
-    var raw = localStorage.getItem(OWNED_SKINS_KEY);
-    if (raw) { var p = JSON.parse(raw); if (Array.isArray(p)) ownedSkins = p; }
-  } catch(e) {}
-  try {
-    var eq = localStorage.getItem(EQUIPPED_SKIN_KEY);
-    if (eq !== null && eq !== '') { var n = parseInt(eq, 10); if (!isNaN(n) && n >= -1) equippedSkinId = n; }
-  } catch(e) {}
+function openConvert(){
+  var chess=Math.floor(totalPoints/CHESS_RATE);
+  document.getElementById('conv-pts').textContent=totalPoints.toLocaleString();
+  ['conv-done','conv-no-wallet','conv-low','conv-btn'].forEach(function(id){document.getElementById(id).classList.add('hidden');});
+  if(!walletAddr)document.getElementById('conv-no-wallet').classList.remove('hidden');
+  else if(chess===0)document.getElementById('conv-low').classList.remove('hidden');
+  else{var b=document.getElementById('conv-btn');b.classList.remove('hidden');b.textContent='💎 Request '+chess+' $CHESSIO Now';}
+  document.getElementById('modal-convert').classList.remove('hidden');
 }
-function saveSkinState() {
-  try { localStorage.setItem(OWNED_SKINS_KEY, JSON.stringify(ownedSkins)); } catch(e) {}
-  try { localStorage.setItem(EQUIPPED_SKIN_KEY, String(equippedSkinId)); } catch(e) {}
-}
-function isSkinOwned(id) { return ownedSkins.indexOf(id) !== -1; }
-function getEquippedSkin() { return equippedSkinId >= 0 ? SKINS[equippedSkinId] : null; }
-function getSkinBoostMultiplier() { var s = getEquippedSkin(); return s ? s.boost : 1.0; }
+function closeConvert(){document.getElementById('modal-convert').classList.add('hidden');}
+function doConvert(){if(!walletAddr)return;document.getElementById('conv-btn').classList.add('hidden');document.getElementById('conv-done').classList.remove('hidden');}
 
-function equipSkin(id) {
-  if (!isSkinOwned(id)) { showToast('❌ You don\'t own this skin! Buy it first.', 'error'); return; }
-  equippedSkinId = id;
-  saveSkinState();
-  applyEquippedSkinToGame();
-  renderSkinsGrid();
-  closeSkinModal();
-  showToast('✅ ' + SKINS[id].name + ' equipped! Tap boost active in game.', 'success');
-}
-function unequipSkin() {
-  equippedSkinId = -1;
-  saveSkinState();
-  applyEquippedSkinToGame();
-  renderSkinsGrid();
-  showToast('Skin unequipped — no boost active.', 'info');
+// ── Particles ──
+(function(){
+  var cv=document.getElementById('particle-canvas'),cx=cv.getContext('2d');
+  var PS=['♟','♞','♝','♜','♛','♚','♙','♘','♗','♖','♕','♔'],pp=[],W,H;
+  function rsz(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
+  addEventListener('resize',rsz);rsz();
+  function rnd(a,b){return Math.random()*(b-a)+a;}
+  function mk(){return{x:rnd(0,W),y:rnd(-60,H+60),vx:rnd(-.4,.4),vy:rnd(.12,.55),sz:rnd(16,38),op:rnd(.12,.32),p:PS[0|Math.random()*PS.length],r:rnd(0,6.28),rs:rnd(-.007,.007),c:['#0ea5e9','#38bdf8','#7dd3fc','#3b82f6','#818cf8'][0|Math.random()*5]};}
+  for(var i=0;i<60;i++)pp.push(mk());
+  (function fr(){cx.clearRect(0,0,W,H);pp.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.r+=p.rs;if(p.y>H+70){p.y=-70;p.x=rnd(0,W);}if(p.x<-70)p.x=W+70;if(p.x>W+70)p.x=-70;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.globalAlpha=p.op;cx.font=p.sz+'px serif';cx.fillStyle=p.c;cx.textAlign='center';cx.textBaseline='middle';cx.fillText(p.p,0,0);cx.restore();});requestAnimationFrame(fr);})();
+})();
+
+// ── Navigation ──
+function goto(pg,e){
+  if(e)e.preventDefault();
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('page-'+pg).classList.add('active');
+  scrollTo(0,0);
+  if(pg==='shop')renderShop();
+  if(pg==='play')renderPoints();
 }
 
-function applyEquippedSkinToGame() {
-  var s = getEquippedSkin();
-  var apeImg = document.getElementById('ape-img');
-  var boostBar = document.getElementById('boost-bar');
-  var badge = document.getElementById('game-skin-badge');
-  var boostInd = document.getElementById('boost-indicator');
-  if (s) {
-    apeImg.src = s.img;
-    apeImg.style.borderColor = s.border;
-    apeImg.style.boxShadow = '0 0 60px ' + s.border;
-    boostBar.style.display = 'block';
-    document.getElementById('boost-bar-label').textContent = '🦍 ' + s.name + ' EQUIPPED';
-    document.getElementById('boost-bar-tag').textContent = '⚡ ' + s.boostLabel;
-    badge.style.display = 'block';
-    badge.style.color = s.rarityColor;
-    badge.style.border = '1px solid ' + s.rarityColor;
-    badge.textContent = '⚡ ' + s.boostLabel;
-    boostInd.style.display = 'block';
-    boostInd.textContent = '⚡ ' + s.boost + '× boost active';
-  } else {
-    apeImg.src = 'https://i.imgur.com/KlM5HWE.jpg';
-    apeImg.style.borderColor = '#FFD700';
-    apeImg.style.boxShadow = '0 0 60px #FFD700';
-    boostBar.style.display = 'none';
-    badge.style.display = 'none';
-    boostInd.style.display = 'none';
-  }
-}
+// ── Scroll reveal ──
+(function(){
+  var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+})();
 
-function renderSkinsGrid() {
-  var grid = document.getElementById('skins-grid');
-  grid.innerHTML = '';
-  SKINS.forEach(function(s) {
-    var owned = isSkinOwned(s.id);
-    var equipped = equippedSkinId === s.id;
-    var bColor = equipped ? s.border : (owned ? '#34D399' : 'rgba(250,204,21,0.2)');
-    var card = document.createElement('div');
-    card.className = 'skin-card' + (equipped ? ' equipped' : '');
-    card.style.borderColor = bColor;
-    if (equipped) card.style.borderWidth = '2px';
-    card.onclick = function() { showSkinModal(s.id); };
-    var badge1 = equipped ? '<div style="position:absolute;top:12px;left:12px;background:#000;border:2px solid #34D399;border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:#34D399">✅ EQUIPPED</div>' : (owned ? '<div style="position:absolute;top:12px;left:12px;background:#000;border:2px solid #22c55e;border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:#22c55e">✔ OWNED</div>' : '');
-    var btn = '';
-    if (owned) {
-      if (equipped) {
-        btn = '<button onclick="event.stopPropagation();unequipSkin()" class="btn-equip active-eq" style="font-size:0.75rem;border:1px solid #34D399">✅ EQUIPPED — Unequip</button>';
-      } else {
-        btn = '<button onclick="event.stopPropagation();equipSkin(' + s.id + ')" class="btn-equip" style="font-size:0.75rem">🦍 EQUIP IN GAME</button>';
-      }
-    } else {
-      btn = '<button onclick="event.stopPropagation();showSkinModal(' + s.id + ')" class="btn-buy-ton" style="font-size:0.75rem">💎 Buy ' + s.price + ' TON</button>';
-    }
-    card.innerHTML =
-      '<div style="position:relative">' +
-        '<img src="' + s.img + '" style="width:100%;height:220px;object-fit:cover;border-radius:1rem;border:4px solid ' + s.border + ';box-shadow:0 0 30px ' + s.border + '55;margin-bottom:0.75rem" />' +
-        '<div style="position:absolute;top:12px;right:12px;background:#000;border:2px solid ' + s.rarityColor + ';border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:' + s.rarityColor + '">' + s.rarity + '</div>' +
-        badge1 +
-      '</div>' +
-      '<div style="font-weight:900;font-size:1.15rem;margin-bottom:0.2rem">' + s.name + '</div>' +
-      '<div style="color:' + s.rarityColor + ';font-size:0.8rem;margin-bottom:0.4rem">' + s.rarity + '</div>' +
-      '<div style="display:inline-flex;align-items:center;gap:0.3rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:0.4rem;padding:0.2rem 0.55rem;font-size:0.68rem;font-weight:900;color:#34D399;margin-bottom:0.5rem">⚡ ' + s.boostLabel + '</div>' +
-      '<div style="background:rgba(131,110,249,0.1);border:1px solid rgba(131,110,249,0.3);border-radius:0.75rem;padding:0.4rem 0.6rem;font-size:0.75rem;color:#836EF9;font-weight:700;margin-bottom:0.75rem;text-align:center">💎 ' + s.price + ' TON</div>' +
-      btn;
-    grid.appendChild(card);
+// ── Roadmap ──
+(function(){
+  var items=[
+    {phase:'Phase 1 — Q2 2025',title:'Launch & Foundation',done:true,items:['Token launch on Groypfi.io','Website & chess minigame live','X & Telegram community launched','WebRTC PvP & skin shop']},
+    {phase:'Phase 2 — Q3 2025',title:'Growth & Listings',done:false,items:['First CEX listing campaign','Strategic partnership announcements','Community chess tournament ($CHESSIO prizes)','Mobile-friendly UI optimization']},
+    {phase:'Phase 3 — Q4 2025',title:'Ecosystem Expansion',done:false,items:['On-chain points → $CHESSIO reward system','Chess skin NFT collection on TON','$CHESSIO staking & yield mechanism','Ranked tournament ladder system']},
+    {phase:'Phase 4 — 2026',title:'Mass Adoption',done:false,items:['Native mobile app (iOS & Android)','AI-powered coaching feature','Top-tier CEX listings','Global chess championship sponsorship']},
+  ];
+  var cnt=document.getElementById('roadmap-items');
+  items.forEach(function(item,i){
+    var d=document.createElement('div');d.className='reveal md:ml-16 glass rounded-2xl p-6 relative';d.style.transitionDelay=i*.1+'s';
+    var dBg=item.done?'#0ea5e9':'#f0f9ff',dBd=item.done?'#0ea5e9':'#bae6fd';
+    d.innerHTML='<div class="hidden md:flex absolute items-center justify-center w-7 h-7 rounded-full border-2" style="border-color:'+dBd+';background:'+dBg+';left:-44px;top:22px">'+(item.done?'<span class="text-white text-xs font-black">✓</span>':'')+'</div>'+
+      '<div class="flex items-center gap-3 mb-3 flex-wrap"><span class="text-xs font-bold px-3 py-1 rounded-full '+(item.done?'bg-sky-100 text-sky-600':'bg-blue-50 text-blue-500')+'">'+item.phase+'</span><h3 class="text-lg font-bold text-sky-700">'+item.title+'</h3>'+(item.done?'<span class="text-xs font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-600">Completed</span>':'')+'</div>'+
+      '<ul class="grid sm:grid-cols-2 gap-1">'+item.items.map(function(it){return '<li class="text-sky-600 text-sm">'+it+'</li>';}).join('')+'</ul>';
+    cnt.appendChild(d);
+    var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');o.unobserve(e.target);}});},{threshold:.1});
+    o.observe(d);
+  });
+})();
+
+// ── Skin definitions ──
+var BOARD_SKINS={
+  classic:{id:'classic',name:'Classic Blue',  desc:'Signature sky-blue board',free:true, light:'#e0f2fe',dark:'#0284c7'},
+  dark:   {id:'dark',   name:'Dark Knight',   desc:'Dramatic midnight steel',  free:false,light:'#374151',dark:'#111827'},
+  emerald:{id:'emerald',name:'Emerald Forest',desc:'Classic green felt',        free:false,light:'#d1fae5',dark:'#065f46'},
+  purple: {id:'purple', name:'Royal Purple',  desc:'Regal violet court',        free:false,light:'#ede9fe',dark:'#5b21b6'},
+  ocean:  {id:'ocean',  name:'Ocean Deep',    desc:'Deep cyan battlefield',     free:false,light:'#cffafe',dark:'#0e7490'},
+  sunset: {id:'sunset', name:'Sunset Fire',   desc:'Warm amber dusk',           free:false,light:'#ffedd5',dark:'#9a3412'},
+};
+var PIECE_SKINS={
+  standard:{id:'standard',name:'Standard',    desc:'Classic pieces',      free:true, wp:'#ffffff',bp:'#0f172a',wsh:'0 0 3px rgba(0,0,0,.9)',bsh:'0 0 3px rgba(255,255,255,.3)'},
+  gold:    {id:'gold',    name:'Golden Royal',desc:'Shimmering gold',     free:false,wp:'#fbbf24',bp:'#92400e',wsh:'0 0 8px rgba(251,191,36,1)',bsh:'0 0 8px rgba(146,64,14,.8)'},
+  neon:    {id:'neon',    name:'Neon Cyber',  desc:'Cyan & magenta glow', free:false,wp:'#22d3ee',bp:'#d946ef',wsh:'0 0 12px #22d3ee',bsh:'0 0 12px #d946ef'},
+  ice:     {id:'ice',     name:'Ice Crystal', desc:'Frosty glacial blue', free:false,wp:'#bae6fd',bp:'#0369a1',wsh:'0 0 10px rgba(186,230,253,1)',bsh:'0 0 10px rgba(3,105,161,.9)'},
+  blood:   {id:'blood',   name:'Blood Moon',  desc:'Crimson power',       free:false,wp:'#fca5a5',bp:'#7f1d1d',wsh:'0 0 10px rgba(252,165,165,1)',bsh:'0 0 10px rgba(127,29,29,.9)'},
+  sakura:  {id:'sakura',  name:'Sakura Bloom',desc:'Pink elegance',       free:false,wp:'#fbcfe8',bp:'#86198f',wsh:'0 0 10px rgba(251,207,232,1)',bsh:'0 0 10px rgba(134,25,143,.8)'},
+};
+
+var owned={b:['classic'],p:['standard']};
+var eqBoard=(function(){var s=localStorage.getItem('chessio_board');return s&&BOARD_SKINS[s]?s:'classic';})();
+var eqPiece=(function(){var s=localStorage.getItem('chessio_piece');return s&&PIECE_SKINS[s]?s:'standard';})();
+var pendingBuy=null;
+
+function getOK(a){return a?'chessio_owned_'+a.toLowerCase().replace(/[^a-z0-9]/g,'_'):null;}
+function loadOwnedForWallet(a){
+  var key=getOK(a),raw=key?localStorage.getItem(key):null;
+  if(raw){try{owned=JSON.parse(raw);}catch(e){owned={b:['classic'],p:['standard']};}}
+  else{owned={b:['classic'],p:['standard']};}
+}
+function saveOwned(){var k=getOK(walletAddr);if(k)localStorage.setItem(k,JSON.stringify(owned));}
+function boardOwned(id){return owned.b.indexOf(id)>=0;}
+function pieceOwned(id){return owned.p.indexOf(id)>=0;}
+function equipBoard(id){eqBoard=id;localStorage.setItem('chessio_board',id);renderShop();renderAIBoard();renderPvPBoard();}
+function equipPiece(id){eqPiece=id;localStorage.setItem('chessio_piece',id);renderShop();renderAIBoard();renderPvPBoard();}
+
+function applySq(cell,lt){var sk=BOARD_SKINS[eqBoard]||BOARD_SKINS.classic;cell.style.background=lt?sk.light:sk.dark;}
+function applyPiece(span,isW){var sk=PIECE_SKINS[eqPiece]||PIECE_SKINS.standard;span.style.color=isW?sk.wp:sk.bp;span.style.textShadow=isW?sk.wsh:sk.bsh;}
+
+function renderShop(){renderBoardCards();renderPieceCards();}
+function boardPrev(sk){var c=[sk.dark,sk.light,sk.light,sk.dark];return '<div class="preview-grid mb-3">'+c.map(function(x){return '<div style="background:'+x+';width:22px;height:22px;border-radius:3px"></div>';}).join('')+'</div>';}
+function skinBtn(type,sk,own,eq){
+  if(eq)return '<div class="py-2 bg-sky-50 text-sky-600 font-bold text-center rounded-xl text-xs border border-sky-200">Equipped</div>';
+  if(own)return '<button onclick="equip'+(type==='board'?'Board':'Piece')+'(\''+sk.id+'\')" class="w-full py-2 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl text-xs">Equip</button>';
+  var grad=type==='board'?'linear-gradient(135deg,#0ea5e9,#3b82f6)':'linear-gradient(135deg,#7c3aed,#ec4899)';
+  return '<button onclick="openBuy(\''+type+'\',\''+sk.id+'\')" class="w-full py-2 text-white font-bold rounded-xl text-xs" style="background:'+grad+'">💎 '+SKIN_PRICE_TON+' TON</button>';
+}
+function renderBoardCards(){
+  var cnt=document.getElementById('board-skin-cards');if(!cnt)return;cnt.innerHTML='';
+  Object.keys(BOARD_SKINS).forEach(function(key){
+    var sk=BOARD_SKINS[key],own=boardOwned(sk.id),eq=eqBoard===sk.id;
+    var d=document.createElement('div');d.className='skin-card glass rounded-2xl p-4'+(own?' owned':'')+(eq?' equipped':'');
+    d.innerHTML=boardPrev(sk)+'<h3 class="font-bold text-sky-700 text-center text-sm">'+sk.name+'</h3><p class="text-sky-400 text-xs text-center mt-0.5 mb-3">'+sk.desc+'</p>'+(sk.free?'<div class="text-xs text-center text-green-600 font-bold mb-2">Free</div>':'')+skinBtn('board',sk,own,eq);
+    cnt.appendChild(d);
+  });
+}
+function renderPieceCards(){
+  var cnt=document.getElementById('piece-skin-cards');if(!cnt)return;cnt.innerHTML='';
+  Object.keys(PIECE_SKINS).forEach(function(key){
+    var sk=PIECE_SKINS[key],own=pieceOwned(sk.id),eq=eqPiece===sk.id;
+    var d=document.createElement('div');d.className='skin-card glass rounded-2xl p-4'+(own?' owned':'')+(eq?' equipped':'');
+    d.innerHTML='<div class="flex justify-center gap-3 mb-3"><span class="piece-preview" style="color:'+sk.wp+';text-shadow:'+sk.wsh+'">♕</span><span class="piece-preview" style="color:'+sk.bp+';text-shadow:'+sk.bsh+'">♛</span></div><h3 class="font-bold text-sky-700 text-center text-sm">'+sk.name+'</h3><p class="text-sky-400 text-xs text-center mt-0.5 mb-3">'+sk.desc+'</p>'+(sk.free?'<div class="text-xs text-center text-green-600 font-bold mb-2">Free</div>':'')+skinBtn('piece',sk,own,eq);
+    cnt.appendChild(d);
   });
 }
 
-function showSkinModal(id) {
-  var s = SKINS[id]; if (!s) return;
-  document.getElementById('skin-modal-title').innerHTML = s.name + ' <span style="font-size:0.65rem;color:#6B7280">SKIN</span>';
-  var img = document.getElementById('skin-modal-img');
-  img.src = s.img; img.style.border = '8px solid ' + s.border; img.style.boxShadow = '0 0 60px ' + s.border;
-  var r = document.getElementById('skin-modal-rarity'); r.textContent = s.rarity; r.style.color = s.rarityColor;
-  document.getElementById('skin-modal-boost').textContent = '⚡ ' + s.boostLabel + ' in game';
-  document.getElementById('skin-modal-desc').textContent = s.desc;
-  document.getElementById('skin-modal-price').textContent = '💎 ' + s.price + ' TON';
-  document.getElementById('skin-modal-unlock').textContent = s.unlock;
-
-  var owned = isSkinOwned(id);
-  var equipped = equippedSkinId === id;
-  var actions = document.getElementById('skin-modal-actions');
-  var closeBtn = '<button onclick="closeSkinModal()" style="flex:1;padding:0.85rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CLOSE</button>';
-  if (owned) {
-    if (equipped) {
-      actions.innerHTML = closeBtn + '<button onclick="unequipSkin()" class="btn-equip active-eq" style="flex:1;padding:0.85rem;border:1px solid #34D399;cursor:pointer">✅ UNEQUIP</button>';
-    } else {
-      actions.innerHTML = closeBtn + '<button onclick="equipSkin(' + id + ')" class="btn-equip" style="flex:1;padding:0.85rem;cursor:pointer">🦍 EQUIP NOW</button>';
-    }
-  } else {
-    actions.innerHTML = closeBtn + '<button onclick="buySkin(' + id + ')" class="btn-buy-ton" style="flex:1;padding:0.85rem">💎 Buy ' + s.price + ' TON</button>';
-  }
-  document.getElementById('skin-modal').style.display = 'flex';
+function openBuy(type,id){
+  if(!walletAddr){pendingBuy={type:type,id:id};if(tonUI)tonUI.openModal();return;}
+  var sk=type==='board'?BOARD_SKINS[id]:PIECE_SKINS[id];if(!sk)return;
+  pendingBuy={type:type,id:id};
+  document.getElementById('buy-title').textContent='Buy — '+sk.name;
+  document.getElementById('buy-desc').textContent=sk.desc;
+  document.getElementById('buy-price').textContent=SKIN_PRICE_TON+' TON';
+  ['buy-error','buy-success','verify-status'].forEach(function(i){document.getElementById(i).classList.add('hidden');});
+  var btn=document.getElementById('buy-btn');btn.disabled=false;btn.innerHTML='<span>💎</span><span>Buy with TON</span>';
+  document.getElementById('cancel-btn').disabled=false;
+  document.getElementById('modal-buy').classList.remove('hidden');
 }
-function closeSkinModal() { document.getElementById('skin-modal').style.display = 'none'; }
+function closeBuyModal(){document.getElementById('modal-buy').classList.add('hidden');}
 
-// ══════════════════════════════════════════
-// ── TON PAYMENT — Real on-chain payments to Planet Apes wallet ──
-// ══════════════════════════════════════════
-var PLANET_APES_WALLET = 'UQB0V-E4hIglz-OylGnNTmvec-U4blugU7yZMeT1siTaU3Xv';
-var pendingBuySkinId = -1;
-var payQrInstance = null;
-
-function tonNano(tonAmount) {
-  // Convert TON to nanotons (1 TON = 1,000,000,000 nanotons)
-  return Math.round(tonAmount * 1000000000);
-}
-function tonPaymentUrl(tonAmount, memo) {
-  var nano = tonNano(tonAmount);
-  var encodedMemo = encodeURIComponent(memo);
-  // Universal TON deep link — opens any TON wallet on mobile
-  return 'ton://transfer/' + PLANET_APES_WALLET + '?amount=' + nano + '&text=' + encodedMemo;
-}
-function tonkeeperUrl(tonAmount, memo) {
-  var nano = tonNano(tonAmount);
-  var encodedMemo = encodeURIComponent(memo);
-  return 'https://app.tonkeeper.com/transfer/' + PLANET_APES_WALLET + '?amount=' + nano + '&text=' + encodedMemo;
-}
-function tonhubUrl(tonAmount, memo) {
-  var nano = tonNano(tonAmount);
-  var encodedMemo = encodeURIComponent(memo);
-  return 'https://tonhub.com/transfer/' + PLANET_APES_WALLET + '?amount=' + nano + '&text=' + encodedMemo;
-}
-function mytonwalletUrl(tonAmount, memo) {
-  var nano = tonNano(tonAmount);
-  var encodedMemo = encodeURIComponent(memo);
-  return 'https://wallet.ton.org/transfer/' + PLANET_APES_WALLET + '?amount=' + nano + '&text=' + encodedMemo;
-}
-
-function buySkin(id) {
-  closeSkinModal();
-  openPaymentModal(id);
-}
-
-function openPaymentModal(id) {
-  var s = SKINS[id]; if (!s) return;
-  pendingBuySkinId = id;
-  var memo = 'APES-SKIN-' + s.name.replace(/\s+/g, '-').toUpperCase();
-
-  document.getElementById('pay-skin-name').textContent = s.rarity + ' ' + s.name;
-  document.getElementById('pay-amount-display').textContent = s.price + ' TON';
-
-  // Generate QR code — encodes the universal TON payment deep link
-  var qrBox = document.getElementById('pay-qr-box');
-  qrBox.innerHTML = '';
-  try {
-    var payUrl = tonPaymentUrl(s.price, memo);
-    payQrInstance = new QRCode(qrBox, {
-      text: payUrl,
-      width: 180, height: 180,
-      colorDark: '#000000', colorLight: '#ffffff',
-      correctLevel: QRCode.CorrectLevel.M
+function verifyTonTransaction(senderAddr,amountNanoStr,startTimeSec){
+  var TONCENTER='https://toncenter.com/api/v2/getTransactions';
+  var minAmount=BigInt(amountNanoStr),maxAttempts=20,senderNorm=(senderAddr||'').toLowerCase().trim(),attempt=0;
+  function loop(){
+    if(attempt>=maxAttempts)return Promise.resolve({verified:false});
+    attempt++;
+    var pct=Math.min((attempt/maxAttempts)*100,95);
+    var fill=document.getElementById('verify-fill');if(fill)fill.style.width=pct+'%';
+    return new Promise(function(res){setTimeout(res,3000);}).then(function(){
+      var url=TONCENTER+'?address='+encodeURIComponent(TREASURY)+'&limit=20&to_lt=0&archival=false';
+      return fetch(url,{headers:{'Accept':'application/json'}}).then(function(r){return r.ok?r.json():null;})
+      .then(function(data){
+        if(!data||!data.ok||!Array.isArray(data.result))return loop();
+        for(var i=0;i<data.result.length;i++){
+          var tx=data.result[i];if(tx.utime<startTimeSec-60)break;
+          var inMsg=tx.in_msg;if(!inMsg||!inMsg.source)continue;
+          var srcNorm=(inMsg.source||'').toLowerCase().trim();
+          var match=srcNorm===senderNorm||(srcNorm.length>8&&senderNorm.length>8&&srcNorm.slice(-24)===senderNorm.slice(-24));
+          if(!match)continue;
+          if(BigInt(inMsg.value||'0')<minAmount)continue;
+          return{verified:true,txHash:tx.transaction_id?tx.transaction_id.hash:'unknown',amount:inMsg.value,timestamp:tx.utime};
+        }
+        return loop();
+      }).catch(function(){return loop();});
     });
-  } catch(e) {
-    qrBox.innerHTML = '<div style="width:180px;height:180px;display:flex;align-items:center;justify-content:center;background:#1a1a1a;border-radius:0.5rem;font-size:0.75rem;color:#9CA3AF;text-align:center;padding:1rem">QR unavailable — use wallet buttons above</div>';
   }
-
-  // Store memo in data attr for wallet buttons
-  document.getElementById('payment-modal').dataset.memo = memo;
-  document.getElementById('payment-modal').dataset.price = s.price;
-  document.getElementById('payment-modal').style.display = 'flex';
+  return loop();
 }
 
-function openTonPayment(wallet) {
-  var modal = document.getElementById('payment-modal');
-  var price = parseFloat(modal.dataset.price);
-  var memo  = modal.dataset.memo;
-  var url;
-  if (wallet === 'tonkeeper') url = tonkeeperUrl(price, memo);
-  else if (wallet === 'tonhub') url = tonhubUrl(price, memo);
-  else url = mytonwalletUrl(price, memo);
-  window.open(url, '_blank');
-  // After opening wallet, enable confirm button with a note
-  var btn = document.getElementById('pay-confirm-btn');
-  btn.style.background = 'linear-gradient(90deg,#34D399,#22c55e)';
-  btn.textContent = '✅ I\'ve Paid — Unlock Skin';
-}
-
-function closePaymentModal() {
-  document.getElementById('payment-modal').style.display = 'none';
-  pendingBuySkinId = -1;
-  var qrBox = document.getElementById('pay-qr-box');
-  qrBox.innerHTML = '';
-  payQrInstance = null;
-}
-
-function confirmPayment() {
-  if (pendingBuySkinId < 0) return;
-  var id = pendingBuySkinId;
-  var s = SKINS[id];
-  closePaymentModal();
-  if (!isSkinOwned(id)) { ownedSkins.push(id); }
-  saveSkinState();
-  if (equippedSkinId < 0) { equippedSkinId = id; saveSkinState(); applyEquippedSkinToGame(); }
-  renderSkinsGrid();
-  showToast('🎉 ' + s.name + ' unlocked & equipped! ' + s.boostLabel + ' now active!', 'success');
-}
-
-// ══════════════════════════════════════════
-// ── LEADERBOARD — Persistent via localStorage ──
-// Score NEVER resets on page navigation.
-// Only the weekly prize cycle resets, not the data.
-// ══════════════════════════════════════════
-var LB_KEY = 'apes_leaderboard_v3';
-var PB_KEY = 'apes_personal_best_v2';
-var MEDALS = ['👑','🥈','🥉'];
-var leaderboardData = [];
-var personalBest = 0;
-var submitting = false;
-
-var FALLBACK_LB = [
-  { name:'HarambeReborn', score:12450 },
-  { name:'BananaSlayer',  score:9820  },
-  { name:'JungleChad',   score:8740  },
-  { name:'MoonApe420',   score:7650  },
-  { name:'PeelMaster',   score:6890  }
-];
-
-function loadLeaderboard() {
-  try {
-    var raw = localStorage.getItem(LB_KEY);
-    if (raw) {
-      var parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+function confirmBuy(){
+  if(!pendingBuy)return;
+  var type=pendingBuy.type,id=pendingBuy.id;
+  var sk=type==='board'?BOARD_SKINS[id]:PIECE_SKINS[id];if(!sk)return;
+  var errEl=document.getElementById('buy-error'),sucEl=document.getElementById('buy-success'),
+      verifyEl=document.getElementById('verify-status'),verifyMsg=document.getElementById('verify-msg');
+  var btn=document.getElementById('buy-btn'),cancelBtn=document.getElementById('cancel-btn');
+  if(!walletAddr||!tonUI){errEl.textContent='Please connect your TON wallet first.';errEl.classList.remove('hidden');setTimeout(function(){closeBuyModal();if(tonUI)tonUI.openModal();},1200);return;}
+  btn.disabled=true;cancelBtn.disabled=true;btn.innerHTML='<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full spin mr-2 inline-block"></div>Sending…';
+  errEl.classList.add('hidden');sucEl.classList.add('hidden');verifyEl.classList.add('hidden');
+  var startTimeSec=Math.floor(Date.now()/1000);
+  tonUI.sendTransaction({validUntil:startTimeSec+600,network:TON_MAINNET,messages:[{address:TREASURY,amount:SKIN_PRICE_NANO}]})
+  .then(function(){
+    btn.innerHTML='Confirming on-chain…';
+    document.getElementById('verify-msg').textContent='Verifying on TON mainnet… please wait';
+    document.getElementById('verify-fill').style.width='0%';
+    verifyEl.classList.remove('hidden');
+    return verifyTonTransaction(walletAddr,SKIN_PRICE_NANO,startTimeSec);
+  }).then(function(result){
+    if(result.verified){
+      if(type==='board'){if(owned.b.indexOf(id)<0)owned.b.push(id);}else{if(owned.p.indexOf(id)<0)owned.p.push(id);}
+      saveOwned();document.getElementById('verify-fill').style.width='100%';
+      document.getElementById('verify-msg').textContent='Transaction confirmed!';
+      sucEl.textContent=SKIN_PRICE_TON+' TON confirmed! '+sk.name+' is yours.';sucEl.classList.remove('hidden');btn.innerHTML='Unlocked!';
+      setTimeout(function(){closeBuyModal();renderShop();},2500);
+    }else{
+      verifyEl.classList.add('hidden');errEl.textContent='Could not confirm within 60s. Check your wallet.';errEl.classList.remove('hidden');
+      btn.disabled=false;cancelBtn.disabled=false;btn.innerHTML='<span>💎</span><span>Try Again</span>';
     }
-  } catch(e) {}
-  return FALLBACK_LB.slice();
-}
-function saveLeaderboard() {
-  try { localStorage.setItem(LB_KEY, JSON.stringify(leaderboardData)); } catch(e) {}
-}
-function loadPersonalBest() {
-  try { var v = parseInt(localStorage.getItem(PB_KEY),10); if (!isNaN(v) && v > 0) return v; } catch(e) {}
-  return 0;
-}
-function savePersonalBest() {
-  try { localStorage.setItem(PB_KEY, String(personalBest)); } catch(e) {}
-}
-function renderLeaderboard() {
-  var list = document.getElementById('leaderboard-list');
-  list.innerHTML = '';
-  leaderboardData.slice(0,8).forEach(function(entry, i) {
-    var div = document.createElement('div');
-    div.className = 'lb-pop';
-    div.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:7px 0.75rem;border-radius:1rem;animation-delay:' + (i*60) + 'ms;' + (i < 3 ? 'background:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.3)' : 'background:rgba(0,0,0,0.4)');
-    var walletBadge = entry.wallet ? '<span style="font-size:0.5rem;color:#836EF9;background:rgba(131,110,249,0.15);border:1px solid rgba(131,110,249,0.3);border-radius:3px;padding:1px 4px;margin-left:5px;vertical-align:middle">💎 TON</span>' : '';
-    div.innerHTML = '<div style="display:flex;align-items:center;gap:0.75rem"><div style="min-width:28px;text-align:right;font-family:monospace;font-size:0.75rem;font-weight:700;color:#FACC15;padding-right:0.25rem">' + (i+1) + '</div><div style="font-weight:700">' + escHtml(entry.name) + (i < 3 ? ' ' + MEDALS[i] : '') + walletBadge + '</div></div><div style="font-family:monospace;color:#FACC15;font-size:0.875rem">' + Math.floor(entry.score).toLocaleString() + '</div>';
-    list.appendChild(div);
+  }).catch(function(err){
+    var msg=String((err&&(err.message||err.code))||'');
+    var isReject=msg.toLowerCase().indexOf('reject')>=0||msg.indexOf('UserDeclined')>=0||msg.indexOf('cancel')>=0;
+    verifyEl.classList.add('hidden');errEl.textContent=isReject?'Transaction cancelled.':'Transaction failed: '+(msg||'Unknown error');
+    errEl.classList.remove('hidden');btn.disabled=false;cancelBtn.disabled=false;btn.innerHTML='<span>💎</span><span>Buy with TON</span>';
   });
 }
-function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-// ══════════════════════════════════════════
-// ── GAME STATE ──
-// ══════════════════════════════════════════
-var score = 0, level = 1, bananasNeeded = 10000;
-var comboCount = 0, lastClickTime = 0;
+// ══════════════════════════════════════════════════════════════
+// TON WALLET — TonConnect UI (mainnet, web + mobile)
+// Supports: Tonkeeper, Tonhub, MyTonWallet, OpenMask, + all
+// TonConnect-compatible wallets. On desktop shows QR code.
+// On mobile opens wallet app via deep link automatically.
+// ══════════════════════════════════════════════════════════════
+var walletAddr = null;
+var tonUI = null;
 
-function updateGameUI() {
-  document.getElementById('score-display').textContent = Math.floor(score).toLocaleString();
-  document.getElementById('level-display').textContent = level;
-  document.getElementById('personal-best').textContent = Math.floor(personalBest).toLocaleString();
-  var target = level * bananasNeeded;
-  var pct = Math.min((score / target) * 100, 100);
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-lvl').textContent = 'LVL ' + level;
-  document.getElementById('progress-txt').textContent = Math.floor(score).toLocaleString() + '/' + target.toLocaleString();
-}
-
-function spawnFloat(emoji, xPct, yPct) {
-  var c = document.getElementById('floats');
-  var el = document.createElement('div');
-  el.className = 'float-emoji';
-  el.style.cssText = 'left:' + (xPct||50) + '%;top:' + (yPct||50) + '%;';
-  el.textContent = emoji;
-  c.appendChild(el);
-  setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 850);
-}
-
-function showLevelMsg(msg) {
-  var el = document.getElementById('level-msg');
-  el.textContent = msg; el.style.display = 'block';
-  setTimeout(function(){ el.style.display = 'none'; }, 1800);
-}
-
-function animateApe(scale) {
-  var img = document.getElementById('ape-img');
-  img.style.transform = 'scale(' + scale + ')';
-  setTimeout(function(){ img.style.transform = 'scale(1)'; }, 400);
-}
-
-function takeBanana(baseAmount) {
-  var now = Date.now();
-  // Apply equipped skin boost multiplier
-  var boost = getSkinBoostMultiplier();
-  var pts = Math.round(baseAmount * boost);
-  // Combo bonus
-  if (now - lastClickTime < 800) { comboCount++; pts += Math.floor(comboCount / 3); } else { comboCount = 0; }
-  lastClickTime = now;
-  score += pts;
-  // Update personal best (persisted to localStorage)
-  if (score > personalBest) {
-    personalBest = score;
-    savePersonalBest();
-  }
-  // Level up check
-  var target = level * bananasNeeded;
-  if (score >= target && level < 30) {
-    level++;
-    bananasNeeded = Math.floor(bananasNeeded * 1.25);
-    animateApe(1.4);
-    showLevelMsg('LEVEL ' + level + ' UNLOCKED! 🔥');
-    if (level === 5) showToast('🔥 KING MODE! You are now a true Banana Lord!', 'info');
-    if (level === 10) showToast('👑 ULTIMATE KING OF THE JUNGLE! 🦍 Try King Ape skin for 3× boost!', 'success');
-  }
-  document.getElementById('game-instruction').style.display = 'none';
-  updateGameUI();
-}
-
-function handleGameClick(e) {
-  if (e.target.closest && e.target.closest('button')) return;
-  startJungleMusic();
-  var c = document.getElementById('game-container');
-  var rect = c.getBoundingClientRect();
-  var y = e.clientY - rect.top;
-  var x = e.clientX - rect.left;
-  if (y > 60 && y < rect.height - 70) {
-    takeBanana(1);
-    var boost = getSkinBoostMultiplier();
-    var emoji = boost >= 3.0 ? '👑🍌' : (boost >= 2.0 ? '⚡🍌' : '🍌');
-    spawnFloat(emoji, (x/rect.width)*100, (y/rect.height)*100);
-    if (Math.random() < 0.22) setTimeout(function(){ takeBanana(2); }, 180);
-  }
-}
-
-function handleGameTouch(e) {
-  e.preventDefault();
-  startJungleMusic();
-  var c = document.getElementById('game-container');
-  var rect = c.getBoundingClientRect();
-  var t = e.touches[0];
-  var y = t.clientY - rect.top;
-  var x = t.clientX - rect.left;
-  if (y > 60 && y < rect.height - 70) {
-    takeBanana(1);
-    spawnFloat('🍌', (x/rect.width)*100, (y/rect.height)*100);
-  }
-}
-
-function resetGame() {
-  score = 0; level = 1; bananasNeeded = 10000; comboCount = 0;
-  document.getElementById('game-instruction').style.display = 'block';
-  updateGameUI();
-}
-
-document.addEventListener('keydown', function(e) {
-  var inp = document.getElementById('submit-name-input');
-  if ((e.key === ' ' || e.key === 'Enter') && document.activeElement !== inp && document.activeElement !== document.body.querySelector('input')) {
-    e.preventDefault(); takeBanana(1); spawnFloat('🍌', 50, 50);
-  }
-  if (e.key === 'Escape') { closeSubmitModal(); closeSkinModal(); closeWalletInfoModal(); closePaymentModal(); closeConvertModal(); }
-});
-
-setInterval(function(){
-  if (score > 5 && Math.random() < 0.32) spawnFloat('💣', Math.random()*80+10, Math.random()*60+10);
-}, 6000);
-
-// ── SUBMIT MODAL ──
-function openSubmitModal() {
-  if (Math.floor(score) === 0) { showToast('⚠️ Play the game first to collect bananas!', 'error'); return; }
-  if (!walletAddress || !walletRawAddress) {
-    showToast('💎 Connect your TON wallet first to submit your score!', 'error');
-    setTimeout(function(){ openWalletModal(); }, 300);
-    return;
-  }
-  document.getElementById('submit-score-display').textContent = Math.floor(score).toLocaleString();
-  document.getElementById('submit-wallet-display').textContent = walletAddress;
-  document.getElementById('submit-name-input').value = '';
-  document.getElementById('submit-modal').style.display = 'flex';
-  setTimeout(function(){ var inp=document.getElementById('submit-name-input'); if(inp) inp.focus(); }, 100);
-}
-function closeSubmitModal() { if (!submitting) document.getElementById('submit-modal').style.display = 'none'; }
-function submitScore() {
-  var name = (document.getElementById('submit-name-input').value || '').trim();
-  if (!name) { showToast('⚠️ Enter your ape name first!', 'error'); return; }
-  if (!walletAddress) { showToast('💎 Connect wallet to submit!', 'error'); return; }
-  submitting = true;
-  var btn = document.getElementById('submit-btn');
-  btn.textContent = '⏳ Saving…'; btn.disabled = true;
-  var currentScore = Math.floor(score);
-  setTimeout(function() {
-    var entry = { name: name, score: currentScore, wallet: walletRawAddress || '' };
-    var updated = leaderboardData.concat([entry]);
-    updated.sort(function(a,b){ return b.score - a.score; });
-    updated = updated.slice(0, 10);
-    leaderboardData = updated;
-    saveLeaderboard();
-    renderLeaderboard();
-    var rank = updated.findIndex(function(e){ return e.name === name && e.score === currentScore; }) + 1;
-    if (currentScore > personalBest) { personalBest = currentScore; savePersonalBest(); updateGameUI(); }
-    closeSubmitModal();
-    showToast('🏆 Score saved! Ranked #' + rank + ' — linked to your TON wallet forever!', 'success');
-    submitting = false; btn.textContent = '🏆 SUBMIT'; btn.disabled = false;
-  }, 600);
-}
-
-// ── CONVERT MODAL ──
-function openConvertModal() {
-  var currentScore = Math.floor(score);
-  document.getElementById('convert-score-display').textContent = currentScore.toLocaleString();
-  document.getElementById('convert-apes-display').textContent = Math.floor(currentScore / 1000).toLocaleString() + ' $APES';
-  var s = getEquippedSkin();
-  var note = document.getElementById('convert-boost-note');
-  if (s) {
-    note.style.display = 'block';
-    note.textContent = '⚡ ' + s.name + ' (' + s.boostLabel + ') is boosting your bananas — more $APES for you!';
-  } else {
-    note.style.display = 'none';
-  }
-  document.getElementById('convert-modal').style.display = 'flex';
-}
-function closeConvertModal() { document.getElementById('convert-modal').style.display = 'none'; }
-function claimConvert() {
-  if (!walletAddress) { closeConvertModal(); openWalletModal(); showToast('💎 Connect wallet to claim $APES when available.', 'info'); return; }
-  closeConvertModal();
-  showToast('✅ Wallet linked! Your banana score is recorded. $APES conversion goes live at token launch!', 'info');
-}
-
-// ── MUSIC ──
-var musicOn = true, musicStarted = false, musicAudioCtx = null, musicMasterGain = null, musicInterval = null;
-function startJungleMusic() {
-  if (musicStarted) return;
-  musicStarted = true;
+function initTonConnect() {
   try {
-    musicAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    musicMasterGain = musicAudioCtx.createGain();
-    musicMasterGain.gain.value = 0.38;
-    musicMasterGain.connect(musicAudioCtx.destination);
-    var BPM = 122, beat = 60/BPM;
-    var NOTES = [196,233,261,294,349,392,466];
-    var MELODY = [0,-1,2,-1,4,3,-1,2,0,-1,1,-1,3,2,-1,0];
-    var nextTime = musicAudioCtx.currentTime + 0.05, step = 0;
-    function schedule() {
-      while (nextTime < musicAudioCtx.currentTime + 0.2) {
-        if (step%8===0||step%8===4) {
-          var o=musicAudioCtx.createOscillator(),g=musicAudioCtx.createGain();
-          o.connect(g);g.connect(musicMasterGain);
-          o.frequency.setValueAtTime(160,nextTime);o.frequency.exponentialRampToValueAtTime(0.01,nextTime+0.28);
-          g.gain.setValueAtTime(0.85,nextTime);g.gain.exponentialRampToValueAtTime(0.001,nextTime+0.28);
-          o.start(nextTime);o.stop(nextTime+0.3);
-        }
-        var mIdx=MELODY[step%MELODY.length];
-        if (mIdx>=0) {
-          var oM=musicAudioCtx.createOscillator(),gM=musicAudioCtx.createGain();
-          oM.type='triangle';oM.connect(gM);gM.connect(musicMasterGain);
-          oM.frequency.value=NOTES[mIdx];
-          gM.gain.setValueAtTime(0.22,nextTime);gM.gain.exponentialRampToValueAtTime(0.001,nextTime+beat*0.75);
-          oM.start(nextTime);oM.stop(nextTime+beat);
-        }
-        nextTime+=beat/2;step++;
+    // Inline manifest — no external file needed, works as single HTML
+    var manifest = {
+      url: window.location.origin || 'https://chessio.app',
+      name: 'CHESSIO',
+      iconUrl: 'https://i.imgur.com/KfYwnPE.png'
+    };
+    var manifestUrl = 'data:application/json,' + encodeURIComponent(JSON.stringify(manifest));
+
+    // Single TonConnectUI instance — renders its own button in #tc-btn-nav
+    tonUI = new TON_CONNECT_UI.TonConnectUI({
+      manifestUrl: manifestUrl,
+      buttonRootId: 'tc-btn-nav',
+      uiPreferences: {
+        theme: TON_CONNECT_UI.THEME.LIGHT
       }
-    }
-    musicInterval=setInterval(schedule,50);schedule();
-  } catch(e){}
-}
-function toggleMusic() {
-  var btn = document.getElementById('music-btn');
-  if (!musicStarted) { startJungleMusic(); musicOn=true; btn.textContent='🎵 ON'; btn.style.color='#FFD700'; btn.style.borderColor='#FFD700'; return; }
-  musicOn=!musicOn;
-  if (musicMasterGain) musicMasterGain.gain.setValueAtTime(musicOn?0.38:0, musicAudioCtx.currentTime);
-  btn.textContent=musicOn?'🎵 ON':'🔇 OFF';
-  btn.style.color=musicOn?'#FFD700':'#6B7280';
-  btn.style.borderColor=musicOn?'#FFD700':'rgba(255,255,255,0.2)';
+    });
+
+    // Clone the button into the shop nav as well (visual only — actions via tonUI)
+    tonUI.onStatusChange(function(wallet) {
+      var prev = walletAddr;
+      walletAddr = wallet ? wallet.account.address : null;
+
+      if (walletAddr && walletAddr !== prev) {
+        loadOwnedForWallet(walletAddr);
+        loadPointsForWallet(walletAddr);
+        renderShop();
+      } else if (!walletAddr && prev) {
+        owned = {b: ['classic'], p: ['standard']};
+        resetPointsOnDisconnect();
+        renderShop();
+      }
+
+      syncShopWalletUI(walletAddr);
+      renderPoints();
+
+      if (wallet && pendingBuy) {
+        var pb = pendingBuy;
+        pendingBuy = null;
+        openBuy(pb.type, pb.id);
+      }
+    });
+
+    // Mirror button state in shop nav
+    mirrorBtnToShop();
+  } catch(e) {
+    console.error('TonConnect init error:', e);
+  }
 }
 
-// ══════════════════════════════════════════
-// ── INIT — load all persisted state ──
-// ══════════════════════════════════════════
-initTonConnect();
-loadSkinState();
-leaderboardData = loadLeaderboard();
-personalBest = loadPersonalBest();
-renderLeaderboard();
-renderSkinsGrid();
-applyEquippedSkinToGame();
-updateGameUI();
+// Mirror the TonConnect button into the shop nav by re-rendering it
+function mirrorBtnToShop() {
+  // The TonConnect UI button only renders in one root — for the shop
+  // we use a custom styled button that delegates to the same tonUI instance
+  syncShopWalletUI(walletAddr);
+}
+
+function syncShopWalletUI(addr) {
+  var s = addr ? addr.slice(0, 6) + '…' + addr.slice(-4) : null;
+  var sw = document.getElementById('shop-wallet-txt');
+  if (sw) sw.textContent = addr
+    ? 'Connected: ' + s + ' — your skins are loaded'
+    : 'Not connected — connect wallet to purchase skins';
+  var cb = document.getElementById('shop-conn-btn');
+  if (cb) cb.textContent = addr ? 'Disconnect' : 'Connect Wallet';
+
+  // Show TonConnect button copy in shop nav too
+  var shopBtn = document.getElementById('tc-btn-shop');
+  if (shopBtn) {
+    shopBtn.innerHTML = addr
+      ? '<button onclick="shopConnClick()" style="background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff;border:none;border-radius:14px;padding:9px 16px;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;transition:all .2s">💎 ' + s + '</button>'
+      : '<button onclick="shopConnClick()" style="background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff;border:none;border-radius:14px;padding:9px 16px;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;transition:all .2s">💎 Connect Wallet</button>';
+  }
+}
+
+// Shop nav wallet button click
+function shopConnClick() {
+  if (!tonUI) return;
+  if (walletAddr) {
+    tonUI.disconnect();
+  } else {
+    tonUI.openModal();
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// BOARD RENDERER
+// ══════════════════════════════════════════════════════════════
+var PU={wk:'♔',wq:'♕',wr:'♖',wb:'♗',wn:'♘',wp:'♙',bk:'♚',bq:'♛',br:'♜',bb:'♝',bn:'♞',bp:'♟'};
+var FL=['a','b','c','d','e','f','g','h'],RK=[8,7,6,5,4,3,2,1];
+function sqN(c,r){return FL[c]+RK[r];}
+
+function drawBoard(el,game,selSq,posSqs,cb,flip){
+  el.innerHTML='';
+  var bd=game.board(),skin=BOARD_SKINS[eqBoard]||BOARD_SKINS.classic;
+  for(var r=0;r<8;r++){for(var c=0;c<8;c++){
+    var dr=flip?7-r:r,dc=flip?7-c:c,sq=sqN(dc,dr),lt=(dr+dc)%2===0;
+    var cell=document.createElement('div');cell.className='chess-square';applySq(cell,lt);
+    if(sq===selSq)cell.classList.add('selected');
+    if(posSqs&&posSqs.indexOf(sq)>=0)cell.classList.add('possible');
+    (function(s){cell.onclick=function(){cb(s);};})(sq);
+    if(dc===0){var sr=document.createElement('span');sr.className='coord-label coord-rank';sr.style.color=lt?skin.dark:skin.light;sr.textContent=RK[dr];cell.appendChild(sr);}
+    if(dr===7){var sf=document.createElement('span');sf.className='coord-label coord-file';sf.style.color=lt?skin.dark:skin.light;sf.textContent=FL[dc];cell.appendChild(sf);}
+    var pc=bd[dr][dc];if(pc){var sp=document.createElement('span');sp.className='chess-piece';sp.textContent=PU[pc.color+pc.type]||'';applyPiece(sp,pc.color==='w');cell.appendChild(sp);}
+    el.appendChild(cell);
+  }}
+}
+
+// ══════════════════════════════════════════════════════════════
+// TURN TIMER
+// ══════════════════════════════════════════════════════════════
+var _timerInterval=null,_timerCount=0,_timerMode='ai';
+
+function startTurnTimer(mode,onExpire){
+  clearTurnTimer();
+  _timerMode=mode;_timerCount=TURN_LIMIT;
+  _updateTimerUI(mode,TURN_LIMIT);
+  var sk=document.getElementById(mode+'-timer-skipped');if(sk)sk.classList.add('hidden');
+  _timerInterval=setInterval(function(){
+    _timerCount--;
+    _updateTimerUI(mode,_timerCount);
+    if(_timerCount<=0){clearTurnTimer();var s=document.getElementById(mode+'-timer-skipped');if(s){s.classList.remove('hidden');setTimeout(function(){s.classList.add('hidden');},2000);}onExpire();}
+  },1000);
+}
+
+function clearTurnTimer(){if(_timerInterval){clearInterval(_timerInterval);_timerInterval=null;}}
+
+function _updateTimerUI(mode,secs){
+  var txt=document.getElementById(mode+'-timer-text'),ring=document.getElementById(mode+'-timer-ring-fg'),disp=document.getElementById(mode+'-timer-display');
+  if(!txt||!ring||!disp)return;
+  txt.textContent=Math.max(secs,0)+'s';
+  ring.style.strokeDashoffset=CIRC*(1-Math.max(secs,0)/TURN_LIMIT);
+  if(secs<=3){ring.style.stroke='#dc2626';disp.className='turn-timer urgent';if(secs>0)SFX.tick();}
+  else if(secs<=6){ring.style.stroke='#d97706';disp.className='turn-timer warning';}
+  else{ring.style.stroke='#0ea5e9';disp.className='turn-timer normal';}
+}
+
+function resetTimerUI(mode){_updateTimerUI(mode,TURN_LIMIT);var s=document.getElementById(mode+'-timer-skipped');if(s)s.classList.add('hidden');}
+
+// ══════════════════════════════════════════════════════════════
+// AI GAME
+// ══════════════════════════════════════════════════════════════
+var aig=null,aiDf='normal',aiSel=null,aiPos=[],aiTh=false,aiHst=[];
+
+function setDiff(d){
+  aiDf=d;
+  ['easy','normal','hard'].forEach(function(x){
+    var b=document.getElementById('btn-'+x);if(!b)return;
+    if(x===d&&d==='hard'){b.className='flex-1 py-2 rounded-xl text-sm font-bold text-white';b.style.background='linear-gradient(135deg,#dc2626,#b91c1c)';}
+    else if(x===d&&d==='easy'){b.className='flex-1 py-2 rounded-xl text-sm font-bold text-white';b.style.background='linear-gradient(135deg,#16a34a,#22c55e)';}
+    else if(x===d){b.className='flex-1 py-2 rounded-xl text-sm font-bold bg-sky-600 text-white';b.style.background='';}
+    else{b.className='flex-1 py-2 rounded-xl text-sm font-bold bg-sky-100 text-sky-600';b.style.background='';}
+  });
+  updateStreakBadge();
+}
+
+function changeAIDiff(d){
+  aiDf=d;
+  ['easy','normal','hard'].forEach(function(x){
+    var b=document.getElementById('ai-btn-'+x);if(!b)return;
+    if(x===d&&d==='hard'){b.className='flex-1 py-1.5 rounded-lg text-xs font-bold text-white';b.style.background='linear-gradient(135deg,#dc2626,#b91c1c)';}
+    else if(x===d&&d==='easy'){b.className='flex-1 py-1.5 rounded-lg text-xs font-bold text-white';b.style.background='linear-gradient(135deg,#16a34a,#22c55e)';}
+    else if(x===d){b.className='flex-1 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white';b.style.background='';}
+    else{b.className='flex-1 py-1.5 rounded-lg text-xs font-bold bg-sky-100 text-sky-600';b.style.background='';}
+  });
+  var badge=document.getElementById('ai-diff-badge');
+  if(badge){
+    if(d==='hard')badge.innerHTML='<p class="text-xs font-bold px-2 py-1 rounded-lg" style="background:rgba(220,38,38,.1);color:#dc2626">Hard'+(hardStreak>0?' x'+hardStreak:'')+'</p><p class="text-xs text-amber-400 mt-1">Win: +'+(POINTS_PER_WIN.hard+(hardStreak>0?STREAK_BONUS*hardStreak:0))+' pts</p>';
+    else if(d==='easy')badge.innerHTML='<p class="text-xs font-bold px-2 py-1 rounded-lg" style="background:rgba(22,163,74,.1);color:#16a34a">Easy</p><p class="text-xs text-amber-400 mt-1">Win: +'+POINTS_PER_WIN.easy+' pts</p>';
+    else badge.innerHTML='<p class="text-xs font-bold px-2 py-1 rounded-lg bg-sky-100 text-sky-600">Normal</p><p class="text-xs text-amber-400 mt-1">Win: +'+POINTS_PER_WIN.normal+' pts</p>';
+  }
+  resetAI();
+}
+
+function startAI(){
+  document.getElementById('play-menu').classList.add('hidden');
+  document.getElementById('play-pvp').classList.add('hidden');
+  document.getElementById('play-ai').classList.remove('hidden');
+  changeAIDiff(aiDf);resetAI();
+}
+
+function resetAI(){
+  clearTurnTimer();killAIWorker();
+  aig=new Chess();aiSel=null;aiPos=[];aiTh=false;aiHst=[];pointsAwarded=false;
+  document.getElementById('ai-thinking').classList.add('hidden');
+  resetTimerUI('ai');renderAIBoard();renderPoints();updAISt();updAIHst();
+  if(!aig.game_over())startPlayerTimer();
+}
+
+function startPlayerTimer(){
+  startTurnTimer('ai',function(){
+    if(!aig||aig.game_over()||aig.turn()!=='w'||aiTh)return;
+    var ms=aig.moves();if(!ms.length)return;
+    var mv=ms[0|Math.random()*ms.length];
+    var r=aig.move(mv);
+    if(r){aiHst.push(r.san);aiSel=null;aiPos=[];SFX.autoMove();updAISt();updAIHst();renderAIBoard();if(!aig.game_over())schedAI();}
+  });
+}
+
+function updAISt(){
+  var el=document.getElementById('ai-status');if(!aig)return;
+  var t='',c='text-sky-700';
+  if(aig.in_checkmate()){var won=aig.turn()==='b';t=won?'Checkmate! You win!':'Checkmate! AI wins!';c=won?'text-green-600':'text-red-500';awardPoints(aiDf,won);clearTurnTimer();}
+  else if(aig.in_draw()){t='Draw!';c='text-orange-500';awardPoints(aiDf,false);clearTurnTimer();}
+  else if(aig.in_stalemate()){t='Stalemate!';c='text-orange-500';awardPoints(aiDf,false);clearTurnTimer();}
+  else if(aig.in_check()){t=aig.turn()==='w'?'Check! Your turn':'AI is in check';}
+  else{t=aig.turn()==='w'?'Your turn (White)':'AI thinking…';}
+  el.textContent=t;el.className='font-bold text-lg '+c;
+}
+
+function updAIHst(){
+  var el=document.getElementById('ai-history');
+  if(!aiHst.length){el.innerHTML='<p class="text-sky-300 text-sm">No moves yet</p>';return;}
+  el.innerHTML=aiHst.map(function(m,i){return '<div class="flex items-center gap-2 text-sm"><span class="text-sky-300 text-xs w-6">'+(Math.floor(i/2)+1)+(i%2===0?'.':'')+'</span><span class="font-mono font-semibold '+(i%2===0?'text-sky-700':'text-blue-500')+'">'+m+'</span><span class="text-sky-300 text-xs">'+(i%2===0?'White':'Black')+'</span></div>';}).join('');
+  el.scrollTop=el.scrollHeight;
+}
+
+function renderAIBoard(){if(!aig)return;drawBoard(document.getElementById('ai-board'),aig,aiSel,aiPos,onAISq,false);}
+
+function onAISq(sq){
+  if(!aig||aiTh||aig.game_over()||aig.turn()!=='w')return;
+  if(!aiSel){
+    var p=aig.get(sq);if(p&&p.color==='w'){aiSel=sq;aiPos=aig.moves({square:sq,verbose:true}).map(function(m){return m.to;});}
+  }else{
+    if(sq===aiSel){aiSel=null;aiPos=[];}
+    else{
+      try{
+        var mv=aig.move({from:aiSel,to:sq,promotion:'q'});
+        if(mv){clearTurnTimer();aiHst.push(mv.san);aiSel=null;aiPos=[];playSFX(mv,aig);updAISt();updAIHst();renderAIBoard();if(!aig.game_over())schedAI();return;}
+      }catch(e){}
+      var p2=aig.get(sq);
+      if(p2&&p2.color==='w'){aiSel=sq;aiPos=aig.moves({square:sq,verbose:true}).map(function(m){return m.to;});}
+      else{aiSel=null;aiPos=[];}
+    }
+  }
+  renderAIBoard();
+}
+
+function schedAI(){
+  if(!aig||aig.game_over())return;
+  aiTh=true;
+  document.getElementById('ai-thinking').classList.remove('hidden');
+  updAISt();renderAIBoard();
+
+  var delay=aiDf==='easy'?150+Math.random()*300:aiDf==='normal'?300+Math.random()*400:300+Math.random()*300;
+
+  startTurnTimer('ai',function(){
+    killAIWorker();
+    if(!aig||aig.game_over()){aiTh=false;document.getElementById('ai-thinking').classList.add('hidden');return;}
+    var ms=aig.moves();if(!ms.length){aiTh=false;document.getElementById('ai-thinking').classList.add('hidden');return;}
+    var mv=ms[0|Math.random()*ms.length];
+    var r=aig.move(mv);
+    if(r){aiHst.push(r.san);SFX.autoMove();updAIHst();}
+    aiTh=false;document.getElementById('ai-thinking').classList.add('hidden');
+    updAISt();renderAIBoard();
+    if(!aig.game_over())startPlayerTimer();
+  });
+
+  setTimeout(function(){
+    if(!aig||!aiTh)return;
+    var fen=aig.fen();
+    var worker=getAIWorker();
+    worker.onmessage=function(e){
+      clearTurnTimer();
+      if(!aiTh)return;
+      var mv=e.data.move;
+      if(mv&&aig){
+        var r=aig.move(mv);if(r){aiHst.push(r.san);playSFX(r,aig);updAIHst();}
+      }
+      aiTh=false;document.getElementById('ai-thinking').classList.add('hidden');
+      updAISt();renderAIBoard();
+      if(!aig.game_over())startPlayerTimer();
+    };
+    worker.onerror=function(){
+      clearTurnTimer();
+      if(aig&&!aig.game_over()){var ms=aig.moves();if(ms.length){var r=aig.move(ms[0|Math.random()*ms.length]);if(r){aiHst.push(r.san);updAIHst();}}}
+      aiTh=false;document.getElementById('ai-thinking').classList.add('hidden');
+      updAISt();renderAIBoard();
+      _aiWorker=null;
+      if(!aig.game_over())startPlayerTimer();
+    };
+    worker.postMessage({fen:fen,diff:aiDf});
+  },delay);
+}
+
+function backToMenu(){
+  clearTurnTimer();killAIWorker();
+  document.getElementById('play-ai').classList.add('hidden');
+  document.getElementById('play-pvp').classList.add('hidden');
+  document.getElementById('play-menu').classList.remove('hidden');
+  aig=null;pvpReset();renderPoints();
+}
+
+// ══════════════════════════════════════════════════════════════
+// WebRTC PvP
+// ══════════════════════════════════════════════════════════════
+var peer=null,conn=null,pvpG=null,pvpCol='white',pvpRoom='',pvpHst=[],pvpSel=null,pvpPos=[];
+
+function copyCode(){var txt=document.getElementById('pvp-code-display').textContent;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).catch(function(){cbFb(txt);});}else{cbFb(txt);}}
+function cbFb(txt){var ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);}
+
+function startPvP(){document.getElementById('play-menu').classList.add('hidden');document.getElementById('play-ai').classList.add('hidden');document.getElementById('play-pvp').classList.remove('hidden');pvpShowLobby();}
+function pvpShowLobby(){['pvp-waiting','pvp-game'].forEach(function(id){document.getElementById(id).classList.add('hidden');});document.getElementById('pvp-lobby').classList.remove('hidden');}
+function pvpShowWait(){['pvp-lobby','pvp-game'].forEach(function(id){document.getElementById(id).classList.add('hidden');});document.getElementById('pvp-waiting').classList.remove('hidden');}
+function pvpShowGame(){['pvp-lobby','pvp-waiting'].forEach(function(id){document.getElementById(id).classList.add('hidden');});document.getElementById('pvp-game').classList.remove('hidden');}
+
+function pvpCreate(){
+  var code=(Math.random().toString(36).substring(2,8)).toUpperCase();
+  pvpRoom=code;document.getElementById('pvp-code-display').textContent=code;pvpShowWait();
+  document.getElementById('pvp-wait-status').textContent='Creating room '+code+'…';
+  peer=new Peer(code,{debug:1});
+  peer.on('open',function(){document.getElementById('pvp-wait-status').textContent='Room ready! Waiting for opponent…';});
+  peer.on('connection',function(c){conn=c;conn.on('open',function(){pvpCol='white';pvpG=new Chess();conn.send({type:'start',color:'black',fen:pvpG.fen()});pvpBegin('white');});conn.on('data',pvpData);conn.on('close',pvpDisc);});
+  peer.on('error',function(e){pvpShowErr('Peer error: '+e.message);pvpShowLobby();});
+}
+
+function pvpJoin(){
+  var code=(document.getElementById('pvp-join-input').value||'').trim().toUpperCase();
+  if(code.length<4){pvpShowErr('Enter a valid room code.');return;}
+  pvpRoom=code;document.getElementById('pvp-code-display').textContent=code;pvpShowWait();
+  document.getElementById('pvp-wait-status').textContent='Connecting to room '+code+'…';
+  peer=new Peer(undefined,{debug:1});
+  peer.on('open',function(){conn=peer.connect(code,{reliable:true});conn.on('open',function(){document.getElementById('pvp-wait-status').textContent='Connected! Waiting for host to start…';});conn.on('data',pvpData);conn.on('close',pvpDisc);conn.on('error',function(e){pvpShowErr('Join error: '+e.message);pvpShowLobby();});});
+  peer.on('error',function(e){pvpShowErr('Peer error: '+e.message);pvpShowLobby();});
+}
+
+function pvpData(data){
+  if(data.type==='start'){pvpCol=data.color;pvpG=new Chess(data.fen);pvpBegin(data.color);}
+  else if((data.type==='move'||data.type==='auto_move')&&pvpG){var r=pvpG.move(data.move);if(r){pvpHst.push(r.san);playSFX(r,pvpG);pvpUpdSt();pvpUpdHst();renderPvPBoard();pvpStartTimer();}}
+  else if(data.type==='resign'){pvpSt('Opponent resigned. You win!','text-green-600');clearTurnTimer();}
+}
+function pvpDisc(){pvpSt('Opponent disconnected.','text-red-500');clearTurnTimer();document.getElementById('pvp-leave-btn').textContent='Play Again';}
+
+function pvpBegin(col){
+  pvpSel=null;pvpPos=[];pvpHst=[];
+  document.getElementById('pvp-color-badge').textContent='You: '+col;
+  document.getElementById('pvp-room-badge').textContent='Room: '+pvpRoom;
+  document.getElementById('pvp-leave-btn').textContent='Leave Game';
+  pvpShowGame();pvpUpdSt();renderPvPBoard();pvpStartTimer();
+}
+
+function pvpStartTimer(){
+  if(!pvpG||pvpG.game_over()){clearTurnTimer();return;}
+  var myC=pvpCol==='white'?'w':'b';
+  startTurnTimer('pvp',function(){
+    if(!pvpG||pvpG.game_over())return;
+    if(pvpG.turn()!==myC)return;
+    var ms=pvpG.moves();if(!ms.length)return;
+    var mv=ms[0|Math.random()*ms.length],r=pvpG.move(mv);
+    if(r){pvpHst.push(r.san);pvpSel=null;pvpPos=[];SFX.autoMove();if(conn&&conn.open)conn.send({type:'auto_move',move:r.san});pvpUpdSt();pvpUpdHst();renderPvPBoard();pvpStartTimer();}
+  });
+}
+
+function pvpUpdSt(){
+  if(!pvpG)return;
+  var my=(pvpG.turn()==='w'&&pvpCol==='white')||(pvpG.turn()==='b'&&pvpCol==='black');
+  var t='',c='text-sky-700';
+  if(pvpG.in_checkmate()){t=my?'You lost! Checkmate.':'You win! Checkmate!';c=my?'text-red-500':'text-green-600';clearTurnTimer();}
+  else if(pvpG.in_draw()){t='Draw!';c='text-orange-500';clearTurnTimer();}
+  else if(pvpG.in_check()){t=my?'Check! Your turn':'Opponent in check!';}
+  else{t=my?'Your turn!':'Opponent\'s turn…';}
+  pvpSt(t,c);
+}
+function pvpSt(t,c){var el=document.getElementById('pvp-status');el.textContent=t;el.className='font-bold text-lg '+(c||'text-sky-700');}
+function pvpUpdHst(){
+  var el=document.getElementById('pvp-history');
+  if(!pvpHst.length){el.innerHTML='<p class="text-sky-300 text-sm">No moves yet</p>';return;}
+  el.innerHTML=pvpHst.map(function(m,i){return '<div class="flex items-center gap-2 text-sm"><span class="text-sky-300 text-xs w-6">'+(Math.floor(i/2)+1)+(i%2===0?'.':'')+'</span><span class="font-mono font-semibold '+(i%2===0?'text-sky-700':'text-blue-500')+'">'+m+'</span></div>';}).join('');
+  el.scrollTop=el.scrollHeight;
+}
+function renderPvPBoard(){var el=document.getElementById('pvp-board');if(!pvpG||!el)return;drawBoard(el,pvpG,pvpSel,pvpPos,onPvPSq,pvpCol==='black');}
+
+function onPvPSq(sq){
+  if(!pvpG||pvpG.game_over())return;
+  var myC=pvpCol==='white'?'w':'b';if(pvpG.turn()!==myC)return;
+  if(!pvpSel){
+    var p=pvpG.get(sq);if(p&&p.color===myC){pvpSel=sq;pvpPos=pvpG.moves({square:sq,verbose:true}).map(function(m){return m.to;});}
+  }else{
+    if(sq===pvpSel){pvpSel=null;pvpPos=[];}
+    else{
+      try{
+        var r=pvpG.move({from:pvpSel,to:sq,promotion:'q'});
+        if(r){clearTurnTimer();pvpHst.push(r.san);pvpSel=null;pvpPos=[];playSFX(r,pvpG);if(conn&&conn.open)conn.send({type:'move',move:r.san});pvpUpdSt();pvpUpdHst();renderPvPBoard();pvpStartTimer();return;}
+      }catch(e){}
+      var p2=pvpG.get(sq);
+      if(p2&&p2.color===myC){pvpSel=sq;pvpPos=pvpG.moves({square:sq,verbose:true}).map(function(m){return m.to;});}
+      else{pvpSel=null;pvpPos=[];}
+    }
+  }
+  renderPvPBoard();
+}
+
+function pvpShowErr(msg){var el=document.getElementById('pvp-err');el.textContent=msg;el.classList.remove('hidden');}
+function pvpReset(){
+  clearTurnTimer();
+  try{if(conn)conn.close();}catch(e){}try{if(peer)peer.destroy();}catch(e){}
+  peer=null;conn=null;pvpG=null;pvpSel=null;pvpPos=[];pvpHst=[];pvpRoom='';
+  var ji=document.getElementById('pvp-join-input');if(ji)ji.value='';
+  var pe=document.getElementById('pvp-err');if(pe)pe.classList.add('hidden');
+  pvpShowLobby();
+}
+
+// ── Init ──
+window.addEventListener('load',function(){
+  initTonConnect();renderShop();renderPoints();setDiff('normal');
+});
 </script>
 </body>
 </html>
