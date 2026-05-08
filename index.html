@@ -739,20 +739,27 @@ function toggleFaq(qEl) {
 // ── REAL TON WALLET — TonConnect v2 ──
 // Works on mobile (deep link) + browser extension
 // ══════════════════════════════════════════
-var walletAddress = null;     // short display string e.g. "0:Ab12…Ef90"
-var walletRawAddress = null;  // full raw address from TonConnect
-var tonConnectUI = null;
-
-function initTonConnect() {
-  function doInit() {
-    if (tonConnectUI) return; // already initialized
-    try {
-      var UI = window.__TonConnectUI;
-      if (!UI) { console.warn('[APES] TonConnectUI class not found'); return; }
-      tonConnectUI = new UI({
-        manifestUrl: window.location.origin + '/tonconnect-manifest.json'
-      });
-      tonConnectUI.onStatusChange(handleWalletChange);
+var walletAddr=null,tonUI=null;
+function initTonConnect(){
+  try{
+    var base=window.location.origin+window.location.pathname.replace(/\/[^/]*$/,'/');
+    tonUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:base+'tonconnect-manifest.json'});
+    tonUI.onStatusChange(function(w){
+      var prev=walletAddr;walletAddr=w?w.account.address:null;
+      if(walletAddr&&walletAddr!==prev){loadOwnedForWallet(walletAddr);loadPointsForWallet(walletAddr);renderShop();}
+      else if(!walletAddr&&prev){owned={b:['classic'],p:['standard']};resetPointsOnDisconnect();renderShop();}
+      syncWalletUI(walletAddr);renderPoints();
+      if(w&&pendingBuy){var pb=pendingBuy;pendingBuy=null;openBuy(pb.type,pb.id);}
+    });
+  }catch(e){}
+}
+function syncWalletUI(addr){
+  var s=addr?addr.slice(0,6)+'…'+addr.slice(-4):null,lbl=s||'Connect Wallet';
+  ['ton-lbl','ton-lbl2'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=lbl;});
+  var sw=document.getElementById('shop-wallet-txt');if(sw)sw.textContent=addr?'Connected: '+s+' — your skins are loaded':'Not connected — connect wallet to purchase skins';
+  var cb=document.getElementById('shop-conn-btn');if(cb)cb.textContent=addr?'Disconnect':'Connect Wallet';
+}
+function walletClick(){if(walletAddr){if(tonUI)tonUI.disconnect();return;}if(tonUI)tonUI.openModal();}
       // Restore session if wallet was previously connected
       if (tonConnectUI.wallet) { handleWalletChange(tonConnectUI.wallet); }
       console.log('[APES] TonConnect initialized ✅');
