@@ -759,14 +759,11 @@ function initTonConnect() {
       return;
     }
 
-    // Build manifest inline as a Blob URL — no separate file needed
-    var manifestObj = {
-      url: window.location.href.split('?')[0].split('#')[0],
-      name: 'Planet Apes',
-      iconUrl: 'https://i.imgur.com/KlM5HWE.jpg'
-    };
-    var manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/json' });
-    var manifestUrl = URL.createObjectURL(manifestBlob);
+    // Manifest must be a publicly accessible URL (wallets fetch it over HTTP)
+    // Place tonconnect-manifest.json in the same folder as index.html
+    var origin = window.location.origin;
+    var basePath = window.location.pathname.replace(/\/[^/]*$/, '') || '';
+    var manifestUrl = origin + basePath + '/tonconnect-manifest.json';
 
     tonConnectUI = new UIClass({ manifestUrl: manifestUrl });
     tonConnectUI.onStatusChange(handleWalletChange);
