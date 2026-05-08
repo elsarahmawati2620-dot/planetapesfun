@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script type="module" src="/src/tonconnect-init.ts"></script>
+  <script type="module" src="./src/tonconnect-init.ts"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --gold: #FFD700; --gold2: #F59E0B; --green: #34D399; --purple: #C084FC; --red: #ef4444; --blue: #3b82f6; }
@@ -745,6 +745,7 @@ var tonConnectUI = null;
 
 function initTonConnect() {
   function doInit() {
+    if (tonConnectUI) return; // already initialized
     try {
       var UI = window.__TonConnectUI;
       if (!UI) { console.warn('[APES] TonConnectUI class not found'); return; }
@@ -752,19 +753,29 @@ function initTonConnect() {
         manifestUrl: window.location.origin + '/tonconnect-manifest.json'
       });
       tonConnectUI.onStatusChange(handleWalletChange);
-      // Restore session if wallet was already connected
+      // Restore session if wallet was previously connected
       if (tonConnectUI.wallet) { handleWalletChange(tonConnectUI.wallet); }
+      console.log('[APES] TonConnect initialized ✅');
     } catch(e) {
       console.warn('[APES] TonConnect init error:', e);
+      tonConnectUI = null;
     }
   }
-  // Module scripts (type=module) always run AFTER inline scripts,
-  // so we listen for the ready event dispatched by tonconnect-init.ts
-  if (window.__TonConnectUI) {
-    doInit();
-  } else {
-    window.addEventListener('ton-connect-ready', doInit, { once: true });
-  }
+
+  // Module scripts (type=module) are deferred — they run AFTER inline scripts.
+  // Listen for the ready event + use a polling fallback for robustness.
+  window.addEventListener('ton-connect-ready', doInit, { once: true });
+
+  // Polling fallback: check every 200ms for up to 10 seconds
+  var attempts = 0;
+  var poll = setInterval(function() {
+    if (tonConnectUI) { clearInterval(poll); return; }
+    if (window.__TonConnectUI) { clearInterval(poll); doInit(); return; }
+    if (++attempts > 50) {
+      clearInterval(poll);
+      console.warn('[APES] TonConnect did not load within 10s');
+    }
+  }, 200);
 }
 
 function handleWalletChange(wallet) {
@@ -788,13 +799,25 @@ function openWalletModal() {
     document.getElementById('wallet-info-short').textContent = walletAddress;
     document.getElementById('wallet-info-addr').textContent = walletRawAddress;
     document.getElementById('wallet-info-modal').style.display = 'flex';
-  } else {
-    if (tonConnectUI) {
-      tonConnectUI.openModal();
-    } else {
-      showToast('⚠️ TON wallet unavailable. Check internet connection.', 'error');
-    }
+    return;
   }
+  if (tonConnectUI) {
+    tonConnectUI.openModal();
+    return;
+  }
+  // TonConnect is still loading — wait up to 5s then open
+  showToast('⏳ Loading wallet connection…', 'info');
+  var waited = 0;
+  var waiter = setInterval(function() {
+    waited += 200;
+    if (tonConnectUI) {
+      clearInterval(waiter);
+      tonConnectUI.openModal();
+    } else if (waited >= 5000) {
+      clearInterval(waiter);
+      showToast('⚠️ Could not load wallet. Try refreshing the page.', 'error');
+    }
+  }, 200);
 }
 function closeWalletModal() { closeWalletInfoModal(); }
 function closeWalletInfoModal() {
