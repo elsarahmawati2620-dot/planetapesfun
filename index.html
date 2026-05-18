@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-  <meta name="description" content="Planet Apes ($APES) — The most based meme coin on TON. Take bananas, rule the jungle, earn rewards!" />
-  <title>Planet Apes ($APES) — King of the Jungle on TON</title>
+  <meta name="description" content="Planet Apes ($APES) — The most based meme coin on HyperEVM. Take bananas, rule the jungle, earn rewards!" />
+  <title>Planet Apes ($APES) — King of the Jungle on HyperEVM</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <!-- TonConnect UI v2 — supports Tonkeeper, MyTonWallet, TonHub on web & mobile -->
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+  <!-- ethers.js v6 for MetaMask / ERC-20 USDC transfers -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --gold: #FFD700; --gold2: #F59E0B; --green: #34D399; --purple: #C084FC; --red: #ef4444; --blue: #3b82f6; }
@@ -80,8 +79,8 @@
     .btn-x { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(255,255,255,0.3); background:rgba(255,255,255,0.05); color:#fff; font-size:0.75rem; font-weight:700; transition:all 0.2s; }
     .btn-x:hover { background:rgba(255,255,255,0.15); }
     .btn-tg { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(34,158,217,0.5); background:rgba(34,158,217,0.1); color:#229ED9; font-size:0.75rem; font-weight:700; }
-    .btn-wallet { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(0,152,234,0.6); background:rgba(0,152,234,0.12); color:#0098EA; font-size:0.75rem; font-weight:700; transition:all 0.2s; white-space:nowrap; }
-    .btn-wallet:hover { background:rgba(0,152,234,0.25); }
+    .btn-wallet { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(245,158,11,0.6); background:rgba(245,158,11,0.12); color:#F5A623; font-size:0.75rem; font-weight:700; transition:all 0.2s; white-space:nowrap; }
+    .btn-wallet:hover { background:rgba(245,158,11,0.25); }
     .btn-wallet.connected { border-color:rgba(52,211,153,0.6); background:rgba(52,211,153,0.1); color:#34D399; }
     @media(max-width:900px) { .nav-links { display:none; } }
     @media(max-width:640px) { .nav-logo-text { display:none; } .btn-x { display:none; } }
@@ -127,8 +126,8 @@
     /* Buttons */
     .meme-btn { transition:transform 0.2s, box-shadow 0.2s; }
     .meme-btn:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 8px 30px rgba(255,215,0,0.4); }
-    .btn-buy-ton { background:linear-gradient(90deg,#836EF9,#6d54f0); color:#fff; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
-    .btn-buy-ton:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(131,110,249,0.4); }
+    .btn-buy-usdc { background:linear-gradient(90deg,#2775CA,#1a5fa8); color:#fff; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
+    .btn-buy-usdc:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(39,117,202,0.4); }
     .btn-equip { background:linear-gradient(90deg,#34D399,#22c55e); color:#000; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
     .btn-equip:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(52,211,153,0.4); }
     .btn-equip.active-eq { background:rgba(52,211,153,0.15); border:1px solid #34D399; color:#34D399; }
@@ -140,11 +139,6 @@
     .modal-box { background:#111; border:1px solid rgba(250,204,21,0.3); border-radius:1.5rem; padding:2rem; max-width:460px; width:100%; animation:modal-in 0.25s ease; max-height:90vh; overflow-y:auto; }
     .modal-close { background:none; border:none; color:#9CA3AF; font-size:1.5rem; line-height:1; cursor:pointer; flex-shrink:0; }
     .modal-close:hover { color:#fff; }
-
-    /* Wallet options */
-    .wallet-opt { display:flex; align-items:center; gap:1rem; padding:1rem; background:#1a1a1a; border:1px solid rgba(255,255,255,0.1); border-radius:1rem; cursor:pointer; transition:all 0.2s; margin-bottom:0.75rem; }
-    .wallet-opt:hover { border-color:rgba(0,152,234,0.5); background:rgba(0,152,234,0.1); }
-    .wallet-opt-icon { width:44px; height:44px; border-radius:0.75rem; display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0; }
 
     /* Input */
     input[type=text] { width:100%; padding:0.75rem 1rem; background:rgba(255,255,255,0.07); border:1px solid rgba(255,215,0,0.3); border-radius:0.75rem; color:#fff; font-size:1rem; outline:none; transition:border-color 0.2s; }
@@ -184,7 +178,7 @@
   </div>
   <div class="nav-actions">
     <button class="btn-wallet" id="wallet-btn" onclick="handleWalletBtnClick()">
-      <span>💎</span><span id="wallet-btn-txt">Connect TON</span>
+      <span>🦊</span><span id="wallet-btn-txt">Connect MetaMask</span>
     </button>
     <button class="btn-x" onclick="window.open('https://groypfi.io/','_blank')">𝕏 @planetapesxyz</button>
     <button class="btn-tg" onclick="window.open('https://t.me/planetapesfun','_blank')">📱 TG</button>
@@ -206,20 +200,20 @@
 
     <div style="display:inline-flex;align-items:center;gap:0.75rem;padding:0.5rem 1.5rem;background:#FFD700;color:#000;border-radius:9999px;margin-bottom:1rem">
       <div class="animate-pulse" style="width:0.75rem;height:0.75rem;background:#22c55e;border-radius:50%"></div>
-      <span style="font-weight:900;font-size:0.875rem;letter-spacing:3px">LIVE ON TON</span>
+      <span style="font-weight:900;font-size:0.875rem;letter-spacing:3px">LIVE ON HyperEVM</span>
     </div>
 
     <h1 class="pixel-font" style="font-size:clamp(3rem,10vw,5rem);line-height:1;color:#fff;margin-bottom:0.5rem">PLANET<br>APES</h1>
     <p style="font-size:2rem;font-weight:900;color:#FACC15;letter-spacing:4px;margin-top:-0.25rem;margin-bottom:1.5rem">KING OF THE JUNGLE</p>
 
     <p style="max-width:42rem;margin:0 auto 2rem;font-size:1.2rem;color:#D1D5DB">
-      The most based meme coin on <span style="color:#836EF9;font-weight:700">TON</span>.<br>
+      The most based meme coin on <span style="color:#F5A623;font-weight:700">HyperEVM</span>.<br>
       Take bananas. Rule the jungle. <span style="color:#FACC15">To the moon.</span>
     </p>
 
     <div style="max-width:36rem;margin:0 auto 2rem;display:flex;align-items:center">
-      <div style="flex:1;background:rgba(131,110,249,0.1);border:1px solid rgba(131,110,249,0.4);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">CA: SOON</div>
-      <div style="background:linear-gradient(90deg,#836EF9,#6d54f0);color:#fff;font-weight:900;font-size:0.78rem;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;white-space:nowrap;display:flex;align-items:center">⏳ SOON</div>
+      <div style="flex:1;background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.4);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">CA: SOON</div>
+      <div style="background:linear-gradient(90deg,#F5A623,#d4891a);color:#000;font-weight:900;font-size:0.78rem;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;white-space:nowrap;display:flex;align-items:center">⏳ SOON</div>
     </div>
 
     <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;align-items:center">
@@ -235,14 +229,14 @@
       <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#34D399">✔</span>FAIR LAUNCH</div>
       <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#34D399">✔</span>0 TAX</div>
       <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#34D399">✔</span>LP BURNED</div>
-      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#0098EA">💎</span>TON MAINNET</div>
+      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#F5A623">🦊</span>HyperEVM MAINNET</div>
     </div>
   </div>
 
   <div class="ticker-wrap">
     <div class="ticker-inner">
-      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON TON MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON GROYPFI.IO 🚀</span><span>🦍 KING OF THE JUNGLE ON TON 🦍</span><span>💎 APE SKINS FROM 0.3 TON 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
-      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON TON MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON GROYPFI.IO 🚀</span><span>🦍 KING OF THE JUNGLE ON TON 🦍</span><span>💎 APE SKINS FROM 0.3 TON 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
+      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON HyperEVM MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON GROYPFI.IO 🚀</span><span>🦍 KING OF THE JUNGLE ON HyperEVM 🦍</span><span>💎 APE SKINS FROM 3 USDC 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
+      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON HyperEVM MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON GROYPFI.IO 🚀</span><span>🦍 KING OF THE JUNGLE ON HyperEVM 🦍</span><span>💎 APE SKINS FROM 3 USDC 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
     </div>
   </div>
 </section>
@@ -250,7 +244,7 @@
 <!-- Available on bar -->
 <div onclick="window.open('https://groypfi.io/','_blank')" style="background:#0a0a0a;border-bottom:1px solid rgba(234,179,8,0.2);padding:1.25rem;text-align:center;cursor:pointer;position:relative;z-index:1">
   <div style="color:#FACC15;font-size:0.75rem;letter-spacing:0.2em">AVAILABLE ON</div>
-  <div style="font-size:2.25rem;font-weight:900;color:#836EF9">GROYPFI.IO 🚀</div>
+  <div style="font-size:2.25rem;font-weight:900;color:#F5A623">GROYPFI.IO 🚀</div>
 </div>
 
 <!-- GAME -->
@@ -307,7 +301,7 @@
       <div style="display:flex;justify-content:center;gap:0.75rem;margin-top:1.5rem;flex-wrap:wrap">
         <button onclick="resetGame()" style="padding:0.75rem 1.75rem;border:1px solid rgba(255,255,255,0.3);background:transparent;color:#fff;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">↺ RESET JUNGLE</button>
         <button onclick="openConvertModal()" style="padding:0.75rem 1.75rem;border:1px solid rgba(255,215,0,0.4);background:rgba(255,215,0,0.08);color:#FFD700;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">🍌 Convert to $APES</button>
-        <button onclick="smoothScroll('skins')" style="padding:0.75rem 1.75rem;border:1px solid rgba(131,110,249,0.4);background:rgba(131,110,249,0.08);color:#836EF9;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">💎 Get Skin Boost</button>
+        <button onclick="smoothScroll('skins')" style="padding:0.75rem 1.75rem;border:1px solid rgba(39,117,202,0.4);background:rgba(39,117,202,0.08);color:#2775CA;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">💎 Get Skin Boost</button>
       </div>
       <div style="text-align:center;margin-top:1rem;font-size:0.75rem;color:#6B7280">Every 10,000 bananas × level = level up • Equip a skin for tap boost multipliers!</div>
     </div>
@@ -347,19 +341,19 @@
 <!-- APE SKINS -->
 <section id="skins" style="max-width:64rem;margin:0 auto;padding:5rem 1.5rem;background:#0a0a0a;position:relative;z-index:1">
   <div style="text-align:center;margin-bottom:3rem">
-    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(131,110,249,0.2);color:#836EF9;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">💎 BUY WITH TON — FROM 0.3 TON</div>
+    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(39,117,202,0.2);color:#2775CA;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">💎 BUY WITH USDC — FROM 3 USDC</div>
     <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem">APE SKINS</h2>
-    <p style="color:#9CA3AF;font-size:1.05rem;margin-top:0.5rem">Buy with TON Mainnet. Each skin gives you a <strong style="color:#34D399">tap boost multiplier</strong> that applies instantly when equipped in-game!</p>
+    <p style="color:#9CA3AF;font-size:1.05rem;margin-top:0.5rem">Buy with USDC on HyperEVM. Each skin gives you a <strong style="color:#34D399">tap boost multiplier</strong> that applies instantly when equipped in-game!</p>
     <div style="display:flex;justify-content:center;gap:1rem;margin-top:1rem;flex-wrap:wrap">
       <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#34D399">⚡ Equipped skin multiplies every tap</div>
-      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(0,152,234,0.1);border:1px solid rgba(0,152,234,0.3);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#0098EA">💎 TON Mainnet payments</div>
+      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(39,117,202,0.1);border:1px solid rgba(39,117,202,0.3);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#2775CA">💎 HyperEVM USDC payments</div>
     </div>
   </div>
   <div id="skins-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.75rem"></div>
   <div style="text-align:center;margin-top:2.5rem">
     <div style="display:inline-flex;align-items:center;gap:0.5rem;background:#111;border:1px solid rgba(250,204,21,0.3);border-radius:9999px;padding:0.5rem 1.25rem">
       <span style="color:#FACC15">🦍</span>
-      <span style="font-size:0.875rem;color:#9CA3AF">Connect TON wallet to purchase • Skins are saved permanently</span>
+      <span style="font-size:0.875rem;color:#9CA3AF">Connect MetaMask to purchase • Skins are saved permanently</span>
     </div>
   </div>
 </section>
@@ -379,8 +373,8 @@
       <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">OWNER</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#F59E0B">Renounced</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">No control, true community coin</div></div>
     </div>
     <div style="margin-bottom:2rem;display:flex;align-items:center;max-width:640px;margin-left:auto;margin-right:auto">
-      <div style="flex:1;background:rgba(131,110,249,0.1);border:1px solid rgba(131,110,249,0.4);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">CA: SOON</div>
-      <div style="background:linear-gradient(90deg,#836EF9,#6d54f0);color:#fff;font-weight:900;font-size:0.78rem;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;white-space:nowrap;display:flex;align-items:center">⏳ SOON</div>
+      <div style="flex:1;background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.4);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">CA: SOON</div>
+      <div style="background:linear-gradient(90deg,#F5A623,#d4891a);color:#000;font-weight:900;font-size:0.78rem;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;white-space:nowrap;display:flex;align-items:center">⏳ SOON</div>
     </div>
   </div>
 </section>
@@ -392,10 +386,10 @@
     <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff">HOW TO BUY $APES</h2>
   </div>
   <div style="display:flex;flex-direction:column;gap:1rem">
-    <div class="step"><div class="step-num">1</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Get a TON-Compatible Wallet</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Download Tonkeeper, MyTonWallet, or TonHub. Click <strong style="color:#0098EA">Connect TON</strong> in the navbar to link your wallet — works on mobile and desktop browser!</div></div></div>
-    <div class="step"><div class="step-num">2</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Fund with TON</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Load your TON wallet with at least <strong style="color:#FFD700">0.3 TON</strong> to buy the starter Jungle Chad skin, plus a tiny amount for gas. Skins give tap boost multipliers in the game!</div></div></div>
-    <div class="step"><div class="step-num">3</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy Skins &amp; Play</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Head to the <strong style="color:#C084FC">APE SKINS</strong> section, choose your skin, and buy with TON. Equip it in-game for an instant tap boost. Stack banana scores and convert them to $APES!</div></div></div>
-    <div class="step"><div class="step-num">4</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy $APES on groypfi.io</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Visit <strong style="color:#836EF9">groypfi.io</strong> — the premier platform to buy $APES. Connect your wallet and swap instantly.<br><span style="color:#FACC15;font-size:0.8rem">CA: SOON</span></div></div></div>
+    <div class="step"><div class="step-num">1</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Install MetaMask &amp; Add HyperEVM</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Install MetaMask and add the HyperEVM network (Chain ID: 999). Click <strong style="color:#F5A623">Connect MetaMask</strong> in the navbar to link your wallet instantly!</div></div></div>
+    <div class="step"><div class="step-num">2</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Get USDC on HyperEVM</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Bridge or obtain USDC on HyperEVM. You need at least <strong style="color:#FFD700">3 USDC</strong> to buy the starter Jungle Chad skin. Skins give tap boost multipliers in the game!</div></div></div>
+    <div class="step"><div class="step-num">3</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy Skins &amp; Play</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Head to the <strong style="color:#C084FC">APE SKINS</strong> section, choose your skin, and buy with USDC via MetaMask. Equip it in-game for an instant tap boost. Stack banana scores and convert them to $APES!</div></div></div>
+    <div class="step"><div class="step-num">4</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy $APES on groypfi.io</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Visit <strong style="color:#F5A623">groypfi.io</strong> — the premier platform to buy $APES. Connect MetaMask and swap instantly.<br><span style="color:#FACC15;font-size:0.8rem">CA: SOON</span></div></div></div>
   </div>
   <div style="margin-top:2rem;text-align:center">
     <button class="meme-btn" onclick="window.open('https://groypfi.io/','_blank')" style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;box-shadow:0 10px 40px rgba(255,215,0,0.4)">🚀 BUY $APES ON GROYPFI.IO</button>
@@ -417,24 +411,24 @@
         <div class="pixel-font" style="font-size:0.7rem;color:#FFD700;margin-bottom:0.5rem">PHASE 1</div>
         <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🚀 LAUNCH</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Token launch on TON</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Token launch on HyperEVM</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Website &amp; Take Banana game live</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Persistent leaderboard</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Skin shop with TON payments</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Skin shop with USDC payments</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Community Twitter launch</li>
         </ul>
       </div>
-      <div style="background:#111;border:1px solid rgba(131,110,249,0.4);border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#836EF9,#6d54f0cc)"></div>
-        <div style="display:inline-block;padding:0.25rem 0.875rem;background:rgba(131,110,249,0.2);color:#836EF9;border-radius:9999px;font-size:0.7rem;font-weight:900;letter-spacing:1px;margin-bottom:1rem">⏳ COMING SOON</div>
-        <div class="pixel-font" style="font-size:0.7rem;color:#836EF9;margin-bottom:0.5rem">PHASE 2</div>
+      <div style="background:#111;border:1px solid rgba(245,166,35,0.4);border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#F5A623,#d4891acc)"></div>
+        <div style="display:inline-block;padding:0.25rem 0.875rem;background:rgba(245,166,35,0.2);color:#F5A623;border-radius:9999px;font-size:0.7rem;font-weight:900;letter-spacing:1px;margin-bottom:1rem">⏳ COMING SOON</div>
+        <div class="pixel-font" style="font-size:0.7rem;color:#F5A623;margin-bottom:0.5rem">PHASE 2</div>
         <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🌿 GROWTH</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>CoinGecko &amp; CMC listing</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>Convert bananas to $APES live</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>Major influencer partnerships</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>Telegram community 5,000+</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#836EF9">◆</span>Cross-platform marketing blitz</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#F5A623">◆</span>CoinGecko &amp; CMC listing</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#F5A623">◆</span>Convert bananas to $APES live</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#F5A623">◆</span>Major influencer partnerships</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#F5A623">◆</span>Telegram community 5,000+</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#F5A623">◆</span>Cross-platform marketing blitz</li>
         </ul>
       </div>
       <div style="background:#111;border:1px solid rgba(192,132,252,0.4);border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
@@ -443,7 +437,7 @@
         <div class="pixel-font" style="font-size:0.7rem;color:#C084FC;margin-bottom:0.5rem">PHASE 3</div>
         <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🦍 NFT DROP</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>NFT Ape Skin collection (TON)</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>NFT Ape Skin collection (HyperEVM)</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>1,000 NFT holder milestone</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>Holder-only events &amp; giveaways</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>$APES weekly prize pool</li>
@@ -497,35 +491,35 @@
     <img src="https://i.imgur.com/KlM5HWE.jpg" alt="APES" style="width:56px;height:56px;border-radius:50%;border:2px solid #FFD700;object-fit:cover" />
   </div>
   <div class="pixel-font" style="font-size:1rem;color:#FFD700;margin-bottom:0.5rem">PLANET APES</div>
-  <div style="color:#6B7280;font-size:0.875rem;margin-bottom:1.5rem">The most based meme coin on TON.</div>
+  <div style="color:#6B7280;font-size:0.875rem;margin-bottom:1.5rem">The most based meme coin on HyperEVM.</div>
   <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap">
     <a href="https://groypfi.io/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#FFD700'" onmouseout="this.style.color='#9CA3AF'">Twitter</a>
     <a href="https://t.me/planetapesfun" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#229ED9'" onmouseout="this.style.color='#9CA3AF'">Telegram</a>
-    <a href="https://groypfi.io/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#836EF9'" onmouseout="this.style.color='#9CA3AF'">Buy $APES</a>
+    <a href="https://groypfi.io/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#F5A623'" onmouseout="this.style.color='#9CA3AF'">Buy $APES</a>
   </div>
   <div style="color:#4B5563;font-size:0.75rem">$APES is a meme coin with no intrinsic value. Always do your own research. Not financial advice.</div>
-  <div style="color:#374151;font-size:0.65rem;margin-top:0.5rem">TON Network | High-Performance Blockchain</div>
+  <div style="color:#374151;font-size:0.65rem;margin-top:0.5rem">HyperEVM Network | High-Performance EVM Blockchain</div>
 </footer>
 
 <!-- ═══════════ MODALS ═══════════ -->
 
-<!-- WALLET INFO MODAL (shown when wallet is already connected) -->
+<!-- WALLET INFO MODAL -->
 <div id="wallet-info-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeWalletInfoModal()">
   <div class="modal-box" style="max-width:420px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
       <div>
-        <div style="font-weight:900;font-size:1.4rem">💎 TON Wallet</div>
-        <div style="font-size:0.75rem;color:#34D399;margin-top:0.2rem">Connected to TON Mainnet</div>
+        <div style="font-weight:900;font-size:1.4rem">🦊 MetaMask Wallet</div>
+        <div style="font-size:0.75rem;color:#34D399;margin-top:0.2rem">Connected to HyperEVM</div>
       </div>
       <button class="modal-close" onclick="closeWalletInfoModal()">✕</button>
     </div>
     <div style="text-align:center;padding:0.5rem 0 1.5rem">
       <div style="font-size:3rem;margin-bottom:0.75rem">✅</div>
       <div style="font-weight:900;font-size:1.1rem;color:#34D399;margin-bottom:0.35rem">Wallet Connected</div>
-      <div id="wallet-info-short" style="font-size:1rem;font-weight:700;color:#0098EA;margin-bottom:0.6rem;font-family:monospace"></div>
+      <div id="wallet-info-short" style="font-size:1rem;font-weight:700;color:#F5A623;margin-bottom:0.6rem;font-family:monospace"></div>
       <div id="wallet-info-addr" style="font-family:monospace;font-size:0.62rem;color:#9CA3AF;background:#1a1a1a;padding:0.6rem 0.75rem;border-radius:0.75rem;word-break:break-all;margin-bottom:1.25rem;text-align:left"></div>
       <div style="background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.2);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;text-align:left;line-height:1.6">
-        ✅ You can submit scores to the leaderboard<br>✅ Buy skins with TON payments<br>✅ Convert bananas to $APES at launch
+        ✅ You can submit scores to the leaderboard<br>✅ Buy skins with USDC on HyperEVM<br>✅ Convert bananas to $APES at launch
       </div>
       <button onclick="disconnectWallet()" style="padding:0.75rem 2rem;border:1px solid rgba(239,68,68,0.4);background:rgba(239,68,68,0.1);color:#ef4444;font-weight:700;border-radius:0.75rem;width:100%;cursor:pointer;font-size:0.9rem">🔌 Disconnect Wallet</button>
     </div>
@@ -543,9 +537,9 @@
       <div style="font-size:0.75rem;color:#9CA3AF;margin-bottom:0.25rem">YOUR SCORE</div>
       <div id="submit-score-display" style="font-family:monospace;font-weight:900;font-size:3rem;color:#FACC15">0</div>
     </div>
-    <div style="background:rgba(0,152,234,0.1);border:1px solid rgba(0,152,234,0.3);border-radius:0.75rem;padding:0.6rem 0.9rem;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem">
-      <span style="font-size:0.8rem">💎</span>
-      <span id="submit-wallet-display" style="font-family:monospace;font-size:0.72rem;color:#0098EA;font-weight:700"></span>
+    <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.3);border-radius:0.75rem;padding:0.6rem 0.9rem;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem">
+      <span style="font-size:0.8rem">🦊</span>
+      <span id="submit-wallet-display" style="font-family:monospace;font-size:0.72rem;color:#F5A623;font-weight:700"></span>
     </div>
     <input type="text" id="submit-name-input" placeholder="Enter your ape name..." maxlength="20" onkeydown="if(event.key==='Enter')submitScore();if(event.key==='Escape')closeSubmitModal()" style="margin-bottom:0.5rem" />
     <p style="font-size:0.7rem;color:#6B7280;text-align:center;margin-bottom:1rem">Score saved permanently to leaderboard — linked to your wallet!</p>
@@ -573,14 +567,14 @@
     <div id="skin-modal-desc" style="color:#9CA3AF;font-size:0.9rem;line-height:1.6;text-align:center;margin-bottom:1rem"></div>
     <div style="background:#1a1a1a;border:1px solid rgba(250,204,21,0.2);border-radius:1rem;padding:1rem;margin-bottom:1.25rem">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
-        <div style="font-size:0.75rem;color:#9CA3AF">PRICE (TON MAINNET)</div>
-        <div id="skin-modal-price" style="font-weight:900;color:#836EF9;font-size:1.1rem"></div>
+        <div style="font-size:0.75rem;color:#9CA3AF">PRICE (USDC — HyperEVM)</div>
+        <div id="skin-modal-price" style="font-weight:900;color:#2775CA;font-size:1.1rem"></div>
       </div>
       <div style="font-size:0.7rem;color:#FACC15;margin-bottom:0.25rem">BOOST UTILITY</div>
       <div id="skin-modal-unlock" style="font-weight:700;color:#fff;font-size:0.85rem"></div>
     </div>
     <div id="skin-modal-actions" style="display:flex;gap:0.75rem;flex-wrap:wrap"></div>
-    <div style="text-align:center;margin-top:0.75rem;font-size:0.65rem;color:#6B7280">TON Mainnet • Permanent Ownership • Equip in Game</div>
+    <div style="text-align:center;margin-top:0.75rem;font-size:0.65rem;color:#6B7280">HyperEVM • USDC Payment • Permanent Ownership • Equip in Game</div>
   </div>
 </div>
 
@@ -589,58 +583,48 @@
   <div class="modal-box" style="max-width:460px">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem">
       <div>
-        <div style="font-weight:900;font-size:1.4rem">💎 Pay with TON</div>
-        <div id="pay-skin-name" style="font-size:0.8rem;color:#836EF9;font-weight:700;margin-top:0.15rem"></div>
+        <div style="font-weight:900;font-size:1.4rem">💎 Pay with USDC</div>
+        <div id="pay-skin-name" style="font-size:0.8rem;color:#2775CA;font-weight:700;margin-top:0.15rem"></div>
       </div>
       <button class="modal-close" onclick="closePaymentModal()">✕</button>
     </div>
 
     <!-- Amount box -->
-    <div style="background:linear-gradient(135deg,rgba(0,152,234,0.15),rgba(0,152,234,0.05));border:2px solid rgba(0,152,234,0.5);border-radius:1rem;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between">
+    <div style="background:linear-gradient(135deg,rgba(39,117,202,0.15),rgba(39,117,202,0.05));border:2px solid rgba(39,117,202,0.5);border-radius:1rem;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:0.65rem;color:#9CA3AF;letter-spacing:0.1em">SEND EXACTLY</div>
-        <div id="pay-amount-display" style="font-size:2rem;font-weight:900;color:#0098EA;font-family:monospace"></div>
-        <div style="font-size:0.65rem;color:#6B7280;margin-top:0.1rem">to Planet Apes wallet</div>
+        <div id="pay-amount-display" style="font-size:2rem;font-weight:900;color:#2775CA;font-family:monospace"></div>
+        <div style="font-size:0.65rem;color:#6B7280;margin-top:0.1rem">via MetaMask on HyperEVM</div>
       </div>
       <div style="font-size:3rem">💎</div>
     </div>
 
     <!-- Destination address -->
     <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:0.75rem;padding:0.75rem 1rem;margin-bottom:1rem">
-      <div style="font-size:0.65rem;color:#9CA3AF;margin-bottom:0.3rem;letter-spacing:0.1em">DESTINATION ADDRESS (TON MAINNET)</div>
-      <div style="font-family:monospace;font-size:0.72rem;color:#FFD700;word-break:break-all;line-height:1.5">UQB0V-E4hIglz-OylGnNTmvec-U4blugU7yZMeT1siTaU3Xv</div>
+      <div style="font-size:0.65rem;color:#9CA3AF;margin-bottom:0.3rem;letter-spacing:0.1em">DESTINATION ADDRESS (HyperEVM)</div>
+      <div style="font-family:monospace;font-size:0.72rem;color:#FFD700;word-break:break-all;line-height:1.5">0x48B4d44319DA6c95fC20c516Cc90FEF33DbaCfAa</div>
     </div>
 
-    <!-- QR code -->
-    <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:1rem">
-      <div style="font-size:0.7rem;color:#9CA3AF;margin-bottom:0.5rem">SCAN WITH YOUR TON WALLET</div>
-      <div id="pay-qr-box" style="background:#fff;padding:10px;border-radius:0.75rem;width:fit-content"></div>
+    <!-- MetaMask pay button -->
+    <div style="margin-bottom:1rem">
+      <button id="metamask-pay-btn" onclick="payWithMetaMask()" style="width:100%;padding:1rem;background:linear-gradient(90deg,#F5A623,#d4891a);color:#000;font-weight:900;font-size:1rem;border:none;border-radius:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.75rem;transition:all 0.2s">
+        <span style="font-size:1.25rem">🦊</span> Pay with MetaMask
+      </button>
     </div>
 
-    <!-- Wallet buttons -->
-    <div style="font-size:0.7rem;color:#9CA3AF;text-align:center;margin-bottom:0.6rem">OR OPEN DIRECTLY IN YOUR WALLET</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;margin-bottom:1rem">
-      <button onclick="openTonPayment('tonkeeper')" style="padding:0.6rem 0.25rem;background:rgba(0,152,234,0.15);border:1px solid rgba(0,152,234,0.4);border-radius:0.75rem;color:#0098EA;font-size:0.65rem;font-weight:900;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.25rem;transition:all 0.2s">
-        <span style="font-size:1.25rem">💎</span><span>Tonkeeper</span>
-      </button>
-      <button onclick="openTonPayment('tonhub')" style="padding:0.6rem 0.25rem;background:rgba(75,107,245,0.15);border:1px solid rgba(75,107,245,0.4);border-radius:0.75rem;color:#4B6BF5;font-size:0.65rem;font-weight:900;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.25rem;transition:all 0.2s">
-        <span style="font-size:1.25rem">🔷</span><span>TonHub</span>
-      </button>
-      <button onclick="openTonPayment('mytonwallet')" style="padding:0.6rem 0.25rem;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.4);border-radius:0.75rem;color:#FFD700;font-size:0.65rem;font-weight:900;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.25rem;transition:all 0.2s">
-        <span style="font-size:1.25rem">🔑</span><span>MyTonWallet</span>
-      </button>
-    </div>
+    <!-- Status -->
+    <div id="pay-status" style="display:none;background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.3);border-radius:0.75rem;padding:0.75rem;margin-bottom:1rem;font-size:0.8rem;color:#34D399;text-align:center;line-height:1.5"></div>
 
     <!-- Countdown + Confirm -->
     <div style="background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.3);border-radius:0.75rem;padding:0.75rem;margin-bottom:1rem;font-size:0.75rem;color:#34D399;text-align:center;line-height:1.5">
-      After sending, click <strong>✅ I've Paid</strong> below to unlock your skin instantly.<br>
-      <span style="color:#6B7280;font-size:0.65rem">Your purchase is stored permanently in this browser.</span>
+      Click <strong>Pay with MetaMask</strong> above — MetaMask will open and send USDC automatically.<br>
+      <span style="color:#6B7280;font-size:0.65rem">Your purchase is stored permanently in this browser after payment confirms.</span>
     </div>
     <div style="display:flex;gap:0.75rem">
       <button onclick="closePaymentModal()" style="flex:1;padding:0.85rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CANCEL</button>
-      <button id="pay-confirm-btn" onclick="confirmPayment()" style="flex:2;padding:0.85rem;background:linear-gradient(90deg,#34D399,#22c55e);color:#000;font-weight:900;border-radius:0.75rem;border:none;cursor:pointer;font-size:0.95rem">✅ I've Paid — Unlock Skin</button>
+      <button id="pay-confirm-btn" onclick="confirmPayment()" style="flex:2;padding:0.85rem;background:rgba(52,211,153,0.15);border:1px solid #34D399;color:#34D399;font-weight:900;border-radius:0.75rem;cursor:pointer;font-size:0.95rem">✅ I've Paid — Unlock Skin</button>
     </div>
-    <div style="text-align:center;margin-top:0.75rem;font-size:0.6rem;color:#6B7280">TON Mainnet only • Send from any TON-compatible wallet • 1 TON ≈ gas included</div>
+    <div style="text-align:center;margin-top:0.75rem;font-size:0.6rem;color:#6B7280">HyperEVM • USDC ERC-20 Transfer • Sent to Planet Apes treasury</div>
   </div>
 </div>
 
@@ -660,7 +644,7 @@
     </div>
     <div id="convert-boost-note" style="display:none;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#34D399;text-align:center"></div>
     <div style="background:#1a1a1a;border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;line-height:1.6">
-      <strong style="color:#fff">How it works:</strong> Submit your score above, then connect your TON wallet. When $APES token launches, your banana score converts to real $APES tokens — the more bananas (boosted by skins!), the more $APES you earn.
+      <strong style="color:#fff">How it works:</strong> Submit your score above, then connect MetaMask. When $APES token launches on HyperEVM, your banana score converts to real $APES tokens — the more bananas (boosted by skins!), the more $APES you earn.
     </div>
     <div style="display:flex;gap:0.75rem">
       <button onclick="closeConvertModal()" style="flex:1;padding:0.75rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CLOSE</button>
@@ -672,6 +656,28 @@
 <!-- ═══════════ SCRIPTS ═══════════ -->
 <script>
 'use strict';
+
+// ══════════════════════════════════════════
+// ── CONFIG ──
+// ══════════════════════════════════════════
+// HyperEVM chain ID (mainnet: 999)
+var HYPEREVM_CHAIN_ID = '0x3E7'; // 999 in hex
+var HYPEREVM_CHAIN_ID_DEC = 999;
+
+// USDC contract address on HyperEVM
+// NOTE: Update this to the correct USDC contract address on HyperEVM mainnet
+var USDC_CONTRACT = '0x09Bc4E0D864854c6aFB6eB9A9cdF58aC190D0dF9';
+
+// Planet Apes treasury — receives all skin purchases
+var PLANET_APES_WALLET = '0x48B4d44319DA6c95fC20c516Cc90FEF33DbaCfAa';
+
+// ERC-20 USDC transfer ABI (minimal)
+var ERC20_ABI = [
+  'function transfer(address to, uint256 amount) returns (bool)',
+  'function decimals() view returns (uint8)',
+  'function balanceOf(address owner) view returns (uint256)',
+  'function symbol() view returns (string)'
+];
 
 // ── PARTICLES ──
 (function() {
@@ -710,13 +716,14 @@ function smoothScroll(id) { var el=document.getElementById(id); if(el) el.scroll
 
 // ── FAQ ──
 var FAQS = [
-  { q:'🍌 What is Planet Apes?', a:'Planet Apes ($APES) is the most based meme coin on TON. Take bananas, climb the leaderboard, convert your bananas to $APES, and rule the jungle with your fellow apes.' },
+  { q:'🍌 What is Planet Apes?', a:'Planet Apes ($APES) is the most based meme coin on HyperEVM. Take bananas, climb the leaderboard, convert your bananas to $APES, and rule the jungle with your fellow apes.' },
   { q:'🎮 How do I play Take Banana?', a:'Click anywhere in the game area to collect bananas. The more you click, the higher your score. Equip a skin to activate a tap boost multiplier for faster banana collection!' },
-  { q:'💎 How do skins work?', a:'Each Ape Skin costs TON (starting at 0.3 TON). Once purchased, you can equip the skin and it applies a boost multiplier to every tap — from +0.5× all the way up to +2× for the King Ape skin.' },
-  { q:'🍌 How do I convert bananas to $APES?', a:'Play the game to collect bananas, then click "Convert to $APES". When $APES token launches on TON, your banana score converts to real $APES tokens at 1,000 bananas = 1 $APES.' },
+  { q:'💎 How do skins work?', a:'Each Ape Skin costs USDC on HyperEVM (starting at 3 USDC). Once purchased, you can equip the skin and it applies a boost multiplier to every tap — from +0.5× all the way up to +2× for the King Ape skin.' },
+  { q:'🍌 How do I convert bananas to $APES?', a:'Play the game to collect bananas, then click "Convert to $APES". When $APES token launches on HyperEVM, your banana score converts to real $APES tokens at 1,000 bananas = 1 $APES.' },
   { q:'🏆 Why does my leaderboard NOT reset when I switch pages?', a:'Your leaderboard is saved permanently in your browser using localStorage. It will persist as long as you use the same browser. The weekly reset only happens every Sunday at 00:00 UTC for the prize cycle.' },
-  { q:'🚀 Where can I buy $APES?', a:'$APES is available on groypfi.io — the premier platform on TON. Follow us on Twitter for the exact launch time and contract address.' },
-  { q:'🔗 What blockchain is $APES on?', a:'Planet Apes ($APES) is on TON — a high-performance blockchain with near-instant transactions and extremely low fees. All skin purchases use TON Mainnet.' },
+  { q:'🚀 Where can I buy $APES?', a:'$APES is available on groypfi.io — the premier platform on HyperEVM. Follow us on Twitter for the exact launch time and contract address.' },
+  { q:'🔗 What blockchain is $APES on?', a:'Planet Apes ($APES) is on HyperEVM — a high-performance EVM-compatible blockchain. All skin purchases use USDC on HyperEVM via MetaMask.' },
+  { q:'🦊 How do I connect MetaMask?', a:'Install MetaMask, then click "Connect MetaMask" in the navbar. Make sure you are on the HyperEVM network (Chain ID: 999). MetaMask will prompt you to switch networks automatically.' },
 ];
 (function() {
   var list = document.getElementById('faq-list');
@@ -737,90 +744,108 @@ function toggleFaq(qEl) {
 }
 
 // ══════════════════════════════════════════
-// ── TON WALLET — TonConnect UI v2 (CDN)
-// Supports Tonkeeper, MyTonWallet, TonHub
-// Works on web browser AND mobile (deep link / QR)
+// ── METAMASK WALLET CONNECTION ──
 // ══════════════════════════════════════════
 var walletAddress = null;
 var walletRawAddress = null;
-var tonConnectUI = null;
 
-function initTonConnect() {
+function initMetaMask() {
+  if (!window.ethereum) return;
+  window.ethereum.on('accountsChanged', function(accounts) {
+    if (accounts.length === 0) {
+      walletAddress = null;
+      walletRawAddress = null;
+      refreshWalletUI(false);
+      renderSkinsGrid();
+    } else {
+      walletRawAddress = accounts[0];
+      walletAddress = formatAddress(accounts[0]);
+      refreshWalletUI(true);
+      renderSkinsGrid();
+    }
+  });
+  window.ethereum.on('chainChanged', function() {
+    window.location.reload();
+  });
+  // Auto-restore session if previously connected
+  window.ethereum.request({ method: 'eth_accounts' }).then(function(accounts) {
+    if (accounts && accounts.length > 0) {
+      walletRawAddress = accounts[0];
+      walletAddress = formatAddress(accounts[0]);
+      refreshWalletUI(true);
+      renderSkinsGrid();
+    }
+  }).catch(function(){});
+}
+
+function formatAddress(addr) {
+  return addr.length > 12 ? addr.slice(0,6) + '…' + addr.slice(-4) : addr;
+}
+
+async function connectMetaMask() {
+  if (!window.ethereum) {
+    showToast('🦊 MetaMask not detected! Please install MetaMask first.', 'error');
+    window.open('https://metamask.io/download/', '_blank');
+    return;
+  }
   try {
-    // TonConnect UI v2 loaded via CDN — exposes TON_CONNECT_UI global
-    var UIClass = (window.TON_CONNECT_UI && window.TON_CONNECT_UI.TonConnectUI)
-      ? window.TON_CONNECT_UI.TonConnectUI
-      : (window.TonConnectUI || null);
-
-    if (!UIClass) {
-      console.warn('[APES] TonConnectUI not found. CDN may still be loading.');
-      // Retry in 500ms if CDN is slow
-      setTimeout(initTonConnect, 500);
+    var accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    if (!accounts || accounts.length === 0) {
+      showToast('⚠️ No accounts found. Please unlock MetaMask.', 'error');
       return;
     }
+    walletRawAddress = accounts[0];
+    walletAddress = formatAddress(accounts[0]);
 
-    // Manifest must be a publicly accessible URL (wallets fetch it over HTTP)
-    // Place tonconnect-manifest.json in the same folder as index.html
-    var origin = window.location.origin;
-    var basePath = window.location.pathname.replace(/\/[^/]*$/, '') || '';
-    var manifestUrl = origin + basePath + '/tonconnect-manifest.json';
+    // Switch to HyperEVM if not already on it
+    await switchToHyperEVM();
 
-    tonConnectUI = new UIClass({ manifestUrl: manifestUrl });
-    tonConnectUI.onStatusChange(handleWalletChange);
-
-    // Restore session if wallet was previously connected
-    if (tonConnectUI.wallet) {
-      handleWalletChange(tonConnectUI.wallet);
+    refreshWalletUI(true);
+    renderSkinsGrid();
+    showToast('🦊 MetaMask connected! You can now submit scores & buy skins.', 'success');
+  } catch (err) {
+    if (err.code === 4001) {
+      showToast('⚠️ Connection cancelled.', 'error');
+    } else {
+      showToast('⚠️ Could not connect MetaMask: ' + (err.message || err), 'error');
     }
-    console.log('[APES] TonConnect UI v2 initialized ✅');
-  } catch (e) {
-    console.warn('[APES] TonConnect init error:', e);
-    tonConnectUI = null;
   }
 }
 
-function handleWalletChange(wallet) {
-  if (wallet && wallet.account) {
-    walletRawAddress = wallet.account.address;
-    var addr = walletRawAddress || '';
-    walletAddress = addr.length > 12 ? addr.slice(0,8) + '…' + addr.slice(-6) : addr;
-    refreshWalletUI(true);
-    renderSkinsGrid();
-    showToast('💎 Wallet connected! You can now submit scores.', 'success');
-  } else {
-    walletAddress = null;
-    walletRawAddress = null;
-    refreshWalletUI(false);
-    renderSkinsGrid();
+async function switchToHyperEVM() {
+  try {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: HYPEREVM_CHAIN_ID }]
+    });
+  } catch (switchErr) {
+    if (switchErr.code === 4902) {
+      try {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId: HYPEREVM_CHAIN_ID,
+            chainName: 'HyperEVM',
+            nativeCurrency: { name: 'HYPE', symbol: 'HYPE', decimals: 18 },
+            rpcUrls: ['https://rpc.hyperliquid.xyz/evm'],
+            blockExplorerUrls: ['https://explorer.hyperliquid.xyz']
+          }]
+        });
+      } catch (addErr) {
+        showToast('⚠️ Could not add HyperEVM network: ' + (addErr.message || addErr), 'error');
+      }
+    }
   }
 }
 
 function handleWalletBtnClick() {
-  // If connected — show info modal
   if (walletAddress && walletRawAddress) {
     document.getElementById('wallet-info-short').textContent = walletAddress;
     document.getElementById('wallet-info-addr').textContent = walletRawAddress;
     document.getElementById('wallet-info-modal').style.display = 'flex';
     return;
   }
-  // Not connected — open TonConnect modal (shows QR + wallet list)
-  if (tonConnectUI) {
-    tonConnectUI.openModal();
-    return;
-  }
-  // Still loading — wait and retry
-  showToast('⏳ Loading wallet connection…', 'info');
-  var waited = 0;
-  var waiter = setInterval(function() {
-    waited += 300;
-    if (tonConnectUI) {
-      clearInterval(waiter);
-      tonConnectUI.openModal();
-    } else if (waited >= 6000) {
-      clearInterval(waiter);
-      showToast('⚠️ Could not load wallet. Try refreshing the page.', 'error');
-    }
-  }, 300);
+  connectMetaMask();
 }
 
 function closeWalletInfoModal() {
@@ -828,7 +853,10 @@ function closeWalletInfoModal() {
 }
 
 function disconnectWallet() {
-  if (tonConnectUI) { tonConnectUI.disconnect(); }
+  walletAddress = null;
+  walletRawAddress = null;
+  refreshWalletUI(false);
+  renderSkinsGrid();
   closeWalletInfoModal();
   showToast('Wallet disconnected.', 'info');
 }
@@ -841,18 +869,145 @@ function refreshWalletUI(connected) {
     txt.textContent = walletAddress;
   } else {
     btn.classList.remove('connected');
-    txt.textContent = 'Connect TON';
+    txt.textContent = 'Connect MetaMask';
   }
+}
+
+// ══════════════════════════════════════════
+// ── USDC PAYMENT via MetaMask ──
+// ══════════════════════════════════════════
+var pendingBuySkinId = -1;
+
+function buySkin(id) {
+  closeSkinModal();
+  openPaymentModal(id);
+}
+
+function openPaymentModal(id) {
+  var s = SKINS[id]; if (!s) return;
+  pendingBuySkinId = id;
+
+  document.getElementById('pay-skin-name').textContent = s.rarity + ' ' + s.name;
+  document.getElementById('pay-amount-display').textContent = s.price + ' USDC';
+  document.getElementById('pay-status').style.display = 'none';
+  document.getElementById('pay-status').textContent = '';
+
+  var btn = document.getElementById('metamask-pay-btn');
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  btn.innerHTML = '<span style="font-size:1.25rem">🦊</span> Pay with MetaMask';
+
+  var confirmBtn = document.getElementById('pay-confirm-btn');
+  confirmBtn.style.background = 'rgba(52,211,153,0.15)';
+  confirmBtn.style.border = '1px solid #34D399';
+  confirmBtn.style.color = '#34D399';
+  confirmBtn.textContent = '✅ I\'ve Paid — Unlock Skin';
+
+  document.getElementById('payment-modal').dataset.price = s.price;
+  document.getElementById('payment-modal').style.display = 'flex';
+}
+
+async function payWithMetaMask() {
+  var modal = document.getElementById('payment-modal');
+  var price = parseFloat(modal.dataset.price);
+  var s = SKINS[pendingBuySkinId];
+  if (!s) return;
+
+  if (!walletAddress || !walletRawAddress) {
+    showToast('🦊 Connect MetaMask first!', 'error');
+    closePaymentModal();
+    setTimeout(function(){ connectMetaMask(); }, 300);
+    return;
+  }
+
+  if (!window.ethereum) {
+    showToast('🦊 MetaMask not detected!', 'error');
+    return;
+  }
+
+  var payBtn = document.getElementById('metamask-pay-btn');
+  var statusEl = document.getElementById('pay-status');
+  payBtn.disabled = true;
+  payBtn.style.opacity = '0.7';
+  payBtn.innerHTML = '<span style="font-size:1.25rem">⏳</span> Waiting for MetaMask…';
+  statusEl.style.display = 'block';
+  statusEl.style.color = '#93c5fd';
+  statusEl.textContent = '⏳ Opening MetaMask…';
+
+  try {
+    // Switch to HyperEVM first
+    await switchToHyperEVM();
+
+    var provider = new ethers.BrowserProvider(window.ethereum);
+    var signer = await provider.getSigner();
+    var usdc = new ethers.Contract(USDC_CONTRACT, ERC20_ABI, signer);
+
+    // USDC has 6 decimals
+    var decimals = 6;
+    var amount = ethers.parseUnits(String(price), decimals);
+
+    statusEl.textContent = '⏳ Sending ' + price + ' USDC — approve in MetaMask…';
+
+    var tx = await usdc.transfer(PLANET_APES_WALLET, amount);
+
+    statusEl.textContent = '⏳ Transaction sent! Waiting for confirmation…';
+    payBtn.innerHTML = '<span style="font-size:1.25rem">⏳</span> Confirming…';
+
+    var receipt = await tx.wait(1);
+
+    statusEl.style.color = '#34D399';
+    statusEl.textContent = '✅ Payment confirmed on HyperEVM! Tx: ' + receipt.hash.slice(0,10) + '…';
+    payBtn.innerHTML = '<span style="font-size:1.25rem">✅</span> Payment Successful!';
+    payBtn.style.background = 'linear-gradient(90deg,#34D399,#22c55e)';
+    payBtn.disabled = false;
+    payBtn.style.opacity = '1';
+
+    var confirmBtn = document.getElementById('pay-confirm-btn');
+    confirmBtn.style.background = 'linear-gradient(90deg,#34D399,#22c55e)';
+    confirmBtn.style.color = '#000';
+    confirmBtn.textContent = '✅ Payment Done — Unlock Skin!';
+
+    showToast('✅ USDC sent! Click "Unlock Skin" to equip.', 'success');
+  } catch (err) {
+    payBtn.disabled = false;
+    payBtn.style.opacity = '1';
+    payBtn.innerHTML = '<span style="font-size:1.25rem">🦊</span> Pay with MetaMask';
+    statusEl.style.color = '#ef4444';
+    if (err.code === 4001 || (err.info && err.info.error && err.info.error.code === 4001)) {
+      statusEl.textContent = '❌ Transaction cancelled.';
+      showToast('❌ Transaction cancelled.', 'error');
+    } else {
+      statusEl.textContent = '❌ Error: ' + (err.reason || err.message || 'Unknown error');
+      showToast('❌ Payment failed: ' + (err.reason || err.message || 'Unknown'), 'error');
+    }
+  }
+}
+
+function closePaymentModal() {
+  document.getElementById('payment-modal').style.display = 'none';
+  pendingBuySkinId = -1;
+}
+
+function confirmPayment() {
+  if (pendingBuySkinId < 0) return;
+  var id = pendingBuySkinId;
+  var s = SKINS[id];
+  closePaymentModal();
+  if (!isSkinOwned(id)) { ownedSkins.push(id); }
+  saveSkinState();
+  if (equippedSkinId < 0) { equippedSkinId = id; saveSkinState(); applyEquippedSkinToGame(); }
+  renderSkinsGrid();
+  showToast('🎉 ' + s.name + ' unlocked & equipped! ' + s.boostLabel + ' now active!', 'success');
 }
 
 // ══════════════════════════════════════════
 // ── SKINS DATA ──
 // ══════════════════════════════════════════
 var SKINS = [
-  { id:0, name:'JUNGLE CHAD',  img:'https://i.imgur.com/4rUjNtO.jpg', rarity:'💪 CHAD',      rarityColor:'#F59E0B', border:'#F59E0B', price:0.3, boost:1.5, boostLabel:'+0.5× per tap (1.5× total)', desc:'The alpha starter pack. Maximum gains, never skips banana day. Buy with 0.3 TON and get an immediate +50% tap boost in the game.', unlock:'+0.5× per tap • 1.5× total • Perfect starter boost' },
-  { id:1, name:'DEGEN APE',    img:'https://i.imgur.com/7VFGhCb.jpg', rarity:'🔥 DEGEN',     rarityColor:'#3b82f6', border:'#3b82f6', price:0.8, boost:2.0, boostLabel:'+1× per tap (2× total)',   desc:'Laser eyes activated. This ape never sells. For the true degens who live on the edge of the jungle and want double tap power.', unlock:'+1× per tap • 2× total • Double your banana rate' },
-  { id:2, name:'BANANA GOD',   img:'https://i.imgur.com/eyQoioN.jpg', rarity:'🌟 MYTHIC',    rarityColor:'#34D399', border:'#34D399', price:1.5, boost:2.5, boostLabel:'+1.5× per tap (2.5× total)', desc:'Blessed by the ancient Banana Pantheon. Reserved for those who want to dominate the leaderboard with 2.5× the banana rate.', unlock:'+1.5× per tap • 2.5× total • Dominate the leaderboard' },
-  { id:3, name:'KING APE',     img:'https://i.imgur.com/YestlX1.jpg', rarity:'👑 LEGENDARY', rarityColor:'#FFD700', border:'#FFD700', price:2.5, boost:3.0, boostLabel:'+2× per tap (3× total)',   desc:'The one true ruler of Planet Apes. Maximum boost available. Triple your tap power and convert to more $APES than any other ape.', unlock:'+2× per tap • 3× total • Maximum boost in existence' }
+  { id:0, name:'JUNGLE CHAD',  img:'https://i.imgur.com/4rUjNtO.jpg', rarity:'💪 CHAD',      rarityColor:'#F59E0B', border:'#F59E0B', price:3,  boost:1.5, boostLabel:'+0.5× per tap (1.5× total)', desc:'The alpha starter pack. Maximum gains, never skips banana day. Buy with 3 USDC and get an immediate +50% tap boost in the game.',   unlock:'+0.5× per tap • 1.5× total • Perfect starter boost' },
+  { id:1, name:'DEGEN APE',    img:'https://i.imgur.com/7VFGhCb.jpg', rarity:'🔥 DEGEN',     rarityColor:'#3b82f6', border:'#3b82f6', price:8,  boost:2.0, boostLabel:'+1× per tap (2× total)',    desc:'Laser eyes activated. This ape never sells. For the true degens who live on the edge of the jungle and want double tap power.',         unlock:'+1× per tap • 2× total • Double your banana rate' },
+  { id:2, name:'BANANA GOD',   img:'https://i.imgur.com/eyQoioN.jpg', rarity:'🌟 MYTHIC',    rarityColor:'#34D399', border:'#34D399', price:15, boost:2.5, boostLabel:'+1.5× per tap (2.5× total)', desc:'Blessed by the ancient Banana Pantheon. Reserved for those who want to dominate the leaderboard with 2.5× the banana rate.',        unlock:'+1.5× per tap • 2.5× total • Dominate the leaderboard' },
+  { id:3, name:'KING APE',     img:'https://i.imgur.com/YestlX1.jpg', rarity:'👑 LEGENDARY', rarityColor:'#FFD700', border:'#FFD700', price:25, boost:3.0, boostLabel:'+2× per tap (3× total)',    desc:'The one true ruler of Planet Apes. Maximum boost available. Triple your tap power and convert to more $APES than any other ape.',    unlock:'+2× per tap • 3× total • Maximum boost in existence' }
 ];
 
 // ── SKIN STATE (localStorage) ──
@@ -946,7 +1101,7 @@ function renderSkinsGrid() {
         btn = '<button onclick="event.stopPropagation();equipSkin(' + s.id + ')" class="btn-equip" style="font-size:0.75rem">🦍 EQUIP IN GAME</button>';
       }
     } else {
-      btn = '<button onclick="event.stopPropagation();showSkinModal(' + s.id + ')" class="btn-buy-ton" style="font-size:0.75rem">💎 Buy ' + s.price + ' TON</button>';
+      btn = '<button onclick="event.stopPropagation();showSkinModal(' + s.id + ')" class="btn-buy-usdc" style="font-size:0.75rem">💎 Buy ' + s.price + ' USDC</button>';
     }
     card.innerHTML =
       '<div style="position:relative">' +
@@ -957,7 +1112,7 @@ function renderSkinsGrid() {
       '<div style="font-weight:900;font-size:1.15rem;margin-bottom:0.2rem">' + s.name + '</div>' +
       '<div style="color:' + s.rarityColor + ';font-size:0.8rem;margin-bottom:0.4rem">' + s.rarity + '</div>' +
       '<div style="display:inline-flex;align-items:center;gap:0.3rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:0.4rem;padding:0.2rem 0.55rem;font-size:0.68rem;font-weight:900;color:#34D399;margin-bottom:0.5rem">⚡ ' + s.boostLabel + '</div>' +
-      '<div style="background:rgba(0,152,234,0.1);border:1px solid rgba(0,152,234,0.3);border-radius:0.75rem;padding:0.4rem 0.6rem;font-size:0.75rem;color:#0098EA;font-weight:700;margin-bottom:0.75rem;text-align:center">💎 ' + s.price + ' TON</div>' +
+      '<div style="background:rgba(39,117,202,0.1);border:1px solid rgba(39,117,202,0.3);border-radius:0.75rem;padding:0.4rem 0.6rem;font-size:0.75rem;color:#2775CA;font-weight:700;margin-bottom:0.75rem;text-align:center">💎 ' + s.price + ' USDC</div>' +
       btn;
     grid.appendChild(card);
   });
@@ -966,127 +1121,31 @@ function renderSkinsGrid() {
 function showSkinModal(id) {
   var s = SKINS[id]; if (!s) return;
   document.getElementById('skin-modal-title').innerHTML = s.name + ' <span style="font-size:0.65rem;color:#6B7280">SKIN</span>';
-  var img = document.getElementById('skin-modal-img');
-  img.src = s.img; img.style.border = '8px solid ' + s.border; img.style.boxShadow = '0 0 60px ' + s.border;
-  var r = document.getElementById('skin-modal-rarity'); r.textContent = s.rarity; r.style.color = s.rarityColor;
-  document.getElementById('skin-modal-boost').textContent = '⚡ ' + s.boostLabel + ' in game';
+  document.getElementById('skin-modal-img').src = s.img;
+  document.getElementById('skin-modal-img').style.borderColor = s.border;
+  document.getElementById('skin-modal-img').style.boxShadow = '0 0 60px ' + s.border;
+  document.getElementById('skin-modal-rarity').innerHTML = '<span style="color:' + s.rarityColor + '">' + s.rarity + '</span>';
+  document.getElementById('skin-modal-boost').textContent = '⚡ ' + s.boostLabel;
   document.getElementById('skin-modal-desc').textContent = s.desc;
-  document.getElementById('skin-modal-price').textContent = '💎 ' + s.price + ' TON';
+  document.getElementById('skin-modal-price').textContent = s.price + ' USDC';
   document.getElementById('skin-modal-unlock').textContent = s.unlock;
 
+  var actions = document.getElementById('skin-modal-actions');
+  actions.innerHTML = '';
   var owned = isSkinOwned(id);
   var equipped = equippedSkinId === id;
-  var actions = document.getElementById('skin-modal-actions');
-  var closeBtn = '<button onclick="closeSkinModal()" style="flex:1;padding:0.85rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CLOSE</button>';
   if (owned) {
     if (equipped) {
-      actions.innerHTML = closeBtn + '<button onclick="unequipSkin()" class="btn-equip active-eq" style="flex:1;padding:0.85rem;border:1px solid #34D399;cursor:pointer">✅ UNEQUIP</button>';
+      actions.innerHTML = '<button onclick="unequipSkin()" class="btn-equip active-eq" style="flex:1;border:1px solid #34D399">✅ EQUIPPED — Click to Unequip</button>';
     } else {
-      actions.innerHTML = closeBtn + '<button onclick="equipSkin(' + id + ')" class="btn-equip" style="flex:1;padding:0.85rem;cursor:pointer">🦍 EQUIP NOW</button>';
+      actions.innerHTML = '<button onclick="equipSkin(' + id + ')" class="btn-equip" style="flex:1">🦍 EQUIP IN GAME</button>';
     }
   } else {
-    actions.innerHTML = closeBtn + '<button onclick="buySkin(' + id + ')" class="btn-buy-ton" style="flex:1;padding:0.85rem">💎 Buy ' + s.price + ' TON</button>';
+    actions.innerHTML = '<button onclick="buySkin(' + id + ')" class="btn-buy-usdc" style="flex:1;padding:0.85rem">💎 Buy for ' + s.price + ' USDC</button>';
   }
   document.getElementById('skin-modal').style.display = 'flex';
 }
 function closeSkinModal() { document.getElementById('skin-modal').style.display = 'none'; }
-
-// ══════════════════════════════════════════
-// ── TON PAYMENT — Real on-chain payments ──
-// ══════════════════════════════════════════
-var PLANET_APES_WALLET = 'UQB0V-E4hIglz-OylGnNTmvec-U4blugU7yZMeT1siTaU3Xv';
-var pendingBuySkinId = -1;
-var payQrInstance = null;
-
-function tonNano(tonAmount) {
-  return Math.round(tonAmount * 1000000000);
-}
-function tonPaymentUrl(tonAmount, memo) {
-  var nano = tonNano(tonAmount);
-  var encodedMemo = encodeURIComponent(memo);
-  return 'ton://transfer/' + PLANET_APES_WALLET + '?amount=' + nano + '&text=' + encodedMemo;
-}
-function tonkeeperUrl(tonAmount, memo) {
-  var nano = tonNano(tonAmount);
-  var encodedMemo = encodeURIComponent(memo);
-  return 'https://app.tonkeeper.com/transfer/' + PLANET_APES_WALLET + '?amount=' + nano + '&text=' + encodedMemo;
-}
-function tonhubUrl(tonAmount, memo) {
-  var nano = tonNano(tonAmount);
-  var encodedMemo = encodeURIComponent(memo);
-  return 'https://tonhub.com/transfer/' + PLANET_APES_WALLET + '?amount=' + nano + '&text=' + encodedMemo;
-}
-function mytonwalletUrl(tonAmount, memo) {
-  var nano = tonNano(tonAmount);
-  var encodedMemo = encodeURIComponent(memo);
-  return 'https://wallet.ton.org/transfer/' + PLANET_APES_WALLET + '?amount=' + nano + '&text=' + encodedMemo;
-}
-
-function buySkin(id) {
-  closeSkinModal();
-  openPaymentModal(id);
-}
-
-function openPaymentModal(id) {
-  var s = SKINS[id]; if (!s) return;
-  pendingBuySkinId = id;
-  var memo = 'APES-SKIN-' + s.name.replace(/\s+/g, '-').toUpperCase();
-
-  document.getElementById('pay-skin-name').textContent = s.rarity + ' ' + s.name;
-  document.getElementById('pay-amount-display').textContent = s.price + ' TON';
-
-  var qrBox = document.getElementById('pay-qr-box');
-  qrBox.innerHTML = '';
-  try {
-    var payUrl = tonPaymentUrl(s.price, memo);
-    payQrInstance = new QRCode(qrBox, {
-      text: payUrl,
-      width: 180, height: 180,
-      colorDark: '#000000', colorLight: '#ffffff',
-      correctLevel: QRCode.CorrectLevel.M
-    });
-  } catch(e) {
-    qrBox.innerHTML = '<div style="width:180px;height:180px;display:flex;align-items:center;justify-content:center;background:#1a1a1a;border-radius:0.5rem;font-size:0.75rem;color:#9CA3AF;text-align:center;padding:1rem">QR unavailable — use wallet buttons above</div>';
-  }
-
-  document.getElementById('payment-modal').dataset.memo = memo;
-  document.getElementById('payment-modal').dataset.price = s.price;
-  document.getElementById('payment-modal').style.display = 'flex';
-}
-
-function openTonPayment(wallet) {
-  var modal = document.getElementById('payment-modal');
-  var price = parseFloat(modal.dataset.price);
-  var memo  = modal.dataset.memo;
-  var url;
-  if (wallet === 'tonkeeper') url = tonkeeperUrl(price, memo);
-  else if (wallet === 'tonhub') url = tonhubUrl(price, memo);
-  else url = mytonwalletUrl(price, memo);
-  window.open(url, '_blank');
-  var btn = document.getElementById('pay-confirm-btn');
-  btn.style.background = 'linear-gradient(90deg,#34D399,#22c55e)';
-  btn.textContent = '✅ I\'ve Paid — Unlock Skin';
-}
-
-function closePaymentModal() {
-  document.getElementById('payment-modal').style.display = 'none';
-  pendingBuySkinId = -1;
-  var qrBox = document.getElementById('pay-qr-box');
-  qrBox.innerHTML = '';
-  payQrInstance = null;
-}
-
-function confirmPayment() {
-  if (pendingBuySkinId < 0) return;
-  var id = pendingBuySkinId;
-  var s = SKINS[id];
-  closePaymentModal();
-  if (!isSkinOwned(id)) { ownedSkins.push(id); }
-  saveSkinState();
-  if (equippedSkinId < 0) { equippedSkinId = id; saveSkinState(); applyEquippedSkinToGame(); }
-  renderSkinsGrid();
-  showToast('🎉 ' + s.name + ' unlocked & equipped! ' + s.boostLabel + ' now active!', 'success');
-}
 
 // ══════════════════════════════════════════
 // ── LEADERBOARD ──
@@ -1133,7 +1192,7 @@ function renderLeaderboard() {
     var div = document.createElement('div');
     div.className = 'lb-pop';
     div.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:7px 0.75rem;border-radius:1rem;animation-delay:' + (i*60) + 'ms;' + (i < 3 ? 'background:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.3)' : 'background:rgba(0,0,0,0.4)');
-    var walletBadge = entry.wallet ? '<span style="font-size:0.5rem;color:#0098EA;background:rgba(0,152,234,0.15);border:1px solid rgba(0,152,234,0.3);border-radius:3px;padding:1px 4px;margin-left:5px;vertical-align:middle">💎 TON</span>' : '';
+    var walletBadge = entry.wallet ? '<span style="font-size:0.5rem;color:#F5A623;background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.3);border-radius:3px;padding:1px 4px;margin-left:5px;vertical-align:middle">🦊 EVM</span>' : '';
     div.innerHTML = '<div style="display:flex;align-items:center;gap:0.75rem"><div style="min-width:28px;text-align:right;font-family:monospace;font-size:0.75rem;font-weight:700;color:#FACC15;padding-right:0.25rem">' + (i+1) + '</div><div style="font-weight:700">' + escHtml(entry.name) + (i < 3 ? ' ' + MEDALS[i] : '') + walletBadge + '</div></div><div style="font-family:monospace;color:#FACC15;font-size:0.875rem">' + Math.floor(entry.score).toLocaleString() + '</div>';
     list.appendChild(div);
   });
@@ -1255,8 +1314,8 @@ setInterval(function(){
 function openSubmitModal() {
   if (Math.floor(score) === 0) { showToast('⚠️ Play the game first to collect bananas!', 'error'); return; }
   if (!walletAddress || !walletRawAddress) {
-    showToast('💎 Connect your TON wallet first to submit your score!', 'error');
-    setTimeout(function(){ handleWalletBtnClick(); }, 300);
+    showToast('🦊 Connect MetaMask first to submit your score!', 'error');
+    setTimeout(function(){ connectMetaMask(); }, 300);
     return;
   }
   document.getElementById('submit-score-display').textContent = Math.floor(score).toLocaleString();
@@ -1269,7 +1328,7 @@ function closeSubmitModal() { if (!submitting) document.getElementById('submit-m
 function submitScore() {
   var name = (document.getElementById('submit-name-input').value || '').trim();
   if (!name) { showToast('⚠️ Enter your ape name first!', 'error'); return; }
-  if (!walletAddress) { showToast('💎 Connect wallet to submit!', 'error'); return; }
+  if (!walletAddress) { showToast('🦊 Connect MetaMask to submit!', 'error'); return; }
   submitting = true;
   var btn = document.getElementById('submit-btn');
   btn.textContent = '⏳ Saving…'; btn.disabled = true;
@@ -1285,7 +1344,7 @@ function submitScore() {
     var rank = updated.findIndex(function(e){ return e.name === name && e.score === currentScore; }) + 1;
     if (currentScore > personalBest) { personalBest = currentScore; savePersonalBest(); updateGameUI(); }
     closeSubmitModal();
-    showToast('🏆 Score saved! Ranked #' + rank + ' — linked to your TON wallet forever!', 'success');
+    showToast('🏆 Score saved! Ranked #' + rank + ' — linked to your wallet forever!', 'success');
     submitting = false; btn.textContent = '🏆 SUBMIT'; btn.disabled = false;
   }, 600);
 }
@@ -1307,7 +1366,7 @@ function openConvertModal() {
 }
 function closeConvertModal() { document.getElementById('convert-modal').style.display = 'none'; }
 function claimConvert() {
-  if (!walletAddress) { closeConvertModal(); handleWalletBtnClick(); showToast('💎 Connect wallet to claim $APES when available.', 'info'); return; }
+  if (!walletAddress) { closeConvertModal(); connectMetaMask(); showToast('🦊 Connect MetaMask to claim $APES when available.', 'info'); return; }
   closeConvertModal();
   showToast('✅ Wallet linked! Your banana score is recorded. $APES conversion goes live at token launch!', 'info');
 }
@@ -1362,7 +1421,7 @@ function toggleMusic() {
 // ══════════════════════════════════════════
 // ── INIT ──
 // ══════════════════════════════════════════
-initTonConnect();
+initMetaMask();
 loadSkinState();
 leaderboardData = loadLeaderboard();
 personalBest = loadPersonalBest();
