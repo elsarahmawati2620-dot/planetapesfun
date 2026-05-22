@@ -3,18 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-  <meta name="description" content="Planet Apes ($APES) — The most based meme coin on HyperEVM. Take bananas, rule the jungle, earn rewards!" />
-  <title>Planet Apes ($APES) — King of the Jungle on HyperEVM</title>
+  <meta name="description" content="Planet Apes ($APES) — The most based meme coin on Monad. Take bananas, rule the jungle, earn rewards!" />
+  <title>Planet Apes ($APES) — King of the Jungle on Monad</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
-  <!-- ethers.js v6 for MetaMask / ERC-20 USDC transfers -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --gold: #FFD700; --gold2: #F59E0B; --green: #34D399; --purple: #C084FC; --red: #ef4444; --blue: #3b82f6; }
+    :root {
+      --primary: #05C582;
+      --primary2: #00D97B;
+      --green: #34D399;
+      --purple: #C084FC;
+      --red: #ef4444;
+      --blue: #3b82f6;
+      --bg: #080b10;
+    }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', system-ui, sans-serif; background: #000; color: #fff; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: #fff; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
     .pixel-font { font-family: 'Press Start 2P', monospace; }
     a { color: inherit; text-decoration: none; }
     button { font-family: inherit; cursor: pointer; }
@@ -36,6 +44,10 @@
     @keyframes twinkle {
       0%, 100% { opacity: 0.2; transform: scale(0.8); }
       50% { opacity: 1; transform: scale(1.2); }
+    }
+    @keyframes glow-pulse {
+      0%, 100% { box-shadow: 0 0 80px rgba(5,197,130,0.4); }
+      50% { box-shadow: 0 0 140px rgba(5,197,130,0.7); }
     }
 
     .float-1 { animation: float-1 4s ease-in-out infinite; }
@@ -65,89 +77,98 @@
     /* Navbar */
     #navbar {
       position: fixed; top:0; left:0; right:0; z-index:9000;
-      background: rgba(0,0,0,0.95); border-bottom: 1px solid rgba(250,204,21,0.3);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      background: rgba(8,11,16,0.97); border-bottom: 1px solid rgba(5,197,130,0.25);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 68px;
     }
     .nav-logo { display:flex; align-items:center; gap:0.75rem; }
-    .nav-logo img { width:40px; height:40px; border-radius:50%; border:2px solid var(--gold); object-fit:cover; }
-    .nav-logo-text { font-family:'Press Start 2P',monospace; font-size:0.75rem; color:var(--gold); letter-spacing:1px; }
+    .nav-logo img { width:40px; height:40px; border-radius:50%; border:2px solid var(--primary); object-fit:cover; }
+    .nav-logo-text { font-family:'Press Start 2P',monospace; font-size:0.75rem; color:var(--primary); letter-spacing:1px; }
     .nav-links { display:flex; align-items:center; gap:2rem; }
-    .nav-links a { color:#9CA3AF; font-size:0.8rem; font-weight:600; letter-spacing:1px; transition:color 0.2s; }
-    .nav-links a:hover { color:var(--gold); }
+    .nav-links a { color:#6B7280; font-size:0.8rem; font-weight:600; letter-spacing:1px; transition:color 0.2s; }
+    .nav-links a:hover { color:var(--primary); }
     .nav-actions { display:flex; gap:0.6rem; align-items:center; }
-    .btn-x { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(255,255,255,0.3); background:rgba(255,255,255,0.05); color:#fff; font-size:0.75rem; font-weight:700; transition:all 0.2s; }
-    .btn-x:hover { background:rgba(255,255,255,0.15); }
-    .btn-tg { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(34,158,217,0.5); background:rgba(34,158,217,0.1); color:#229ED9; font-size:0.75rem; font-weight:700; }
-    .btn-wallet { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(245,158,11,0.6); background:rgba(245,158,11,0.12); color:#F5A623; font-size:0.75rem; font-weight:700; transition:all 0.2s; white-space:nowrap; }
-    .btn-wallet:hover { background:rgba(245,158,11,0.25); }
+    .btn-x { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.04); color:#fff; font-size:0.75rem; font-weight:700; transition:all 0.2s; }
+    .btn-x:hover { background:rgba(255,255,255,0.1); }
+    .btn-tg { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(34,158,217,0.5); background:rgba(34,158,217,0.08); color:#229ED9; font-size:0.75rem; font-weight:700; }
+    .btn-wallet { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(5,197,130,0.5); background:rgba(5,197,130,0.08); color:#05C582; font-size:0.75rem; font-weight:700; transition:all 0.2s; white-space:nowrap; }
+    .btn-wallet:hover { background:rgba(5,197,130,0.18); }
     .btn-wallet.connected { border-color:rgba(52,211,153,0.6); background:rgba(52,211,153,0.1); color:#34D399; }
     @media(max-width:900px) { .nav-links { display:none; } }
     @media(max-width:640px) { .nav-logo-text { display:none; } .btn-x { display:none; } }
     @media(max-width:400px) { .btn-tg { padding:0.5rem 0.6rem; } }
 
     /* Hero */
-    .jungle-bg { min-height:100vh; padding-top:68px; background:radial-gradient(ellipse at top,#0a2f1e 0%,#000 60%); position:relative; overflow:hidden; display:flex; align-items:center; }
-    .jungle-bg::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(250,204,21,0.08) 0%,transparent 60%); }
+    .jungle-bg {
+      min-height:100vh; padding-top:68px;
+      background: radial-gradient(ellipse at top, #02120d 0%, #080b10 60%);
+      position:relative; overflow:hidden; display:flex; align-items:center;
+    }
+    .jungle-bg::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(5,197,130,0.07) 0%,transparent 60%); }
     .hero-inner { max-width:64rem; margin:0 auto; padding:3rem 1.5rem; text-align:center; position:relative; z-index:10; width:100%; }
-    .ticker-wrap { position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.8); padding:0.75rem 0; border-top:1px solid rgba(234,179,8,0.3); overflow:hidden; }
+    .ticker-wrap { position:absolute; bottom:0; left:0; right:0; background:rgba(5,10,14,0.9); padding:0.75rem 0; border-top:1px solid rgba(5,197,130,0.2); overflow:hidden; }
     .ticker-inner { display:inline-flex; animation:ticker-scroll 30s linear infinite; white-space:nowrap; }
-    .ticker-inner span { margin:0 3rem; color:var(--gold); font-size:0.8rem; letter-spacing:3px; }
+    .ticker-inner span { margin:0 3rem; color:var(--primary); font-size:0.8rem; letter-spacing:3px; }
 
     /* Game */
-    .game-container { position:relative; width:100%; height:400px; border-radius:1.5rem; border:2px solid rgba(250,204,21,0.4); background:radial-gradient(ellipse at center,rgba(10,47,30,0.8) 0%,rgba(0,0,0,0.95) 100%); overflow:hidden; cursor:crosshair; user-select:none; -webkit-user-select:none; }
-    .progress-track { height:8px; background:rgba(255,255,255,0.1); border-radius:9999px; overflow:hidden; }
-    .progress-fill { height:100%; background:linear-gradient(90deg,#FFD700,#22c55e); border-radius:9999px; transition:width 0.3s; }
+    .game-container {
+      position:relative; width:100%; height:400px; border-radius:1.5rem;
+      border:1px solid rgba(5,197,130,0.3);
+      background:radial-gradient(ellipse at center,rgba(2,18,13,0.9) 0%,rgba(8,11,16,0.98) 100%);
+      overflow:hidden; cursor:crosshair; user-select:none; -webkit-user-select:none;
+    }
+    .progress-track { height:8px; background:rgba(255,255,255,0.07); border-radius:9999px; overflow:hidden; }
+    .progress-fill { height:100%; background:linear-gradient(90deg,#05C582,#00D97B); border-radius:9999px; transition:width 0.3s; }
     .float-emoji { position:absolute; font-size:3rem; pointer-events:none; animation:particle-rise 0.8s forwards; }
 
     /* Cards */
-    .lb-card { background:#111; border:1px solid rgba(250,204,21,0.3); border-radius:1.5rem; padding:1.5rem; }
-    .token-card { background:#111; border:1px solid rgba(250,204,21,0.3); border-radius:1.5rem; padding:2rem; text-align:center; }
-    .step { display:flex; align-items:flex-start; gap:1.5rem; background:#111; border-radius:1.5rem; padding:1.5rem; border:1px solid rgba(250,204,21,0.2); }
-    .step-num { min-width:3rem; height:3rem; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#FFD700,#F59E0B); color:#000; font-weight:900; font-size:1.5rem; border-radius:50%; flex-shrink:0; }
+    .lb-card { background:#0d1117; border:1px solid rgba(5,197,130,0.2); border-radius:1.5rem; padding:1.5rem; }
+    .token-card { background:#0d1117; border:1px solid rgba(5,197,130,0.2); border-radius:1.5rem; padding:2rem; text-align:center; }
+    .step { display:flex; align-items:flex-start; gap:1.5rem; background:#0d1117; border-radius:1.5rem; padding:1.5rem; border:1px solid rgba(5,197,130,0.15); }
+    .step-num { min-width:3rem; height:3rem; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#05C582,#00D97B); color:#000; font-weight:900; font-size:1.5rem; border-radius:50%; flex-shrink:0; }
 
     /* FAQ */
-    .faq-item { background:#111; border:1px solid rgba(250,204,21,0.2); border-radius:1rem; margin-bottom:0.75rem; overflow:hidden; }
+    .faq-item { background:#0d1117; border:1px solid rgba(5,197,130,0.15); border-radius:1rem; margin-bottom:0.75rem; overflow:hidden; }
     .faq-q { padding:1.25rem 1.5rem; display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-weight:700; }
-    .faq-q:hover { background:rgba(250,204,21,0.05); }
-    .faq-arrow { color:var(--gold); transition:transform 0.3s; font-size:0.75rem; }
+    .faq-q:hover { background:rgba(5,197,130,0.04); }
+    .faq-arrow { color:var(--primary); transition:transform 0.3s; font-size:0.75rem; }
     .faq-arrow.open { transform:rotate(180deg); }
     .faq-ans { max-height:0; overflow:hidden; transition:max-height 0.35s ease; }
     .faq-ans.open { max-height:300px; }
     .faq-ans-inner { padding:0 1.5rem 1.25rem; color:#9CA3AF; line-height:1.7; }
 
     /* Social / Skin cards */
-    .social-card { background:#111; border:1px solid rgba(250,204,21,0.2); border-radius:1.5rem; padding:2rem; text-align:center; cursor:pointer; transition:all 0.2s; }
-    .social-card:hover { border-color:var(--gold); transform:translateY(-4px); box-shadow:0 10px 40px rgba(250,204,21,0.15); }
-    .skin-card { background:#111; border:1px solid rgba(250,204,21,0.2); border-radius:1.5rem; padding:1.25rem; text-align:center; transition:all 0.2s; cursor:pointer; }
+    .social-card { background:#0d1117; border:1px solid rgba(5,197,130,0.15); border-radius:1.5rem; padding:2rem; text-align:center; cursor:pointer; transition:all 0.2s; }
+    .social-card:hover { border-color:var(--primary); transform:translateY(-4px); box-shadow:0 10px 40px rgba(5,197,130,0.12); }
+    .skin-card { background:#0d1117; border:1px solid rgba(5,197,130,0.15); border-radius:1.5rem; padding:1.25rem; text-align:center; transition:all 0.2s; cursor:pointer; }
     .skin-card:hover { transform:translateY(-4px); }
     .skin-card.equipped { border-width:2px; }
 
     /* Buttons */
     .meme-btn { transition:transform 0.2s, box-shadow 0.2s; }
-    .meme-btn:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 8px 30px rgba(255,215,0,0.4); }
+    .meme-btn:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 8px 30px rgba(5,197,130,0.35); }
     .btn-buy-usdc { background:linear-gradient(90deg,#2775CA,#1a5fa8); color:#fff; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
     .btn-buy-usdc:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(39,117,202,0.4); }
-    .btn-equip { background:linear-gradient(90deg,#34D399,#22c55e); color:#000; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
-    .btn-equip:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(52,211,153,0.4); }
-    .btn-equip.active-eq { background:rgba(52,211,153,0.15); border:1px solid #34D399; color:#34D399; }
-    .btn-convert { background:linear-gradient(90deg,#FFD700,#F59E0B); color:#000; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
-    .btn-convert:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(255,215,0,0.4); }
+    .btn-equip { background:linear-gradient(90deg,#05C582,#00D97B); color:#000; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
+    .btn-equip:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(5,197,130,0.4); }
+    .btn-equip.active-eq { background:rgba(5,197,130,0.12); border:1px solid #05C582; color:#05C582; }
+    .btn-convert { background:linear-gradient(90deg,#05C582,#00D97B); color:#000; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
+    .btn-convert:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(5,197,130,0.4); }
 
     /* Modal */
-    .modal-overlay { position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:1rem; }
-    .modal-box { background:#111; border:1px solid rgba(250,204,21,0.3); border-radius:1.5rem; padding:2rem; max-width:460px; width:100%; animation:modal-in 0.25s ease; max-height:90vh; overflow-y:auto; }
+    .modal-overlay { position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.88); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; padding:1rem; }
+    .modal-box { background:#0d1117; border:1px solid rgba(5,197,130,0.25); border-radius:1.5rem; padding:2rem; max-width:460px; width:100%; animation:modal-in 0.25s ease; max-height:90vh; overflow-y:auto; }
     .modal-close { background:none; border:none; color:#9CA3AF; font-size:1.5rem; line-height:1; cursor:pointer; flex-shrink:0; }
     .modal-close:hover { color:#fff; }
 
     /* Input */
-    input[type=text] { width:100%; padding:0.75rem 1rem; background:rgba(255,255,255,0.07); border:1px solid rgba(255,215,0,0.3); border-radius:0.75rem; color:#fff; font-size:1rem; outline:none; transition:border-color 0.2s; }
-    input[type=text]:focus { border-color:var(--gold); }
+    input[type=text] { width:100%; padding:0.75rem 1rem; background:rgba(255,255,255,0.05); border:1px solid rgba(5,197,130,0.25); border-radius:0.75rem; color:#fff; font-size:1rem; outline:none; transition:border-color 0.2s; }
+    input[type=text]:focus { border-color:var(--primary); }
 
     /* Toast */
     #toast-container { position:fixed; top:5rem; right:1rem; z-index:99999; display:flex; flex-direction:column; gap:0.5rem; pointer-events:none; }
-    .toast { display:flex; align-items:center; gap:0.75rem; padding:0.875rem 1.25rem; border-radius:1rem; font-size:0.875rem; font-weight:600; max-width:340px; animation:toast-in 0.35s cubic-bezier(0.22,1,0.36,1); pointer-events:auto; box-shadow:0 4px 24px rgba(0,0,0,0.4); }
-    .toast-success { background:#022c22; border:1px solid #34D399; color:#34D399; }
+    .toast { display:flex; align-items:center; gap:0.75rem; padding:0.875rem 1.25rem; border-radius:1rem; font-size:0.875rem; font-weight:600; max-width:340px; animation:toast-in 0.35s cubic-bezier(0.22,1,0.36,1); pointer-events:auto; box-shadow:0 4px 24px rgba(0,0,0,0.5); }
+    .toast-success { background:#011a10; border:1px solid #05C582; color:#05C582; }
     .toast-error { background:#1f0a0a; border:1px solid #ef4444; color:#ef4444; }
     .toast-info { background:#0c1a2e; border:1px solid #3b82f6; color:#93c5fd; }
 
@@ -193,73 +214,72 @@
 
     <div style="display:flex;justify-content:center;margin-bottom:2rem">
       <div style="position:relative">
-        <img src="https://i.imgur.com/KlM5HWE.jpg" alt="Planet Apes" style="width:min(20rem,80vw);height:min(20rem,80vw);border-radius:50%;border:12px solid #FFD700;box-shadow:0 0 120px #FFD700;object-fit:cover" />
-        <div class="animate-pulse" style="position:absolute;inset:-1rem;border-radius:50%;border:4px solid rgba(168,85,247,0.5)"></div>
+        <img src="https://i.imgur.com/KlM5HWE.jpg" alt="Planet Apes" style="width:min(20rem,80vw);height:min(20rem,80vw);border-radius:50%;border:10px solid #05C582;box-shadow:0 0 100px rgba(5,197,130,0.6),0 0 200px rgba(5,197,130,0.2);object-fit:cover;animation:glow-pulse 3s ease-in-out infinite" />
+        <div class="animate-pulse" style="position:absolute;inset:-1rem;border-radius:50%;border:3px solid rgba(5,197,130,0.3)"></div>
       </div>
     </div>
 
-    <div style="display:inline-flex;align-items:center;gap:0.75rem;padding:0.5rem 1.5rem;background:#FFD700;color:#000;border-radius:9999px;margin-bottom:1rem">
-      <div class="animate-pulse" style="width:0.75rem;height:0.75rem;background:#22c55e;border-radius:50%"></div>
-      <span style="font-weight:900;font-size:0.875rem;letter-spacing:3px">LIVE ON HyperEVM</span>
+    <div style="display:inline-flex;align-items:center;gap:0.75rem;padding:0.5rem 1.5rem;background:#05C582;color:#000;border-radius:9999px;margin-bottom:1rem">
+      <div class="animate-pulse" style="width:0.75rem;height:0.75rem;background:#000;border-radius:50%"></div>
+      <span style="font-weight:900;font-size:0.875rem;letter-spacing:3px">LIVE ON MONAD MAINNET</span>
     </div>
 
     <h1 class="pixel-font" style="font-size:clamp(3rem,10vw,5rem);line-height:1;color:#fff;margin-bottom:0.5rem">PLANET<br>APES</h1>
-    <p style="font-size:2rem;font-weight:900;color:#FACC15;letter-spacing:4px;margin-top:-0.25rem;margin-bottom:1.5rem">KING OF THE JUNGLE</p>
+    <p style="font-size:2rem;font-weight:900;color:#05C582;letter-spacing:4px;margin-top:-0.25rem;margin-bottom:1.5rem">KING OF THE JUNGLE</p>
 
-    <p style="max-width:42rem;margin:0 auto 2rem;font-size:1.2rem;color:#D1D5DB">
-      The most based meme coin on <span style="color:#F5A623;font-weight:700">HyperEVM</span>.<br>
-      Take bananas. Rule the jungle. <span style="color:#FACC15">To the moon.</span>
+    <p style="max-width:42rem;margin:0 auto 2rem;font-size:1.2rem;color:#9CA3AF">
+      The most based meme coin on <span style="color:#05C582;font-weight:700">Monad</span>.<br>
+      Take bananas. Rule the jungle. <span style="color:#05C582">To the moon.</span>
     </p>
 
     <div style="max-width:36rem;margin:0 auto 2rem;display:flex;align-items:center">
-      <div style="flex:1;background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.4);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">CA: SOON</div>
-      <div style="background:linear-gradient(90deg,#F5A623,#d4891a);color:#000;font-weight:900;font-size:0.78rem;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;white-space:nowrap;display:flex;align-items:center">⏳ SOON</div>
+      <div style="flex:1;background:rgba(5,197,130,0.07);border:1px solid rgba(5,197,130,0.3);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">CA: SOON</div>
+      <div style="background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:0.78rem;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;white-space:nowrap;display:flex;align-items:center">⏳ SOON</div>
     </div>
 
     <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;align-items:center">
-      <button class="meme-btn" onclick="window.open('https://alt.fun/','_blank')" style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;display:flex;align-items:center;gap:0.75rem;box-shadow:0 10px 40px rgba(255,215,0,0.5)">
+      <button class="meme-btn" onclick="window.open('https://alt.fun/','_blank')" style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;display:flex;align-items:center;gap:0.75rem;box-shadow:0 10px 40px rgba(5,197,130,0.4)">
         <span>BUY $APES</span><span>🚀</span>
       </button>
-      <button onclick="smoothScroll('game')" style="padding:1.25rem 2.5rem;border:4px solid #FFD700;background:transparent;color:#fff;font-weight:900;font-size:1.1rem;border-radius:1rem">
+      <button onclick="smoothScroll('game')" style="padding:1.25rem 2.5rem;border:2px solid #05C582;background:rgba(5,197,130,0.06);color:#fff;font-weight:900;font-size:1.1rem;border-radius:1rem">
         🎮 PLAY TAKE BANANA
       </button>
     </div>
 
     <div style="margin-top:2.5rem;display:flex;justify-content:center;gap:2rem;font-size:0.875rem;opacity:0.75;flex-wrap:wrap">
-      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#34D399">✔</span>FAIR LAUNCH</div>
-      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#34D399">✔</span>0 TAX</div>
-      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#34D399">✔</span>LP BURNED</div>
-      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#F5A623">🦊</span>HyperEVM MAINNET</div>
+      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#05C582">✔</span>FAIR LAUNCH</div>
+      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#05C582">✔</span>0 TAX</div>
+      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#05C582">✔</span>LP BURNED</div>
+      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#05C582">🔮</span>MONAD MAINNET</div>
     </div>
   </div>
 
   <div class="ticker-wrap">
     <div class="ticker-inner">
-      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON HyperEVM MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON ALT.FUN 🚀</span><span>🦍 KING OF THE JUNGLE ON HyperEVM 🦍</span><span>💎 APE SKINS FROM 3 USDC 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
-      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON HyperEVM MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON ALT.FUN 🚀</span><span>🦍 KING OF THE JUNGLE ON HyperEVM 🦍</span><span>💎 APE SKINS FROM 3 USDC 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
+      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON MONAD MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON ALT.FUN 🚀</span><span>🦍 KING OF THE JUNGLE ON MONAD 🦍</span><span>💎 APE SKINS FROM 3 USDC 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
+      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON MONAD MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON ALT.FUN 🚀</span><span>🦍 KING OF THE JUNGLE ON MONAD 🦍</span><span>💎 APE SKINS FROM 3 USDC 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
     </div>
   </div>
 </section>
 
 <!-- Available on bar -->
-<div onclick="window.open('https://alt.fun/','_blank')" style="background:#0a0a0a;border-bottom:1px solid rgba(234,179,8,0.2);padding:1.25rem;text-align:center;cursor:pointer;position:relative;z-index:1">
-  <div style="color:#FACC15;font-size:0.75rem;letter-spacing:0.2em">AVAILABLE ON</div>
-  <div style="font-size:2.25rem;font-weight:900;color:#F5A623">ALT.FUN 🚀</div>
+<div onclick="window.open('https://alt.fun/','_blank')" style="background:#050709;border-bottom:1px solid rgba(5,197,130,0.15);padding:1.25rem;text-align:center;cursor:pointer;position:relative;z-index:1">
+  <div style="color:#05C582;font-size:0.75rem;letter-spacing:0.2em">AVAILABLE ON</div>
+  <div style="font-size:2.25rem;font-weight:900;color:#05C582">ALT.FUN 🚀</div>
 </div>
 
 <!-- GAME -->
 <section id="game" style="max-width:64rem;margin:0 auto;padding:5rem 1.5rem;position:relative;z-index:1">
   <div style="text-align:center;margin-bottom:3rem">
-    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(168,85,247,0.2);color:#C084FC;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">INTERACTIVE EXPERIENCE</div>
+    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(5,197,130,0.1);color:#05C582;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">INTERACTIVE EXPERIENCE</div>
     <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem">TAKE BANANA</h2>
-    <p style="margin-top:0.75rem;font-size:1.15rem;color:#9CA3AF;max-width:32rem;margin-left:auto;margin-right:auto">Click the bananas to feed the King Ape. Equip skins for powerful <strong style="color:#34D399">tap boost multipliers!</strong></p>
+    <p style="margin-top:0.75rem;font-size:1.15rem;color:#9CA3AF;max-width:32rem;margin-left:auto;margin-right:auto">Click the bananas to feed the King Ape. Equip skins for powerful <strong style="color:#05C582">tap boost multipliers!</strong></p>
   </div>
 
-  <!-- Equipped skin boost bar -->
   <div id="boost-bar" style="display:none;text-align:center;margin-bottom:1.25rem">
-    <div style="display:inline-flex;align-items:center;gap:0.75rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.4);border-radius:9999px;padding:0.5rem 1.5rem">
-      <span id="boost-bar-label" style="font-weight:700;font-size:0.875rem;color:#34D399"></span>
-      <span id="boost-bar-tag" style="font-size:0.7rem;color:#34D399;background:rgba(52,211,153,0.2);border-radius:9999px;padding:0.2rem 0.6rem;font-weight:900"></span>
+    <div style="display:inline-flex;align-items:center;gap:0.75rem;background:rgba(5,197,130,0.08);border:1px solid rgba(5,197,130,0.35);border-radius:9999px;padding:0.5rem 1.5rem">
+      <span id="boost-bar-label" style="font-weight:700;font-size:0.875rem;color:#05C582"></span>
+      <span id="boost-bar-tag" style="font-size:0.7rem;color:#05C582;background:rgba(5,197,130,0.15);border-radius:9999px;padding:0.2rem 0.6rem;font-weight:900"></span>
     </div>
   </div>
 
@@ -267,40 +287,39 @@
     <!-- Game box -->
     <div style="flex:1;min-width:280px;max-width:620px">
       <div class="game-container" id="game-container" onclick="handleGameClick(event)" ontouchstart="handleGameTouch(event)">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.18;pointer-events:none;font-size:180px">🌴</div>
-        <!-- In-game equipped badge -->
-        <div id="game-skin-badge" style="display:none;position:absolute;top:1.5rem;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);padding:0.3rem 0.9rem;border-radius:9999px;font-size:0.6rem;font-weight:700;z-index:30;pointer-events:none;white-space:nowrap"></div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.1;pointer-events:none;font-size:180px">🌴</div>
+        <div id="game-skin-badge" style="display:none;position:absolute;top:1.5rem;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);padding:0.3rem 0.9rem;border-radius:9999px;font-size:0.6rem;font-weight:700;z-index:30;pointer-events:none;white-space:nowrap"></div>
         <div id="ape-wrap" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;pointer-events:none;text-align:center">
           <div style="position:relative">
-            <img id="ape-img" src="https://i.imgur.com/KlM5HWE.jpg" style="width:10rem;height:10rem;border-radius:50%;border:8px solid #FFD700;box-shadow:0 0 60px #FFD700;object-fit:cover;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1)" alt="Ape" />
+            <img id="ape-img" src="https://i.imgur.com/KlM5HWE.jpg" style="width:10rem;height:10rem;border-radius:50%;border:6px solid #05C582;box-shadow:0 0 50px rgba(5,197,130,0.5);object-fit:cover;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1)" alt="Ape" />
             <div style="position:absolute;top:-0.75rem;left:50%;transform:translateX(-50%);font-size:2rem">👑</div>
           </div>
         </div>
-        <div style="position:absolute;top:1.5rem;right:1.5rem;background:rgba(0,0,0,0.85);padding:0.75rem 1.5rem;border-radius:1rem;border:1px solid #FFD700;z-index:30;pointer-events:none;text-align:center">
-          <div style="font-size:0.65rem;color:#FACC15;letter-spacing:0.1em">BANANAS COLLECTED</div>
-          <div id="score-display" style="font-size:2.5rem;font-weight:900;color:#FACC15;font-family:monospace">0</div>
+        <div style="position:absolute;top:1.5rem;right:1.5rem;background:rgba(8,11,16,0.92);padding:0.75rem 1.5rem;border-radius:1rem;border:1px solid rgba(5,197,130,0.4);z-index:30;pointer-events:none;text-align:center">
+          <div style="font-size:0.65rem;color:#05C582;letter-spacing:0.1em">BANANAS COLLECTED</div>
+          <div id="score-display" style="font-size:2.5rem;font-weight:900;color:#05C582;font-family:monospace">0</div>
           <div id="boost-indicator" style="display:none;font-size:0.6rem;color:#34D399;margin-top:2px;font-weight:700"></div>
         </div>
-        <div style="position:absolute;top:1.5rem;left:1.5rem;background:rgba(0,0,0,0.85);padding:0.5rem 1.25rem;border-radius:1rem;border:1px solid #a855f7;z-index:30;pointer-events:none">
+        <div style="position:absolute;top:1.5rem;left:1.5rem;background:rgba(8,11,16,0.92);padding:0.5rem 1.25rem;border-radius:1rem;border:1px solid rgba(192,132,252,0.4);z-index:30;pointer-events:none">
           <div style="font-size:0.65rem;color:#C084FC">KING LEVEL</div>
           <div id="level-display" style="font-size:1.75rem;font-weight:900;color:#C084FC">1</div>
         </div>
-        <button id="music-btn" onclick="toggleMusic()" style="position:absolute;bottom:1.5rem;right:1.5rem;z-index:40;background:rgba(0,0,0,0.75);border:1px solid #FFD700;border-radius:9999px;padding:0.35rem 0.9rem;color:#FFD700;font-size:0.75rem;font-weight:700;display:flex;align-items:center;gap:0.35rem;cursor:pointer">🎵 ON</button>
-        <div id="level-msg" style="display:none;position:absolute;top:33%;left:50%;transform:translateX(-50%);background:#FFD700;color:#000;padding:0.5rem 2rem;border-radius:2rem;font-weight:900;font-size:1.25rem;z-index:50;box-shadow:0 0 40px #FFD700;white-space:nowrap;pointer-events:none"></div>
+        <button id="music-btn" onclick="toggleMusic()" style="position:absolute;bottom:1.5rem;right:1.5rem;z-index:40;background:rgba(8,11,16,0.85);border:1px solid rgba(5,197,130,0.4);border-radius:9999px;padding:0.35rem 0.9rem;color:#05C582;font-size:0.75rem;font-weight:700;display:flex;align-items:center;gap:0.35rem;cursor:pointer">🎵 ON</button>
+        <div id="level-msg" style="display:none;position:absolute;top:33%;left:50%;transform:translateX(-50%);background:#05C582;color:#000;padding:0.5rem 2rem;border-radius:2rem;font-weight:900;font-size:1.25rem;z-index:50;box-shadow:0 0 40px rgba(5,197,130,0.6);white-space:nowrap;pointer-events:none"></div>
         <div id="floats" style="position:absolute;inset:0;pointer-events:none;z-index:40;overflow:hidden"></div>
         <div style="position:absolute;bottom:1.5rem;left:1.5rem;right:1.5rem;z-index:30;pointer-events:none">
           <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-          <div style="display:flex;justify-content:space-between;font-size:0.6rem;color:rgba(250,204,21,0.7);margin-top:0.25rem;font-family:monospace">
+          <div style="display:flex;justify-content:space-between;font-size:0.6rem;color:rgba(5,197,130,0.7);margin-top:0.25rem;font-family:monospace">
             <span id="progress-lvl">LVL 1</span><span id="progress-txt">0/10,000</span>
           </div>
         </div>
         <div id="game-instruction" style="position:absolute;bottom:5.5rem;left:50%;transform:translateX(-50%);text-align:center;z-index:30;pointer-events:none">
-          <div style="color:#FACC15;font-size:0.875rem;letter-spacing:2px">👆 CLICK ANYWHERE TO TAKE BANANAS!</div>
+          <div style="color:#05C582;font-size:0.875rem;letter-spacing:2px">👆 CLICK ANYWHERE TO TAKE BANANAS!</div>
         </div>
       </div>
       <div style="display:flex;justify-content:center;gap:0.75rem;margin-top:1.5rem;flex-wrap:wrap">
-        <button onclick="resetGame()" style="padding:0.75rem 1.75rem;border:1px solid rgba(255,255,255,0.3);background:transparent;color:#fff;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">↺ RESET JUNGLE</button>
-        <button onclick="openConvertModal()" style="padding:0.75rem 1.75rem;border:1px solid rgba(255,215,0,0.4);background:rgba(255,215,0,0.08);color:#FFD700;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">🍌 Convert to $APES</button>
+        <button onclick="resetGame()" style="padding:0.75rem 1.75rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#fff;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">↺ RESET JUNGLE</button>
+        <button onclick="openConvertModal()" style="padding:0.75rem 1.75rem;border:1px solid rgba(5,197,130,0.35);background:rgba(5,197,130,0.06);color:#05C582;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">🍌 Convert to $APES</button>
         <button onclick="smoothScroll('skins')" style="padding:0.75rem 1.75rem;border:1px solid rgba(39,117,202,0.4);background:rgba(39,117,202,0.08);color:#2775CA;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">💎 Get Skin Boost</button>
       </div>
       <div style="text-align:center;margin-top:1rem;font-size:0.75rem;color:#6B7280">Every 10,000 bananas × level = level up • Equip a skin for tap boost multipliers!</div>
@@ -312,69 +331,69 @@
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
           <div>
             <div style="font-weight:900;font-size:1.4rem">🏆 LEADERBOARD</div>
-            <div style="font-size:0.6rem;color:#FACC15;letter-spacing:1px;margin-top:-2px">TOP APES • CONVERT TO $APES • WEEKLY</div>
+            <div style="font-size:0.6rem;color:#05C582;letter-spacing:1px;margin-top:-2px">TOP APES • CONVERT TO $APES • WEEKLY</div>
           </div>
-          <button onclick="openSubmitModal()" style="padding:0.5rem 1.25rem;font-size:0.75rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;border-radius:1rem;border:none;white-space:nowrap">SUBMIT</button>
+          <button onclick="openSubmitModal()" style="padding:0.5rem 1.25rem;font-size:0.75rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;border-radius:1rem;border:none;white-space:nowrap">SUBMIT</button>
         </div>
         <div id="leaderboard-list" style="font-size:0.875rem;max-height:200px;overflow-y:auto;padding-right:0.5rem;display:flex;flex-direction:column;gap:0.375rem"></div>
-        <div style="margin-top:1.25rem;background:rgba(0,0,0,0.4);padding:0.75rem;border-radius:0.75rem">
+        <div style="margin-top:1.25rem;background:rgba(0,0,0,0.5);padding:0.75rem;border-radius:0.75rem">
           <div style="display:flex;align-items:center;justify-content:space-between">
             <div>
               <div style="color:#9CA3AF;font-size:0.75rem">YOUR BEST</div>
               <div style="font-size:0.65rem;color:#6B7280">Submit to enter leaderboard</div>
             </div>
-            <div id="personal-best" style="font-family:monospace;font-weight:900;color:#FACC15;font-size:1.5rem">0</div>
+            <div id="personal-best" style="font-family:monospace;font-weight:900;color:#05C582;font-size:1.5rem">0</div>
           </div>
         </div>
         <div style="margin-top:1rem">
           <button onclick="openConvertModal()" class="btn-convert">🍌 Convert Bananas to $APES</button>
         </div>
       </div>
-      <div style="text-align:center;font-size:0.65rem;color:#6B7280;margin-top:0.5rem">Submit your high score to climb the ranks! Scores are saved permanently.</div>
-      <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.1);font-size:0.6rem;color:#6B7280;line-height:1.5">
-        <strong>LEADERBOARD RULES:</strong> Top banana collectors each week can convert to $APES. Fair play only. <span style="color:#FACC15">Resets every Sunday 00:00 UTC.</span>
+      <div style="text-align:center;font-size:0.65rem;color:#6B7280;margin-top:0.5rem">Submit your high score to climb the ranks!</div>
+      <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.07);font-size:0.6rem;color:#6B7280;line-height:1.5">
+        <strong>LEADERBOARD RULES:</strong> Top banana collectors each week can convert to $APES. <span style="color:#05C582">Resets every Sunday 00:00 UTC.</span>
       </div>
     </div>
   </div>
 </section>
 
 <!-- APE SKINS -->
-<section id="skins" style="max-width:64rem;margin:0 auto;padding:5rem 1.5rem;background:#0a0a0a;position:relative;z-index:1">
+<section id="skins" style="max-width:64rem;margin:0 auto;padding:5rem 1.5rem;background:#050709;position:relative;z-index:1">
   <div style="text-align:center;margin-bottom:3rem">
-    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(39,117,202,0.2);color:#2775CA;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">💎 BUY WITH USDC — FROM 3 USDC</div>
+    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(39,117,202,0.15);color:#2775CA;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">💎 BUY WITH USDC — FROM 3 USDC</div>
     <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem">APE SKINS</h2>
-    <p style="color:#9CA3AF;font-size:1.05rem;margin-top:0.5rem">Buy with USDC on HyperEVM. Each skin gives you a <strong style="color:#34D399">tap boost multiplier</strong> that applies instantly when equipped in-game!</p>
+    <p style="color:#9CA3AF;font-size:1.05rem;margin-top:0.5rem">Buy with USDC on Monad. Each skin gives you a <strong style="color:#05C582">tap boost multiplier</strong> that applies instantly when equipped in-game!</p>
     <div style="display:flex;justify-content:center;gap:1rem;margin-top:1rem;flex-wrap:wrap">
-      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#34D399">⚡ Equipped skin multiplies every tap</div>
-      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(39,117,202,0.1);border:1px solid rgba(39,117,202,0.3);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#2775CA">💎 HyperEVM USDC payments</div>
+      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(5,197,130,0.08);border:1px solid rgba(5,197,130,0.25);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#05C582">⚡ Equipped skin multiplies every tap</div>
+      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(39,117,202,0.08);border:1px solid rgba(39,117,202,0.25);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#2775CA">💎 Monad USDC payments</div>
     </div>
   </div>
   <div id="skins-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.75rem"></div>
   <div style="text-align:center;margin-top:2.5rem">
-    <div style="display:inline-flex;align-items:center;gap:0.5rem;background:#111;border:1px solid rgba(250,204,21,0.3);border-radius:9999px;padding:0.5rem 1.25rem">
-      <span style="color:#FACC15">🦍</span>
+    <div style="display:inline-flex;align-items:center;gap:0.5rem;background:#0d1117;border:1px solid rgba(5,197,130,0.2);border-radius:9999px;padding:0.5rem 1.25rem">
+      <span style="color:#05C582">🦍</span>
       <span style="font-size:0.875rem;color:#9CA3AF">Connect MetaMask to purchase • Skins are saved permanently</span>
     </div>
   </div>
 </section>
 
 <!-- TOKENOMICS -->
-<section id="tokenomics" style="background:linear-gradient(180deg,#000 0%,#0a0a0a 100%);padding:5rem 1.5rem;position:relative;z-index:1">
+<section id="tokenomics" style="background:linear-gradient(180deg,#080b10 0%,#050709 100%);padding:5rem 1.5rem;position:relative;z-index:1">
   <div style="max-width:64rem;margin:0 auto">
     <div style="text-align:center;margin-bottom:3rem">
-      <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(250,204,21,0.15);color:#FACC15;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">TOKENOMICS</div>
+      <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(5,197,130,0.1);color:#05C582;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">TOKENOMICS</div>
       <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem">THE ECONOMICS</h2>
       <p style="color:#9CA3AF;font-size:1rem;margin-top:0.5rem">Simple, fair, and transparent.</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-bottom:3rem">
-      <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">TOTAL SUPPLY</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#FFD700">1,000,000,000</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">$APES forever</div></div>
+      <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">TOTAL SUPPLY</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#05C582">1,000,000,000</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">$APES forever</div></div>
       <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">BUY/SELL TAX</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#34D399">0%</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">Zero tax — keep every banana</div></div>
       <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">LP BURNED</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#C084FC">100%</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">Liquidity locked forever</div></div>
-      <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">OWNER</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#F59E0B">Renounced</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">No control, true community coin</div></div>
+      <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">OWNER</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#05C582">Renounced</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">No control, true community coin</div></div>
     </div>
     <div style="margin-bottom:2rem;display:flex;align-items:center;max-width:640px;margin-left:auto;margin-right:auto">
-      <div style="flex:1;background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.4);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">CA: SOON</div>
-      <div style="background:linear-gradient(90deg,#F5A623,#d4891a);color:#000;font-weight:900;font-size:0.78rem;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;white-space:nowrap;display:flex;align-items:center">⏳ SOON</div>
+      <div style="flex:1;background:rgba(5,197,130,0.06);border:1px solid rgba(5,197,130,0.25);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">CA: SOON</div>
+      <div style="background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:0.78rem;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;white-space:nowrap;display:flex;align-items:center">⏳ SOON</div>
     </div>
   </div>
 </section>
@@ -382,71 +401,71 @@
 <!-- HOW TO BUY -->
 <section id="how" style="max-width:64rem;margin:0 auto;padding:5rem 1.5rem;position:relative;z-index:1">
   <div style="text-align:center;margin-bottom:3rem">
-    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(52,211,153,0.2);color:#34D399;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">GET STARTED</div>
+    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(5,197,130,0.1);color:#05C582;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">GET STARTED</div>
     <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff">HOW TO BUY $APES</h2>
   </div>
   <div style="display:flex;flex-direction:column;gap:1rem">
-    <div class="step"><div class="step-num">1</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Install MetaMask &amp; Add HyperEVM</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Install MetaMask and add the HyperEVM network (Chain ID: 999). Click <strong style="color:#F5A623">Connect MetaMask</strong> in the navbar to link your wallet instantly!</div></div></div>
-    <div class="step"><div class="step-num">2</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Get USDC on HyperEVM</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Bridge or obtain USDC on HyperEVM. You need at least <strong style="color:#FFD700">3 USDC</strong> to buy the starter Jungle Chad skin. Skins give tap boost multipliers in the game!</div></div></div>
+    <div class="step"><div class="step-num">1</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Install MetaMask &amp; Add Monad</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Install MetaMask and add the Monad network (Chain ID: 10143). Click <strong style="color:#05C582">Connect MetaMask</strong> in the navbar to link your wallet instantly!</div></div></div>
+    <div class="step"><div class="step-num">2</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Get USDC on Monad</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Bridge or obtain USDC on Monad. You need at least <strong style="color:#05C582">3 USDC</strong> to buy the starter Jungle Chad skin. Skins give tap boost multipliers in the game!</div></div></div>
     <div class="step"><div class="step-num">3</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy Skins &amp; Play</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Head to the <strong style="color:#C084FC">APE SKINS</strong> section, choose your skin, and buy with USDC via MetaMask. Equip it in-game for an instant tap boost. Stack banana scores and convert them to $APES!</div></div></div>
-    <div class="step"><div class="step-num">4</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy $APES on alt.fun</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Visit <strong style="color:#F5A623">alt.fun</strong> — the premier platform to buy $APES. Connect MetaMask and swap instantly.<br><span style="color:#FACC15;font-size:0.8rem">CA: SOON</span></div></div></div>
+    <div class="step"><div class="step-num">4</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy $APES on alt.fun</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Visit <strong style="color:#05C582">alt.fun</strong> — the premier platform to buy $APES. Connect MetaMask and swap instantly.<br><span style="color:#05C582;font-size:0.8rem">CA: SOON</span></div></div></div>
   </div>
   <div style="margin-top:2rem;text-align:center">
-    <button class="meme-btn" onclick="window.open('https://alt.fun/','_blank')" style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;box-shadow:0 10px 40px rgba(255,215,0,0.4)">🚀 BUY $APES ON ALT.FUN</button>
+    <button class="meme-btn" onclick="window.open('https://alt.fun/','_blank')" style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;box-shadow:0 10px 40px rgba(5,197,130,0.35)">🚀 BUY $APES ON ALT.FUN</button>
   </div>
 </section>
 
 <!-- ROADMAP -->
-<section id="roadmap" style="background:#0a0a0a;padding:5rem 1.5rem;position:relative;z-index:1">
+<section id="roadmap" style="background:#050709;padding:5rem 1.5rem;position:relative;z-index:1">
   <div style="max-width:64rem;margin:0 auto">
     <div style="text-align:center;margin-bottom:3rem">
-      <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(250,204,21,0.15);color:#FACC15;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">THE PLAN</div>
+      <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(5,197,130,0.1);color:#05C582;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">THE PLAN</div>
       <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem">ROADMAP</h2>
       <p style="color:#9CA3AF;font-size:1rem;margin-top:0.5rem">From jungle to the moon — one banana at a time.</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem">
-      <div style="background:#111;border:2px solid #FFD700;border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#FFD700,#F59E0Bcc)"></div>
-        <div style="display:inline-block;padding:0.25rem 0.875rem;background:rgba(34,197,94,0.2);color:#22c55e;border-radius:9999px;font-size:0.7rem;font-weight:900;letter-spacing:1px;margin-bottom:1rem">✅ LIVE NOW</div>
-        <div class="pixel-font" style="font-size:0.7rem;color:#FFD700;margin-bottom:0.5rem">PHASE 1</div>
+      <div style="background:#0d1117;border:1px solid #05C582;border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#05C582,#00D97Bcc)"></div>
+        <div style="display:inline-block;padding:0.25rem 0.875rem;background:rgba(5,197,130,0.15);color:#05C582;border-radius:9999px;font-size:0.7rem;font-weight:900;letter-spacing:1px;margin-bottom:1rem">✅ LIVE NOW</div>
+        <div class="pixel-font" style="font-size:0.7rem;color:#05C582;margin-bottom:0.5rem">PHASE 1</div>
         <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🚀 LAUNCH</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Token launch on HyperEVM</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Website &amp; Take Banana game live</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Persistent leaderboard</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Skin shop with USDC payments</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#22c55e">✔</span>Community Twitter launch</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Token launch on Monad</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Website &amp; Take Banana game live</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Persistent leaderboard</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Skin shop with USDC payments</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Community Twitter launch</li>
         </ul>
       </div>
-      <div style="background:#111;border:1px solid rgba(245,166,35,0.4);border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#F5A623,#d4891acc)"></div>
-        <div style="display:inline-block;padding:0.25rem 0.875rem;background:rgba(245,166,35,0.2);color:#F5A623;border-radius:9999px;font-size:0.7rem;font-weight:900;letter-spacing:1px;margin-bottom:1rem">⏳ COMING SOON</div>
-        <div class="pixel-font" style="font-size:0.7rem;color:#F5A623;margin-bottom:0.5rem">PHASE 2</div>
+      <div style="background:#0d1117;border:1px solid rgba(5,197,130,0.3);border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#00D97B,#05C582cc)"></div>
+        <div style="display:inline-block;padding:0.25rem 0.875rem;background:rgba(5,197,130,0.1);color:#00D97B;border-radius:9999px;font-size:0.7rem;font-weight:900;letter-spacing:1px;margin-bottom:1rem">⏳ COMING SOON</div>
+        <div class="pixel-font" style="font-size:0.7rem;color:#00D97B;margin-bottom:0.5rem">PHASE 2</div>
         <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🌿 GROWTH</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#F5A623">◆</span>CoinGecko &amp; CMC listing</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#F5A623">◆</span>Convert bananas to $APES live</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#F5A623">◆</span>Major influencer partnerships</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#F5A623">◆</span>Telegram community 5,000+</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#F5A623">◆</span>Cross-platform marketing blitz</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#00D97B">◆</span>CoinGecko &amp; CMC listing</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#00D97B">◆</span>Convert bananas to $APES live</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#00D97B">◆</span>Major influencer partnerships</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#00D97B">◆</span>Telegram community 5,000+</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#00D97B">◆</span>Cross-platform marketing blitz</li>
         </ul>
       </div>
-      <div style="background:#111;border:1px solid rgba(192,132,252,0.4);border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#C084FC,#a855f7cc)"></div>
-        <div style="display:inline-block;padding:0.25rem 0.875rem;background:rgba(168,85,247,0.2);color:#C084FC;border-radius:9999px;font-size:0.7rem;font-weight:900;letter-spacing:1px;margin-bottom:1rem">🔮 COMING</div>
+      <div style="background:#0d1117;border:1px solid rgba(192,132,252,0.35);border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C084FC,#a855f7cc)"></div>
+        <div style="display:inline-block;padding:0.25rem 0.875rem;background:rgba(168,85,247,0.15);color:#C084FC;border-radius:9999px;font-size:0.7rem;font-weight:900;letter-spacing:1px;margin-bottom:1rem">🔮 COMING</div>
         <div class="pixel-font" style="font-size:0.7rem;color:#C084FC;margin-bottom:0.5rem">PHASE 3</div>
         <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🦍 NFT DROP</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>NFT Ape Skin collection (HyperEVM)</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>NFT Ape Skin collection (Monad)</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>1,000 NFT holder milestone</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>Holder-only events &amp; giveaways</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>$APES weekly prize pool</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>Strategic CEX talks begin</li>
         </ul>
       </div>
-      <div style="background:#111;border:1px solid rgba(52,211,153,0.4);border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#34D399,#22c55ecc)"></div>
-        <div style="display:inline-block;padding:0.25rem 0.875rem;background:rgba(52,211,153,0.1);color:#34D399;border-radius:9999px;font-size:0.7rem;font-weight:900;letter-spacing:1px;margin-bottom:1rem">🌙 THE MOON</div>
+      <div style="background:#0d1117;border:1px solid rgba(52,211,153,0.35);border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#34D399,#22c55ecc)"></div>
+        <div style="display:inline-block;padding:0.25rem 0.875rem;background:rgba(52,211,153,0.08);color:#34D399;border-radius:9999px;font-size:0.7rem;font-weight:900;letter-spacing:1px;margin-bottom:1rem">🌙 THE MOON</div>
         <div class="pixel-font" style="font-size:0.7rem;color:#34D399;margin-bottom:0.5rem">PHASE 4</div>
         <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🦍 ECOSYSTEM</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
@@ -464,19 +483,19 @@
 <!-- COMMUNITY -->
 <section id="community" style="max-width:64rem;margin:0 auto;padding:5rem 1.5rem;position:relative;z-index:1">
   <div style="text-align:center;margin-bottom:3rem">
-    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(168,85,247,0.2);color:#C084FC;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">JOIN US</div>
+    <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(168,85,247,0.15);color:#C084FC;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">JOIN US</div>
     <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff">JOIN THE JUNGLE</h2>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem">
     <div class="social-card" onclick="window.open('https://alt.fun/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">𝕏</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Twitter / X</div><div style="color:#9CA3AF;font-size:0.875rem">Follow for alpha, memes &amp; updates</div></div>
-    <div class="social-card" onclick="window.open('https://t.me/planetapesfun','_blank')"><div style="font-size:3rem;margin-bottom:1rem">📱</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Telegram</div><div style="color:#9CA3AF;font-size:0.875rem">Join the jungle chat • alpha &amp; memes</div></div>
+    <div class="social-card" onclick="window.open('https://t.me/planetapesfun','_blank')"><div style="font-size:3rem;margin-bottom:1rem">📱</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Telegram</div><div style="color:#9CA3AF;font-size:0.875rem">Join the jungle chat</div></div>
     <div class="social-card" onclick="window.open('https://alt.fun/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">🚀</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">alt.fun</div><div style="color:#9CA3AF;font-size:0.875rem">Buy $APES now on alt.fun</div></div>
     <div class="social-card" onclick="window.open('https://alt.fun/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">📊</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Dexscreener</div><div style="color:#9CA3AF;font-size:0.875rem">Track $APES price live</div></div>
   </div>
 </section>
 
 <!-- FAQ -->
-<section style="background:#0a0a0a;padding:5rem 1.5rem;position:relative;z-index:1">
+<section style="background:#050709;padding:5rem 1.5rem;position:relative;z-index:1">
   <div style="max-width:48rem;margin:0 auto">
     <div style="text-align:center;margin-bottom:3rem">
       <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,2.5rem);font-weight:900;color:#fff">FAQ</h2>
@@ -486,19 +505,19 @@
 </section>
 
 <!-- FOOTER -->
-<footer style="background:#000;border-top:1px solid rgba(250,204,21,0.2);padding:3rem 1.5rem;text-align:center;position:relative;z-index:1">
+<footer style="background:#050709;border-top:1px solid rgba(5,197,130,0.15);padding:3rem 1.5rem;text-align:center;position:relative;z-index:1">
   <div style="display:flex;justify-content:center;margin-bottom:1.5rem">
-    <img src="https://i.imgur.com/KlM5HWE.jpg" alt="APES" style="width:56px;height:56px;border-radius:50%;border:2px solid #FFD700;object-fit:cover" />
+    <img src="https://i.imgur.com/KlM5HWE.jpg" alt="APES" style="width:56px;height:56px;border-radius:50%;border:2px solid #05C582;object-fit:cover" />
   </div>
-  <div class="pixel-font" style="font-size:1rem;color:#FFD700;margin-bottom:0.5rem">PLANET APES</div>
-  <div style="color:#6B7280;font-size:0.875rem;margin-bottom:1.5rem">The most based meme coin on HyperEVM.</div>
+  <div class="pixel-font" style="font-size:1rem;color:#05C582;margin-bottom:0.5rem">PLANET APES</div>
+  <div style="color:#6B7280;font-size:0.875rem;margin-bottom:1.5rem">The most based meme coin on Monad.</div>
   <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap">
-    <a href="https://alt.fun/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#FFD700'" onmouseout="this.style.color='#9CA3AF'">Twitter</a>
+    <a href="https://alt.fun/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#05C582'" onmouseout="this.style.color='#9CA3AF'">Twitter</a>
     <a href="https://t.me/planetapesfun" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#229ED9'" onmouseout="this.style.color='#9CA3AF'">Telegram</a>
-    <a href="https://alt.fun/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#F5A623'" onmouseout="this.style.color='#9CA3AF'">Buy $APES</a>
+    <a href="https://alt.fun/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#05C582'" onmouseout="this.style.color='#9CA3AF'">Buy $APES</a>
   </div>
   <div style="color:#4B5563;font-size:0.75rem">$APES is a meme coin with no intrinsic value. Always do your own research. Not financial advice.</div>
-  <div style="color:#374151;font-size:0.65rem;margin-top:0.5rem">HyperEVM Network | High-Performance EVM Blockchain</div>
+  <div style="color:#374151;font-size:0.65rem;margin-top:0.5rem">Monad Network | High-Performance EVM Blockchain</div>
 </footer>
 
 <!-- ═══════════ MODALS ═══════════ -->
@@ -509,19 +528,19 @@
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
       <div>
         <div style="font-weight:900;font-size:1.4rem">🦊 MetaMask Wallet</div>
-        <div style="font-size:0.75rem;color:#34D399;margin-top:0.2rem">Connected to HyperEVM</div>
+        <div style="font-size:0.75rem;color:#05C582;margin-top:0.2rem">Connected to Monad</div>
       </div>
       <button class="modal-close" onclick="closeWalletInfoModal()">✕</button>
     </div>
     <div style="text-align:center;padding:0.5rem 0 1.5rem">
       <div style="font-size:3rem;margin-bottom:0.75rem">✅</div>
-      <div style="font-weight:900;font-size:1.1rem;color:#34D399;margin-bottom:0.35rem">Wallet Connected</div>
-      <div id="wallet-info-short" style="font-size:1rem;font-weight:700;color:#F5A623;margin-bottom:0.6rem;font-family:monospace"></div>
-      <div id="wallet-info-addr" style="font-family:monospace;font-size:0.62rem;color:#9CA3AF;background:#1a1a1a;padding:0.6rem 0.75rem;border-radius:0.75rem;word-break:break-all;margin-bottom:1.25rem;text-align:left"></div>
-      <div style="background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.2);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;text-align:left;line-height:1.6">
-        ✅ You can submit scores to the leaderboard<br>✅ Buy skins with USDC on HyperEVM<br>✅ Convert bananas to $APES at launch
+      <div style="font-weight:900;font-size:1.1rem;color:#05C582;margin-bottom:0.35rem">Wallet Connected</div>
+      <div id="wallet-info-short" style="font-size:1rem;font-weight:700;color:#05C582;margin-bottom:0.6rem;font-family:monospace"></div>
+      <div id="wallet-info-addr" style="font-family:monospace;font-size:0.62rem;color:#9CA3AF;background:#1a1f2e;padding:0.6rem 0.75rem;border-radius:0.75rem;word-break:break-all;margin-bottom:1.25rem;text-align:left"></div>
+      <div style="background:rgba(5,197,130,0.06);border:1px solid rgba(5,197,130,0.2);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;text-align:left;line-height:1.6">
+        ✅ Submit scores to the leaderboard<br>✅ Buy skins with USDC on Monad<br>✅ Convert bananas to $APES at launch
       </div>
-      <button onclick="disconnectWallet()" style="padding:0.75rem 2rem;border:1px solid rgba(239,68,68,0.4);background:rgba(239,68,68,0.1);color:#ef4444;font-weight:700;border-radius:0.75rem;width:100%;cursor:pointer;font-size:0.9rem">🔌 Disconnect Wallet</button>
+      <button onclick="disconnectWallet()" style="padding:0.75rem 2rem;border:1px solid rgba(239,68,68,0.4);background:rgba(239,68,68,0.08);color:#ef4444;font-weight:700;border-radius:0.75rem;width:100%;cursor:pointer;font-size:0.9rem">🔌 Disconnect Wallet</button>
     </div>
   </div>
 </div>
@@ -535,17 +554,17 @@
     </div>
     <div style="text-align:center;margin-bottom:1rem">
       <div style="font-size:0.75rem;color:#9CA3AF;margin-bottom:0.25rem">YOUR SCORE</div>
-      <div id="submit-score-display" style="font-family:monospace;font-weight:900;font-size:3rem;color:#FACC15">0</div>
+      <div id="submit-score-display" style="font-family:monospace;font-weight:900;font-size:3rem;color:#05C582">0</div>
     </div>
-    <div style="background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.3);border-radius:0.75rem;padding:0.6rem 0.9rem;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem">
+    <div style="background:rgba(5,197,130,0.07);border:1px solid rgba(5,197,130,0.25);border-radius:0.75rem;padding:0.6rem 0.9rem;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem">
       <span style="font-size:0.8rem">🦊</span>
-      <span id="submit-wallet-display" style="font-family:monospace;font-size:0.72rem;color:#F5A623;font-weight:700"></span>
+      <span id="submit-wallet-display" style="font-family:monospace;font-size:0.72rem;color:#05C582;font-weight:700"></span>
     </div>
     <input type="text" id="submit-name-input" placeholder="Enter your ape name..." maxlength="20" onkeydown="if(event.key==='Enter')submitScore();if(event.key==='Escape')closeSubmitModal()" style="margin-bottom:0.5rem" />
-    <p style="font-size:0.7rem;color:#6B7280;text-align:center;margin-bottom:1rem">Score saved permanently to leaderboard — linked to your wallet!</p>
+    <p style="font-size:0.7rem;color:#6B7280;text-align:center;margin-bottom:1rem">Score saved permanently — linked to your wallet!</p>
     <div style="display:flex;gap:0.75rem">
-      <button onclick="closeSubmitModal()" style="flex:1;padding:0.75rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CANCEL</button>
-      <button id="submit-btn" onclick="submitScore()" style="flex:1;padding:0.75rem;background:linear-gradient(90deg,#FFD700,#F59E0B);color:#000;font-weight:900;border-radius:0.75rem;border:none;cursor:pointer">🏆 SUBMIT</button>
+      <button onclick="closeSubmitModal()" style="flex:1;padding:0.75rem;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CANCEL</button>
+      <button id="submit-btn" onclick="submitScore()" style="flex:1;padding:0.75rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;border-radius:0.75rem;border:none;cursor:pointer">🏆 SUBMIT</button>
     </div>
   </div>
 </div>
@@ -558,23 +577,23 @@
       <button class="modal-close" onclick="closeSkinModal()">✕</button>
     </div>
     <div style="text-align:center;margin-bottom:1rem">
-      <img id="skin-modal-img" style="width:180px;height:180px;object-fit:cover;border-radius:50%;border:8px solid #FFD700;box-shadow:0 0 60px #FFD700" alt="Skin" />
+      <img id="skin-modal-img" style="width:180px;height:180px;object-fit:cover;border-radius:50%;border:8px solid #05C582;box-shadow:0 0 60px rgba(5,197,130,0.5)" alt="Skin" />
     </div>
     <div id="skin-modal-rarity" style="text-align:center;margin-bottom:0.5rem;font-weight:900"></div>
     <div style="text-align:center;margin-bottom:0.75rem">
-      <span id="skin-modal-boost" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.4);border-radius:0.5rem;padding:0.3rem 0.8rem;font-size:0.8rem;font-weight:900;color:#34D399"></span>
+      <span id="skin-modal-boost" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(5,197,130,0.1);border:1px solid rgba(5,197,130,0.35);border-radius:0.5rem;padding:0.3rem 0.8rem;font-size:0.8rem;font-weight:900;color:#05C582"></span>
     </div>
     <div id="skin-modal-desc" style="color:#9CA3AF;font-size:0.9rem;line-height:1.6;text-align:center;margin-bottom:1rem"></div>
-    <div style="background:#1a1a1a;border:1px solid rgba(250,204,21,0.2);border-radius:1rem;padding:1rem;margin-bottom:1.25rem">
+    <div style="background:#1a1f2e;border:1px solid rgba(5,197,130,0.15);border-radius:1rem;padding:1rem;margin-bottom:1.25rem">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
-        <div style="font-size:0.75rem;color:#9CA3AF">PRICE (USDC — HyperEVM)</div>
+        <div style="font-size:0.75rem;color:#9CA3AF">PRICE (USDC — Monad)</div>
         <div id="skin-modal-price" style="font-weight:900;color:#2775CA;font-size:1.1rem"></div>
       </div>
-      <div style="font-size:0.7rem;color:#FACC15;margin-bottom:0.25rem">BOOST UTILITY</div>
+      <div style="font-size:0.7rem;color:#05C582;margin-bottom:0.25rem">BOOST UTILITY</div>
       <div id="skin-modal-unlock" style="font-weight:700;color:#fff;font-size:0.85rem"></div>
     </div>
     <div id="skin-modal-actions" style="display:flex;gap:0.75rem;flex-wrap:wrap"></div>
-    <div style="text-align:center;margin-top:0.75rem;font-size:0.65rem;color:#6B7280">HyperEVM • USDC Payment • Permanent Ownership • Equip in Game</div>
+    <div style="text-align:center;margin-top:0.75rem;font-size:0.65rem;color:#6B7280">Monad • USDC Payment • Permanent Ownership • Equip in Game</div>
   </div>
 </div>
 
@@ -588,43 +607,33 @@
       </div>
       <button class="modal-close" onclick="closePaymentModal()">✕</button>
     </div>
-
-    <!-- Amount box -->
-    <div style="background:linear-gradient(135deg,rgba(39,117,202,0.15),rgba(39,117,202,0.05));border:2px solid rgba(39,117,202,0.5);border-radius:1rem;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between">
+    <div style="background:linear-gradient(135deg,rgba(39,117,202,0.12),rgba(39,117,202,0.04));border:1px solid rgba(39,117,202,0.4);border-radius:1rem;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:0.65rem;color:#9CA3AF;letter-spacing:0.1em">SEND EXACTLY</div>
         <div id="pay-amount-display" style="font-size:2rem;font-weight:900;color:#2775CA;font-family:monospace"></div>
-        <div style="font-size:0.65rem;color:#6B7280;margin-top:0.1rem">via MetaMask on HyperEVM</div>
+        <div style="font-size:0.65rem;color:#6B7280;margin-top:0.1rem">via MetaMask on Monad</div>
       </div>
       <div style="font-size:3rem">💎</div>
     </div>
-
-    <!-- Destination address -->
-    <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:0.75rem;padding:0.75rem 1rem;margin-bottom:1rem">
-      <div style="font-size:0.65rem;color:#9CA3AF;margin-bottom:0.3rem;letter-spacing:0.1em">DESTINATION ADDRESS (HyperEVM)</div>
-      <div style="font-family:monospace;font-size:0.72rem;color:#FFD700;word-break:break-all;line-height:1.5">0x48B4d44319DA6c95fC20c516Cc90FEF33DbaCfAa</div>
+    <div style="background:#1a1f2e;border:1px solid rgba(255,255,255,0.08);border-radius:0.75rem;padding:0.75rem 1rem;margin-bottom:1rem">
+      <div style="font-size:0.65rem;color:#9CA3AF;margin-bottom:0.3rem;letter-spacing:0.1em">DESTINATION ADDRESS (Monad)</div>
+      <div style="font-family:monospace;font-size:0.72rem;color:#05C582;word-break:break-all;line-height:1.5">0x206DEd182FB54c58Cce0b33BC5d31876b20fB41A</div>
     </div>
-
-    <!-- MetaMask pay button -->
     <div style="margin-bottom:1rem">
-      <button id="metamask-pay-btn" onclick="payWithMetaMask()" style="width:100%;padding:1rem;background:linear-gradient(90deg,#F5A623,#d4891a);color:#000;font-weight:900;font-size:1rem;border:none;border-radius:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.75rem;transition:all 0.2s">
+      <button id="metamask-pay-btn" onclick="payWithMetaMask()" style="width:100%;padding:1rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:1rem;border:none;border-radius:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.75rem;transition:all 0.2s">
         <span style="font-size:1.25rem">🦊</span> Pay with MetaMask
       </button>
     </div>
-
-    <!-- Status -->
-    <div id="pay-status" style="display:none;background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.3);border-radius:0.75rem;padding:0.75rem;margin-bottom:1rem;font-size:0.8rem;color:#34D399;text-align:center;line-height:1.5"></div>
-
-    <!-- Countdown + Confirm -->
-    <div style="background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.3);border-radius:0.75rem;padding:0.75rem;margin-bottom:1rem;font-size:0.75rem;color:#34D399;text-align:center;line-height:1.5">
-      Click <strong>Pay with MetaMask</strong> above — MetaMask will open and send USDC automatically.<br>
-      <span style="color:#6B7280;font-size:0.65rem">Your purchase is stored permanently in this browser after payment confirms.</span>
+    <div id="pay-status" style="display:none;background:rgba(5,197,130,0.06);border:1px solid rgba(5,197,130,0.25);border-radius:0.75rem;padding:0.75rem;margin-bottom:1rem;font-size:0.8rem;color:#05C582;text-align:center;line-height:1.5"></div>
+    <div style="background:rgba(5,197,130,0.05);border:1px solid rgba(5,197,130,0.2);border-radius:0.75rem;padding:0.75rem;margin-bottom:1rem;font-size:0.75rem;color:#05C582;text-align:center;line-height:1.5">
+      Click <strong>Pay with MetaMask</strong> — MetaMask will open and send USDC automatically.<br>
+      <span style="color:#6B7280;font-size:0.65rem">Purchase is stored permanently after payment confirms.</span>
     </div>
     <div style="display:flex;gap:0.75rem">
-      <button onclick="closePaymentModal()" style="flex:1;padding:0.85rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CANCEL</button>
-      <button id="pay-confirm-btn" onclick="confirmPayment()" style="flex:2;padding:0.85rem;background:rgba(52,211,153,0.15);border:1px solid #34D399;color:#34D399;font-weight:900;border-radius:0.75rem;cursor:pointer;font-size:0.95rem">✅ I've Paid — Unlock Skin</button>
+      <button onclick="closePaymentModal()" style="flex:1;padding:0.85rem;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CANCEL</button>
+      <button id="pay-confirm-btn" onclick="confirmPayment()" style="flex:2;padding:0.85rem;background:rgba(5,197,130,0.1);border:1px solid #05C582;color:#05C582;font-weight:900;border-radius:0.75rem;cursor:pointer;font-size:0.95rem">✅ I've Paid — Unlock Skin</button>
     </div>
-    <div style="text-align:center;margin-top:0.75rem;font-size:0.6rem;color:#6B7280">HyperEVM • USDC ERC-20 Transfer • Sent to Planet Apes treasury</div>
+    <div style="text-align:center;margin-top:0.75rem;font-size:0.6rem;color:#6B7280">Monad • USDC ERC-20 Transfer • Sent to Planet Apes treasury</div>
   </div>
 </div>
 
@@ -635,20 +644,20 @@
       <div style="font-weight:900;font-size:1.5rem">🍌 Convert to $APES</div>
       <button class="modal-close" onclick="closeConvertModal()">✕</button>
     </div>
-    <div style="text-align:center;margin-bottom:1.5rem;background:#1a1a1a;border-radius:1rem;padding:1.5rem">
+    <div style="text-align:center;margin-bottom:1.5rem;background:#1a1f2e;border-radius:1rem;padding:1.5rem">
       <div style="font-size:0.75rem;color:#9CA3AF;margin-bottom:0.25rem">YOUR BANANAS</div>
-      <div id="convert-score-display" style="font-family:monospace;font-weight:900;font-size:3rem;color:#FACC15;margin-bottom:0.5rem">0</div>
+      <div id="convert-score-display" style="font-family:monospace;font-weight:900;font-size:3rem;color:#05C582;margin-bottom:0.5rem">0</div>
       <div style="font-size:0.85rem;color:#6B7280;margin-bottom:0.5rem">converts to</div>
       <div id="convert-apes-display" style="font-family:monospace;font-weight:900;font-size:2rem;color:#34D399;margin-bottom:0.25rem">0 $APES</div>
       <div style="font-size:0.7rem;color:#6B7280">Rate: 1,000 bananas = 1 $APES</div>
     </div>
-    <div id="convert-boost-note" style="display:none;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#34D399;text-align:center"></div>
-    <div style="background:#1a1a1a;border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;line-height:1.6">
-      <strong style="color:#fff">How it works:</strong> Submit your score above, then connect MetaMask. When $APES token launches on HyperEVM, your banana score converts to real $APES tokens — the more bananas (boosted by skins!), the more $APES you earn.
+    <div id="convert-boost-note" style="display:none;background:rgba(5,197,130,0.07);border:1px solid rgba(5,197,130,0.25);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#05C582;text-align:center"></div>
+    <div style="background:#1a1f2e;border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;line-height:1.6">
+      <strong style="color:#fff">How it works:</strong> Submit your score, then connect MetaMask. When $APES token launches on Monad, your banana score converts to real $APES tokens — the more bananas (boosted by skins!), the more $APES you earn.
     </div>
     <div style="display:flex;gap:0.75rem">
-      <button onclick="closeConvertModal()" style="flex:1;padding:0.75rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CLOSE</button>
-      <button onclick="claimConvert()" style="flex:1;padding:0.75rem;background:linear-gradient(90deg,#34D399,#22c55e);color:#000;font-weight:900;border-radius:0.75rem;border:none;cursor:pointer">🍌 Convert (SOON)</button>
+      <button onclick="closeConvertModal()" style="flex:1;padding:0.75rem;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CLOSE</button>
+      <button onclick="claimConvert()" style="flex:1;padding:0.75rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;border-radius:0.75rem;border:none;cursor:pointer">🍌 Convert (SOON)</button>
     </div>
   </div>
 </div>
@@ -658,20 +667,18 @@
 'use strict';
 
 // ══════════════════════════════════════════
-// ── CONFIG ──
+// CONFIG
 // ══════════════════════════════════════════
-// HyperEVM chain ID (mainnet: 999)
-var HYPEREVM_CHAIN_ID = '0x3E7'; // 999 in hex
-var HYPEREVM_CHAIN_ID_DEC = 999;
+// Monad Mainnet — Chain ID 10143 (hex: 0x279F)
+var MONAD_CHAIN_ID = '0x279F';
 
-// USDC contract address on HyperEVM
-// NOTE: Update this to the correct USDC contract address on HyperEVM mainnet
-var USDC_CONTRACT = '0x09Bc4E0D864854c6aFB6eB9A9cdF58aC190D0dF9';
+// USDC contract on Monad mainnet
+var USDC_CONTRACT = '0xf817257fed379853cDe0fa4F97AB987181B1E5Ea';
 
-// Planet Apes treasury — receives all skin purchases
-var PLANET_APES_WALLET = '0x48B4d44319DA6c95fC20c516Cc90FEF33DbaCfAa';
+// Planet Apes treasury — receives all skin USDC payments
+var PLANET_APES_WALLET = '0x206DEd182FB54c58Cce0b33BC5d31876b20fB41A';
 
-// ERC-20 USDC transfer ABI (minimal)
+// Minimal ERC-20 ABI for USDC transfers
 var ERC20_ABI = [
   'function transfer(address to, uint256 amount) returns (bool)',
   'function decimals() view returns (uint8)',
@@ -683,7 +690,7 @@ var ERC20_ABI = [
 (function() {
   var bg = document.getElementById('particle-bg');
   var EMOJIS = ['🍌','🍌','🍌','🦍','🐵','✨','⭐','💫'];
-  var COLORS = ['#FFD700','#C084FC','#34D399'];
+  var COLORS = ['#05C582','#00D97B','#34D399'];
   for (var i = 0; i < 40; i++) {
     var star = document.createElement('div');
     star.className = 'star-particle';
@@ -716,14 +723,14 @@ function smoothScroll(id) { var el=document.getElementById(id); if(el) el.scroll
 
 // ── FAQ ──
 var FAQS = [
-  { q:'🍌 What is Planet Apes?', a:'Planet Apes ($APES) is the most based meme coin on HyperEVM. Take bananas, climb the leaderboard, convert your bananas to $APES, and rule the jungle with your fellow apes.' },
+  { q:'🍌 What is Planet Apes?', a:'Planet Apes ($APES) is the most based meme coin on Monad. Take bananas, climb the leaderboard, convert your bananas to $APES, and rule the jungle with your fellow apes.' },
   { q:'🎮 How do I play Take Banana?', a:'Click anywhere in the game area to collect bananas. The more you click, the higher your score. Equip a skin to activate a tap boost multiplier for faster banana collection!' },
-  { q:'💎 How do skins work?', a:'Each Ape Skin costs USDC on HyperEVM (starting at 3 USDC). Once purchased, you can equip the skin and it applies a boost multiplier to every tap — from +0.5× all the way up to +2× for the King Ape skin.' },
-  { q:'🍌 How do I convert bananas to $APES?', a:'Play the game to collect bananas, then click "Convert to $APES". When $APES token launches on HyperEVM, your banana score converts to real $APES tokens at 1,000 bananas = 1 $APES.' },
-  { q:'🏆 Why does my leaderboard NOT reset when I switch pages?', a:'Your leaderboard is saved permanently in your browser using localStorage. It will persist as long as you use the same browser. The weekly reset only happens every Sunday at 00:00 UTC for the prize cycle.' },
-  { q:'🚀 Where can I buy $APES?', a:'$APES is available on alt.fun — the premier platform on HyperEVM. Follow us on Twitter for the exact launch time and contract address.' },
-  { q:'🔗 What blockchain is $APES on?', a:'Planet Apes ($APES) is on HyperEVM — a high-performance EVM-compatible blockchain. All skin purchases use USDC on HyperEVM via MetaMask.' },
-  { q:'🦊 How do I connect MetaMask?', a:'Install MetaMask, then click "Connect MetaMask" in the navbar. Make sure you are on the HyperEVM network (Chain ID: 999). MetaMask will prompt you to switch networks automatically.' },
+  { q:'💎 How do skins work?', a:'Each Ape Skin costs USDC on Monad (starting at 3 USDC). Once purchased, equip the skin and it applies a boost multiplier to every tap — from +0.5× all the way up to +2× for the King Ape skin.' },
+  { q:'🍌 How do I convert bananas to $APES?', a:'Play the game to collect bananas, then click "Convert to $APES". When $APES launches on Monad, your banana score converts to real $APES at 1,000 bananas = 1 $APES.' },
+  { q:'🏆 Will my score be saved?', a:'Your leaderboard score is saved permanently in your browser using localStorage. Submit via MetaMask to link your score to your wallet address permanently.' },
+  { q:'🚀 Where can I buy $APES?', a:'$APES is available on alt.fun. Follow us on Twitter for the exact launch time and contract address.' },
+  { q:'🔗 What blockchain is $APES on?', a:'Planet Apes ($APES) is on Monad — a high-performance EVM-compatible blockchain. All skin purchases use USDC on Monad via MetaMask.' },
+  { q:'🦊 How do I connect MetaMask?', a:'Install MetaMask, then click "Connect MetaMask" in the navbar. Make sure you are on the Monad network (Chain ID: 10143). MetaMask will prompt you to switch networks automatically.' },
 ];
 (function() {
   var list = document.getElementById('faq-list');
@@ -744,7 +751,7 @@ function toggleFaq(qEl) {
 }
 
 // ══════════════════════════════════════════
-// ── METAMASK WALLET CONNECTION ──
+// METAMASK
 // ══════════════════════════════════════════
 var walletAddress = null;
 var walletRawAddress = null;
@@ -753,27 +760,20 @@ function initMetaMask() {
   if (!window.ethereum) return;
   window.ethereum.on('accountsChanged', function(accounts) {
     if (accounts.length === 0) {
-      walletAddress = null;
-      walletRawAddress = null;
-      refreshWalletUI(false);
-      renderSkinsGrid();
+      walletAddress = null; walletRawAddress = null;
+      refreshWalletUI(false); renderSkinsGrid();
     } else {
       walletRawAddress = accounts[0];
       walletAddress = formatAddress(accounts[0]);
-      refreshWalletUI(true);
-      renderSkinsGrid();
+      refreshWalletUI(true); renderSkinsGrid();
     }
   });
-  window.ethereum.on('chainChanged', function() {
-    window.location.reload();
-  });
-  // Auto-restore session if previously connected
+  window.ethereum.on('chainChanged', function() { window.location.reload(); });
   window.ethereum.request({ method: 'eth_accounts' }).then(function(accounts) {
     if (accounts && accounts.length > 0) {
       walletRawAddress = accounts[0];
       walletAddress = formatAddress(accounts[0]);
-      refreshWalletUI(true);
-      renderSkinsGrid();
+      refreshWalletUI(true); renderSkinsGrid();
     }
   }).catch(function(){});
 }
@@ -790,50 +790,35 @@ async function connectMetaMask() {
   }
   try {
     var accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    if (!accounts || accounts.length === 0) {
-      showToast('⚠️ No accounts found. Please unlock MetaMask.', 'error');
-      return;
-    }
+    if (!accounts || accounts.length === 0) { showToast('⚠️ No accounts found. Please unlock MetaMask.', 'error'); return; }
     walletRawAddress = accounts[0];
     walletAddress = formatAddress(accounts[0]);
-
-    // Switch to HyperEVM if not already on it
-    await switchToHyperEVM();
-
-    refreshWalletUI(true);
-    renderSkinsGrid();
+    await switchToMonad();
+    refreshWalletUI(true); renderSkinsGrid();
     showToast('🦊 MetaMask connected! You can now submit scores & buy skins.', 'success');
   } catch (err) {
-    if (err.code === 4001) {
-      showToast('⚠️ Connection cancelled.', 'error');
-    } else {
-      showToast('⚠️ Could not connect MetaMask: ' + (err.message || err), 'error');
-    }
+    if (err.code === 4001) { showToast('⚠️ Connection cancelled.', 'error'); }
+    else { showToast('⚠️ Could not connect: ' + (err.message || err), 'error'); }
   }
 }
 
-async function switchToHyperEVM() {
+async function switchToMonad() {
   try {
-    await window.ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: HYPEREVM_CHAIN_ID }]
-    });
+    await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: MONAD_CHAIN_ID }] });
   } catch (switchErr) {
     if (switchErr.code === 4902) {
       try {
         await window.ethereum.request({
           method: 'wallet_addEthereumChain',
           params: [{
-            chainId: HYPEREVM_CHAIN_ID,
-            chainName: 'HyperEVM',
-            nativeCurrency: { name: 'HYPE', symbol: 'HYPE', decimals: 18 },
-            rpcUrls: ['https://rpc.hyperliquid.xyz/evm'],
-            blockExplorerUrls: ['https://explorer.hyperliquid.xyz']
+            chainId: MONAD_CHAIN_ID,
+            chainName: 'Monad Mainnet',
+            nativeCurrency: { name: 'MON', symbol: 'MON', decimals: 18 },
+            rpcUrls: ['https://rpc.monad.xyz'],
+            blockExplorerUrls: ['https://explorer.monad.xyz']
           }]
         });
-      } catch (addErr) {
-        showToast('⚠️ Could not add HyperEVM network: ' + (addErr.message || addErr), 'error');
-      }
+      } catch (addErr) { showToast('⚠️ Could not add Monad: ' + (addErr.message || addErr), 'error'); }
     }
   }
 }
@@ -847,62 +832,44 @@ function handleWalletBtnClick() {
   }
   connectMetaMask();
 }
-
-function closeWalletInfoModal() {
-  document.getElementById('wallet-info-modal').style.display = 'none';
-}
-
+function closeWalletInfoModal() { document.getElementById('wallet-info-modal').style.display = 'none'; }
 function disconnectWallet() {
-  walletAddress = null;
-  walletRawAddress = null;
-  refreshWalletUI(false);
-  renderSkinsGrid();
-  closeWalletInfoModal();
+  walletAddress = null; walletRawAddress = null;
+  refreshWalletUI(false); renderSkinsGrid(); closeWalletInfoModal();
   showToast('Wallet disconnected.', 'info');
 }
-
 function refreshWalletUI(connected) {
   var btn = document.getElementById('wallet-btn');
   var txt = document.getElementById('wallet-btn-txt');
   if (connected && walletAddress) {
-    btn.classList.add('connected');
-    txt.textContent = walletAddress;
+    btn.classList.add('connected'); txt.textContent = walletAddress;
   } else {
-    btn.classList.remove('connected');
-    txt.textContent = 'Connect MetaMask';
+    btn.classList.remove('connected'); txt.textContent = 'Connect MetaMask';
   }
 }
 
 // ══════════════════════════════════════════
-// ── USDC PAYMENT via MetaMask ──
+// USDC PAYMENT via MetaMask
 // ══════════════════════════════════════════
 var pendingBuySkinId = -1;
 
-function buySkin(id) {
-  closeSkinModal();
-  openPaymentModal(id);
-}
+function buySkin(id) { closeSkinModal(); openPaymentModal(id); }
 
 function openPaymentModal(id) {
   var s = SKINS[id]; if (!s) return;
   pendingBuySkinId = id;
-
   document.getElementById('pay-skin-name').textContent = s.rarity + ' ' + s.name;
   document.getElementById('pay-amount-display').textContent = s.price + ' USDC';
   document.getElementById('pay-status').style.display = 'none';
   document.getElementById('pay-status').textContent = '';
-
   var btn = document.getElementById('metamask-pay-btn');
-  btn.disabled = false;
-  btn.style.opacity = '1';
+  btn.disabled = false; btn.style.opacity = '1';
   btn.innerHTML = '<span style="font-size:1.25rem">🦊</span> Pay with MetaMask';
-
   var confirmBtn = document.getElementById('pay-confirm-btn');
-  confirmBtn.style.background = 'rgba(52,211,153,0.15)';
-  confirmBtn.style.border = '1px solid #34D399';
-  confirmBtn.style.color = '#34D399';
-  confirmBtn.textContent = '✅ I\'ve Paid — Unlock Skin';
-
+  confirmBtn.style.background = 'rgba(5,197,130,0.1)';
+  confirmBtn.style.border = '1px solid #05C582';
+  confirmBtn.style.color = '#05C582';
+  confirmBtn.textContent = "✅ I've Paid — Unlock Skin";
   document.getElementById('payment-modal').dataset.price = s.price;
   document.getElementById('payment-modal').style.display = 'flex';
 }
@@ -910,67 +877,43 @@ function openPaymentModal(id) {
 async function payWithMetaMask() {
   var modal = document.getElementById('payment-modal');
   var price = parseFloat(modal.dataset.price);
-  var s = SKINS[pendingBuySkinId];
-  if (!s) return;
-
+  var s = SKINS[pendingBuySkinId]; if (!s) return;
   if (!walletAddress || !walletRawAddress) {
     showToast('🦊 Connect MetaMask first!', 'error');
-    closePaymentModal();
-    setTimeout(function(){ connectMetaMask(); }, 300);
-    return;
+    closePaymentModal(); setTimeout(function(){ connectMetaMask(); }, 300); return;
   }
-
-  if (!window.ethereum) {
-    showToast('🦊 MetaMask not detected!', 'error');
-    return;
-  }
+  if (!window.ethereum) { showToast('🦊 MetaMask not detected!', 'error'); return; }
 
   var payBtn = document.getElementById('metamask-pay-btn');
   var statusEl = document.getElementById('pay-status');
-  payBtn.disabled = true;
-  payBtn.style.opacity = '0.7';
+  payBtn.disabled = true; payBtn.style.opacity = '0.7';
   payBtn.innerHTML = '<span style="font-size:1.25rem">⏳</span> Waiting for MetaMask…';
-  statusEl.style.display = 'block';
-  statusEl.style.color = '#93c5fd';
+  statusEl.style.display = 'block'; statusEl.style.color = '#93c5fd';
   statusEl.textContent = '⏳ Opening MetaMask…';
 
   try {
-    // Switch to HyperEVM first
-    await switchToHyperEVM();
-
+    await switchToMonad();
     var provider = new ethers.BrowserProvider(window.ethereum);
     var signer = await provider.getSigner();
     var usdc = new ethers.Contract(USDC_CONTRACT, ERC20_ABI, signer);
-
-    // USDC has 6 decimals
-    var decimals = 6;
-    var amount = ethers.parseUnits(String(price), decimals);
-
+    var amount = ethers.parseUnits(String(price), 6);
     statusEl.textContent = '⏳ Sending ' + price + ' USDC — approve in MetaMask…';
-
     var tx = await usdc.transfer(PLANET_APES_WALLET, amount);
-
     statusEl.textContent = '⏳ Transaction sent! Waiting for confirmation…';
     payBtn.innerHTML = '<span style="font-size:1.25rem">⏳</span> Confirming…';
-
     var receipt = await tx.wait(1);
-
-    statusEl.style.color = '#34D399';
-    statusEl.textContent = '✅ Payment confirmed on HyperEVM! Tx: ' + receipt.hash.slice(0,10) + '…';
+    statusEl.style.color = '#05C582';
+    statusEl.textContent = '✅ Payment confirmed! Tx: ' + receipt.hash.slice(0,10) + '…';
     payBtn.innerHTML = '<span style="font-size:1.25rem">✅</span> Payment Successful!';
-    payBtn.style.background = 'linear-gradient(90deg,#34D399,#22c55e)';
-    payBtn.disabled = false;
-    payBtn.style.opacity = '1';
-
+    payBtn.style.background = 'linear-gradient(90deg,#05C582,#00D97B)';
+    payBtn.disabled = false; payBtn.style.opacity = '1';
     var confirmBtn = document.getElementById('pay-confirm-btn');
-    confirmBtn.style.background = 'linear-gradient(90deg,#34D399,#22c55e)';
+    confirmBtn.style.background = 'linear-gradient(90deg,#05C582,#00D97B)';
     confirmBtn.style.color = '#000';
     confirmBtn.textContent = '✅ Payment Done — Unlock Skin!';
-
     showToast('✅ USDC sent! Click "Unlock Skin" to equip.', 'success');
   } catch (err) {
-    payBtn.disabled = false;
-    payBtn.style.opacity = '1';
+    payBtn.disabled = false; payBtn.style.opacity = '1';
     payBtn.innerHTML = '<span style="font-size:1.25rem">🦊</span> Pay with MetaMask';
     statusEl.style.color = '#ef4444';
     if (err.code === 4001 || (err.info && err.info.error && err.info.error.code === 4001)) {
@@ -983,10 +926,7 @@ async function payWithMetaMask() {
   }
 }
 
-function closePaymentModal() {
-  document.getElementById('payment-modal').style.display = 'none';
-  pendingBuySkinId = -1;
-}
+function closePaymentModal() { document.getElementById('payment-modal').style.display = 'none'; pendingBuySkinId = -1; }
 
 function confirmPayment() {
   if (pendingBuySkinId < 0) return;
@@ -997,34 +937,27 @@ function confirmPayment() {
   saveSkinState();
   if (equippedSkinId < 0) { equippedSkinId = id; saveSkinState(); applyEquippedSkinToGame(); }
   renderSkinsGrid();
-  showToast('🎉 ' + s.name + ' unlocked & equipped! ' + s.boostLabel + ' now active!', 'success');
+  showToast('🎉 ' + s.name + ' unlocked! ' + s.boostLabel + ' now active!', 'success');
 }
 
 // ══════════════════════════════════════════
-// ── SKINS DATA ──
+// SKINS DATA
 // ══════════════════════════════════════════
 var SKINS = [
-  { id:0, name:'JUNGLE CHAD',  img:'https://i.imgur.com/4rUjNtO.jpg', rarity:'💪 CHAD',      rarityColor:'#F59E0B', border:'#F59E0B', price:3,  boost:1.5, boostLabel:'+0.5× per tap (1.5× total)', desc:'The alpha starter pack. Maximum gains, never skips banana day. Buy with 3 USDC and get an immediate +50% tap boost in the game.',   unlock:'+0.5× per tap • 1.5× total • Perfect starter boost' },
-  { id:1, name:'DEGEN APE',    img:'https://i.imgur.com/7VFGhCb.jpg', rarity:'🔥 DEGEN',     rarityColor:'#3b82f6', border:'#3b82f6', price:8,  boost:2.0, boostLabel:'+1× per tap (2× total)',    desc:'Laser eyes activated. This ape never sells. For the true degens who live on the edge of the jungle and want double tap power.',         unlock:'+1× per tap • 2× total • Double your banana rate' },
+  { id:0, name:'JUNGLE CHAD',  img:'https://i.imgur.com/4rUjNtO.jpg', rarity:'💪 CHAD',      rarityColor:'#05C582', border:'#05C582', price:3,  boost:1.5, boostLabel:'+0.5× per tap (1.5× total)', desc:'The alpha starter pack. Maximum gains, never skips banana day. Buy with 3 USDC and get an immediate +50% tap boost.',   unlock:'+0.5× per tap • 1.5× total • Perfect starter boost' },
+  { id:1, name:'DEGEN APE',    img:'https://i.imgur.com/7VFGhCb.jpg', rarity:'🔥 DEGEN',     rarityColor:'#3b82f6', border:'#3b82f6', price:8,  boost:2.0, boostLabel:'+1× per tap (2× total)',    desc:'Laser eyes activated. This ape never sells. For the true degens who want double tap power.',         unlock:'+1× per tap • 2× total • Double your banana rate' },
   { id:2, name:'BANANA GOD',   img:'https://i.imgur.com/eyQoioN.jpg', rarity:'🌟 MYTHIC',    rarityColor:'#34D399', border:'#34D399', price:15, boost:2.5, boostLabel:'+1.5× per tap (2.5× total)', desc:'Blessed by the ancient Banana Pantheon. Reserved for those who want to dominate the leaderboard with 2.5× the banana rate.',        unlock:'+1.5× per tap • 2.5× total • Dominate the leaderboard' },
-  { id:3, name:'KING APE',     img:'https://i.imgur.com/YestlX1.jpg', rarity:'👑 LEGENDARY', rarityColor:'#FFD700', border:'#FFD700', price:25, boost:3.0, boostLabel:'+2× per tap (3× total)',    desc:'The one true ruler of Planet Apes. Maximum boost available. Triple your tap power and convert to more $APES than any other ape.',    unlock:'+2× per tap • 3× total • Maximum boost in existence' }
+  { id:3, name:'KING APE',     img:'https://i.imgur.com/YestlX1.jpg', rarity:'👑 LEGENDARY', rarityColor:'#C084FC', border:'#C084FC', price:25, boost:3.0, boostLabel:'+2× per tap (3× total)',    desc:'The one true ruler of Planet Apes. Maximum boost available. Triple your tap power and convert to more $APES than any other ape.',    unlock:'+2× per tap • 3× total • Maximum boost in existence' }
 ];
 
-// ── SKIN STATE (localStorage) ──
 var OWNED_SKINS_KEY = 'apes_owned_skins_v2';
 var EQUIPPED_SKIN_KEY = 'apes_equipped_skin_v2';
 var ownedSkins = [];
 var equippedSkinId = -1;
 
 function loadSkinState() {
-  try {
-    var raw = localStorage.getItem(OWNED_SKINS_KEY);
-    if (raw) { var p = JSON.parse(raw); if (Array.isArray(p)) ownedSkins = p; }
-  } catch(e) {}
-  try {
-    var eq = localStorage.getItem(EQUIPPED_SKIN_KEY);
-    if (eq !== null && eq !== '') { var n = parseInt(eq, 10); if (!isNaN(n) && n >= -1) equippedSkinId = n; }
-  } catch(e) {}
+  try { var raw = localStorage.getItem(OWNED_SKINS_KEY); if (raw) { var p = JSON.parse(raw); if (Array.isArray(p)) ownedSkins = p; } } catch(e) {}
+  try { var eq = localStorage.getItem(EQUIPPED_SKIN_KEY); if (eq !== null && eq !== '') { var n = parseInt(eq, 10); if (!isNaN(n) && n >= -1) equippedSkinId = n; } } catch(e) {}
 }
 function saveSkinState() {
   try { localStorage.setItem(OWNED_SKINS_KEY, JSON.stringify(ownedSkins)); } catch(e) {}
@@ -1036,19 +969,12 @@ function getSkinBoostMultiplier() { var s = getEquippedSkin(); return s ? s.boos
 
 function equipSkin(id) {
   if (!isSkinOwned(id)) { showToast('❌ You don\'t own this skin! Buy it first.', 'error'); return; }
-  equippedSkinId = id;
-  saveSkinState();
-  applyEquippedSkinToGame();
-  renderSkinsGrid();
-  closeSkinModal();
-  showToast('✅ ' + SKINS[id].name + ' equipped! Tap boost active in game.', 'success');
+  equippedSkinId = id; saveSkinState(); applyEquippedSkinToGame(); renderSkinsGrid(); closeSkinModal();
+  showToast('✅ ' + SKINS[id].name + ' equipped! Tap boost active.', 'success');
 }
 function unequipSkin() {
-  equippedSkinId = -1;
-  saveSkinState();
-  applyEquippedSkinToGame();
-  renderSkinsGrid();
-  showToast('Skin unequipped — no boost active.', 'info');
+  equippedSkinId = -1; saveSkinState(); applyEquippedSkinToGame(); renderSkinsGrid();
+  showToast('Skin unequipped.', 'info');
 }
 
 function applyEquippedSkinToGame() {
@@ -1058,22 +984,20 @@ function applyEquippedSkinToGame() {
   var badge = document.getElementById('game-skin-badge');
   var boostInd = document.getElementById('boost-indicator');
   if (s) {
-    apeImg.src = s.img;
-    apeImg.style.borderColor = s.border;
-    apeImg.style.boxShadow = '0 0 60px ' + s.border;
+    apeImg.src = s.img; apeImg.style.borderColor = s.border;
+    apeImg.style.boxShadow = '0 0 50px ' + s.border + '88';
     boostBar.style.display = 'block';
     document.getElementById('boost-bar-label').textContent = '🦍 ' + s.name + ' EQUIPPED';
     document.getElementById('boost-bar-tag').textContent = '⚡ ' + s.boostLabel;
-    badge.style.display = 'block';
-    badge.style.color = s.rarityColor;
+    badge.style.display = 'block'; badge.style.color = s.rarityColor;
     badge.style.border = '1px solid ' + s.rarityColor;
     badge.textContent = '⚡ ' + s.boostLabel;
     boostInd.style.display = 'block';
     boostInd.textContent = '⚡ ' + s.boost + '× boost active';
   } else {
     apeImg.src = 'https://i.imgur.com/KlM5HWE.jpg';
-    apeImg.style.borderColor = '#FFD700';
-    apeImg.style.boxShadow = '0 0 60px #FFD700';
+    apeImg.style.borderColor = '#05C582';
+    apeImg.style.boxShadow = '0 0 50px rgba(5,197,130,0.5)';
     boostBar.style.display = 'none';
     badge.style.display = 'none';
     boostInd.style.display = 'none';
@@ -1086,17 +1010,19 @@ function renderSkinsGrid() {
   SKINS.forEach(function(s) {
     var owned = isSkinOwned(s.id);
     var equipped = equippedSkinId === s.id;
-    var bColor = equipped ? s.border : (owned ? '#34D399' : 'rgba(250,204,21,0.2)');
+    var bColor = equipped ? s.border : (owned ? '#05C582' : 'rgba(5,197,130,0.15)');
     var card = document.createElement('div');
     card.className = 'skin-card' + (equipped ? ' equipped' : '');
     card.style.borderColor = bColor;
     if (equipped) card.style.borderWidth = '2px';
     card.onclick = function() { showSkinModal(s.id); };
-    var badge1 = equipped ? '<div style="position:absolute;top:12px;left:12px;background:#000;border:2px solid #34D399;border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:#34D399">✅ EQUIPPED</div>' : (owned ? '<div style="position:absolute;top:12px;left:12px;background:#000;border:2px solid #22c55e;border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:#22c55e">✔ OWNED</div>' : '');
+    var badge1 = equipped
+      ? '<div style="position:absolute;top:12px;left:12px;background:#000;border:2px solid #05C582;border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:#05C582">✅ EQUIPPED</div>'
+      : (owned ? '<div style="position:absolute;top:12px;left:12px;background:#000;border:2px solid #22c55e;border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:#22c55e">✔ OWNED</div>' : '');
     var btn = '';
     if (owned) {
       if (equipped) {
-        btn = '<button onclick="event.stopPropagation();unequipSkin()" class="btn-equip active-eq" style="font-size:0.75rem;border:1px solid #34D399">✅ EQUIPPED — Unequip</button>';
+        btn = '<button onclick="event.stopPropagation();unequipSkin()" class="btn-equip active-eq" style="font-size:0.75rem;border:1px solid #05C582">✅ EQUIPPED — Unequip</button>';
       } else {
         btn = '<button onclick="event.stopPropagation();equipSkin(' + s.id + ')" class="btn-equip" style="font-size:0.75rem">🦍 EQUIP IN GAME</button>';
       }
@@ -1105,14 +1031,14 @@ function renderSkinsGrid() {
     }
     card.innerHTML =
       '<div style="position:relative">' +
-        '<img src="' + s.img + '" style="width:100%;height:220px;object-fit:cover;border-radius:1rem;border:4px solid ' + s.border + ';box-shadow:0 0 30px ' + s.border + '55;margin-bottom:0.75rem" />' +
-        '<div style="position:absolute;top:12px;right:12px;background:#000;border:2px solid ' + s.rarityColor + ';border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:' + s.rarityColor + '">' + s.rarity + '</div>' +
+        '<img src="' + s.img + '" style="width:100%;height:220px;object-fit:cover;border-radius:1rem;border:3px solid ' + s.border + ';box-shadow:0 0 25px ' + s.border + '44;margin-bottom:0.75rem" />' +
+        '<div style="position:absolute;top:12px;right:12px;background:#000;border:1px solid ' + s.rarityColor + ';border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:' + s.rarityColor + '">' + s.rarity + '</div>' +
         badge1 +
       '</div>' +
       '<div style="font-weight:900;font-size:1.15rem;margin-bottom:0.2rem">' + s.name + '</div>' +
       '<div style="color:' + s.rarityColor + ';font-size:0.8rem;margin-bottom:0.4rem">' + s.rarity + '</div>' +
-      '<div style="display:inline-flex;align-items:center;gap:0.3rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:0.4rem;padding:0.2rem 0.55rem;font-size:0.68rem;font-weight:900;color:#34D399;margin-bottom:0.5rem">⚡ ' + s.boostLabel + '</div>' +
-      '<div style="background:rgba(39,117,202,0.1);border:1px solid rgba(39,117,202,0.3);border-radius:0.75rem;padding:0.4rem 0.6rem;font-size:0.75rem;color:#2775CA;font-weight:700;margin-bottom:0.75rem;text-align:center">💎 ' + s.price + ' USDC</div>' +
+      '<div style="display:inline-flex;align-items:center;gap:0.3rem;background:rgba(5,197,130,0.08);border:1px solid rgba(5,197,130,0.25);border-radius:0.4rem;padding:0.2rem 0.55rem;font-size:0.68rem;font-weight:900;color:#05C582;margin-bottom:0.5rem">⚡ ' + s.boostLabel + '</div>' +
+      '<div style="background:rgba(39,117,202,0.08);border:1px solid rgba(39,117,202,0.25);border-radius:0.75rem;padding:0.4rem 0.6rem;font-size:0.75rem;color:#2775CA;font-weight:700;margin-bottom:0.75rem;text-align:center">💎 ' + s.price + ' USDC</div>' +
       btn;
     grid.appendChild(card);
   });
@@ -1123,23 +1049,18 @@ function showSkinModal(id) {
   document.getElementById('skin-modal-title').innerHTML = s.name + ' <span style="font-size:0.65rem;color:#6B7280">SKIN</span>';
   document.getElementById('skin-modal-img').src = s.img;
   document.getElementById('skin-modal-img').style.borderColor = s.border;
-  document.getElementById('skin-modal-img').style.boxShadow = '0 0 60px ' + s.border;
+  document.getElementById('skin-modal-img').style.boxShadow = '0 0 60px ' + s.border + '88';
   document.getElementById('skin-modal-rarity').innerHTML = '<span style="color:' + s.rarityColor + '">' + s.rarity + '</span>';
   document.getElementById('skin-modal-boost').textContent = '⚡ ' + s.boostLabel;
   document.getElementById('skin-modal-desc').textContent = s.desc;
   document.getElementById('skin-modal-price').textContent = s.price + ' USDC';
   document.getElementById('skin-modal-unlock').textContent = s.unlock;
-
   var actions = document.getElementById('skin-modal-actions');
   actions.innerHTML = '';
-  var owned = isSkinOwned(id);
-  var equipped = equippedSkinId === id;
+  var owned = isSkinOwned(id); var equipped = equippedSkinId === id;
   if (owned) {
-    if (equipped) {
-      actions.innerHTML = '<button onclick="unequipSkin()" class="btn-equip active-eq" style="flex:1;border:1px solid #34D399">✅ EQUIPPED — Click to Unequip</button>';
-    } else {
-      actions.innerHTML = '<button onclick="equipSkin(' + id + ')" class="btn-equip" style="flex:1">🦍 EQUIP IN GAME</button>';
-    }
+    if (equipped) { actions.innerHTML = '<button onclick="unequipSkin()" class="btn-equip active-eq" style="flex:1;border:1px solid #05C582">✅ EQUIPPED — Unequip</button>'; }
+    else { actions.innerHTML = '<button onclick="equipSkin(' + id + ')" class="btn-equip" style="flex:1">🦍 EQUIP IN GAME</button>'; }
   } else {
     actions.innerHTML = '<button onclick="buySkin(' + id + ')" class="btn-buy-usdc" style="flex:1;padding:0.85rem">💎 Buy for ' + s.price + ' USDC</button>';
   }
@@ -1148,7 +1069,7 @@ function showSkinModal(id) {
 function closeSkinModal() { document.getElementById('skin-modal').style.display = 'none'; }
 
 // ══════════════════════════════════════════
-// ── LEADERBOARD ──
+// LEADERBOARD
 // ══════════════════════════════════════════
 var LB_KEY = 'apes_leaderboard_v3';
 var PB_KEY = 'apes_personal_best_v2';
@@ -1166,41 +1087,30 @@ var FALLBACK_LB = [
 ];
 
 function loadLeaderboard() {
-  try {
-    var raw = localStorage.getItem(LB_KEY);
-    if (raw) {
-      var parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-    }
-  } catch(e) {}
+  try { var raw = localStorage.getItem(LB_KEY); if (raw) { var p = JSON.parse(raw); if (Array.isArray(p) && p.length > 0) return p; } } catch(e) {}
   return FALLBACK_LB.slice();
 }
-function saveLeaderboard() {
-  try { localStorage.setItem(LB_KEY, JSON.stringify(leaderboardData)); } catch(e) {}
-}
-function loadPersonalBest() {
-  try { var v = parseInt(localStorage.getItem(PB_KEY),10); if (!isNaN(v) && v > 0) return v; } catch(e) {}
-  return 0;
-}
-function savePersonalBest() {
-  try { localStorage.setItem(PB_KEY, String(personalBest)); } catch(e) {}
-}
+function saveLeaderboard() { try { localStorage.setItem(LB_KEY, JSON.stringify(leaderboardData)); } catch(e) {} }
+function loadPersonalBest() { try { var v = parseInt(localStorage.getItem(PB_KEY),10); if (!isNaN(v) && v > 0) return v; } catch(e) {} return 0; }
+function savePersonalBest() { try { localStorage.setItem(PB_KEY, String(personalBest)); } catch(e) {} }
+
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
 function renderLeaderboard() {
   var list = document.getElementById('leaderboard-list');
   list.innerHTML = '';
   leaderboardData.slice(0,8).forEach(function(entry, i) {
     var div = document.createElement('div');
     div.className = 'lb-pop';
-    div.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:7px 0.75rem;border-radius:1rem;animation-delay:' + (i*60) + 'ms;' + (i < 3 ? 'background:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.3)' : 'background:rgba(0,0,0,0.4)');
-    var walletBadge = entry.wallet ? '<span style="font-size:0.5rem;color:#F5A623;background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.3);border-radius:3px;padding:1px 4px;margin-left:5px;vertical-align:middle">🦊 EVM</span>' : '';
-    div.innerHTML = '<div style="display:flex;align-items:center;gap:0.75rem"><div style="min-width:28px;text-align:right;font-family:monospace;font-size:0.75rem;font-weight:700;color:#FACC15;padding-right:0.25rem">' + (i+1) + '</div><div style="font-weight:700">' + escHtml(entry.name) + (i < 3 ? ' ' + MEDALS[i] : '') + walletBadge + '</div></div><div style="font-family:monospace;color:#FACC15;font-size:0.875rem">' + Math.floor(entry.score).toLocaleString() + '</div>';
+    div.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:7px 0.75rem;border-radius:1rem;animation-delay:' + (i*60) + 'ms;' + (i < 3 ? 'background:rgba(5,197,130,0.07);border:1px solid rgba(5,197,130,0.2)' : 'background:rgba(0,0,0,0.4)');
+    var walletBadge = entry.wallet ? '<span style="font-size:0.5rem;color:#05C582;background:rgba(5,197,130,0.1);border:1px solid rgba(5,197,130,0.25);border-radius:3px;padding:1px 4px;margin-left:5px;vertical-align:middle">🔮 MON</span>' : '';
+    div.innerHTML = '<div style="display:flex;align-items:center;gap:0.75rem"><div style="min-width:28px;text-align:right;font-family:monospace;font-size:0.75rem;font-weight:700;color:#05C582;padding-right:0.25rem">' + (i+1) + '</div><div style="font-weight:700">' + escHtml(entry.name) + (i < 3 ? ' ' + MEDALS[i] : '') + walletBadge + '</div></div><div style="font-family:monospace;color:#05C582;font-size:0.875rem">' + Math.floor(entry.score).toLocaleString() + '</div>';
     list.appendChild(div);
   });
 }
-function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 // ══════════════════════════════════════════
-// ── GAME STATE ──
+// GAME
 // ══════════════════════════════════════════
 var score = 0, level = 1, bananasNeeded = 10000;
 var comboCount = 0, lastClickTime = 0;
@@ -1245,18 +1155,13 @@ function takeBanana(baseAmount) {
   if (now - lastClickTime < 800) { comboCount++; pts += Math.floor(comboCount / 3); } else { comboCount = 0; }
   lastClickTime = now;
   score += pts;
-  if (score > personalBest) {
-    personalBest = score;
-    savePersonalBest();
-  }
+  if (score > personalBest) { personalBest = score; savePersonalBest(); }
   var target = level * bananasNeeded;
   if (score >= target && level < 30) {
-    level++;
-    bananasNeeded = Math.floor(bananasNeeded * 1.25);
-    animateApe(1.4);
-    showLevelMsg('LEVEL ' + level + ' UNLOCKED! 🔥');
+    level++; bananasNeeded = Math.floor(bananasNeeded * 1.25);
+    animateApe(1.4); showLevelMsg('LEVEL ' + level + ' UNLOCKED! 🔥');
     if (level === 5) showToast('🔥 KING MODE! You are now a true Banana Lord!', 'info');
-    if (level === 10) showToast('👑 ULTIMATE KING OF THE JUNGLE! 🦍 Try King Ape skin for 3× boost!', 'success');
+    if (level === 10) showToast('👑 ULTIMATE KING OF THE JUNGLE! Try King Ape skin for 3× boost!', 'success');
   }
   document.getElementById('game-instruction').style.display = 'none';
   updateGameUI();
@@ -1279,16 +1184,13 @@ function handleGameClick(e) {
 }
 
 function handleGameTouch(e) {
-  e.preventDefault();
-  startJungleMusic();
+  e.preventDefault(); startJungleMusic();
   var c = document.getElementById('game-container');
   var rect = c.getBoundingClientRect();
   var t = e.touches[0];
-  var y = t.clientY - rect.top;
-  var x = t.clientX - rect.left;
+  var y = t.clientY - rect.top; var x = t.clientX - rect.left;
   if (y > 60 && y < rect.height - 70) {
-    takeBanana(1);
-    spawnFloat('🍌', (x/rect.width)*100, (y/rect.height)*100);
+    takeBanana(1); spawnFloat('🍌', (x/rect.width)*100, (y/rect.height)*100);
   }
 }
 
@@ -1300,24 +1202,22 @@ function resetGame() {
 
 document.addEventListener('keydown', function(e) {
   var inp = document.getElementById('submit-name-input');
-  if ((e.key === ' ' || e.key === 'Enter') && document.activeElement !== inp && document.activeElement !== document.body.querySelector('input')) {
+  if ((e.key === ' ' || e.key === 'Enter') && document.activeElement !== inp && !document.activeElement.tagName.match(/INPUT|TEXTAREA/)) {
     e.preventDefault(); takeBanana(1); spawnFloat('🍌', 50, 50);
   }
-  if (e.key === 'Escape') { closeSubmitModal(); closeSkinModal(); closeWalletInfoModal(); closePaymentModal(); closeConvertModal(); }
+  if (e.key === 'Escape') {
+    closeSubmitModal(); closeSkinModal(); closeWalletInfoModal(); closePaymentModal(); closeConvertModal();
+  }
 });
 
 setInterval(function(){
   if (score > 5 && Math.random() < 0.32) spawnFloat('💣', Math.random()*80+10, Math.random()*60+10);
 }, 6000);
 
-// ── SUBMIT MODAL ──
+// SUBMIT MODAL
 function openSubmitModal() {
   if (Math.floor(score) === 0) { showToast('⚠️ Play the game first to collect bananas!', 'error'); return; }
-  if (!walletAddress || !walletRawAddress) {
-    showToast('🦊 Connect MetaMask first to submit your score!', 'error');
-    setTimeout(function(){ connectMetaMask(); }, 300);
-    return;
-  }
+  if (!walletAddress || !walletRawAddress) { showToast('🦊 Connect MetaMask first to submit!', 'error'); setTimeout(function(){ connectMetaMask(); }, 300); return; }
   document.getElementById('submit-score-display').textContent = Math.floor(score).toLocaleString();
   document.getElementById('submit-wallet-display').textContent = walletAddress;
   document.getElementById('submit-name-input').value = '';
@@ -1338,40 +1238,34 @@ function submitScore() {
     var updated = leaderboardData.concat([entry]);
     updated.sort(function(a,b){ return b.score - a.score; });
     updated = updated.slice(0, 10);
-    leaderboardData = updated;
-    saveLeaderboard();
-    renderLeaderboard();
+    leaderboardData = updated; saveLeaderboard(); renderLeaderboard();
     var rank = updated.findIndex(function(e){ return e.name === name && e.score === currentScore; }) + 1;
     if (currentScore > personalBest) { personalBest = currentScore; savePersonalBest(); updateGameUI(); }
     closeSubmitModal();
-    showToast('🏆 Score saved! Ranked #' + rank + ' — linked to your wallet forever!', 'success');
+    showToast('🏆 Score saved! Ranked #' + rank + ' — linked to your wallet!', 'success');
     submitting = false; btn.textContent = '🏆 SUBMIT'; btn.disabled = false;
   }, 600);
 }
 
-// ── CONVERT MODAL ──
+// CONVERT MODAL
 function openConvertModal() {
   var currentScore = Math.floor(score);
   document.getElementById('convert-score-display').textContent = currentScore.toLocaleString();
   document.getElementById('convert-apes-display').textContent = Math.floor(currentScore / 1000).toLocaleString() + ' $APES';
   var s = getEquippedSkin();
   var note = document.getElementById('convert-boost-note');
-  if (s) {
-    note.style.display = 'block';
-    note.textContent = '⚡ ' + s.name + ' (' + s.boostLabel + ') is boosting your bananas — more $APES for you!';
-  } else {
-    note.style.display = 'none';
-  }
+  if (s) { note.style.display = 'block'; note.textContent = '⚡ ' + s.name + ' (' + s.boostLabel + ') is boosting your bananas — more $APES for you!'; }
+  else { note.style.display = 'none'; }
   document.getElementById('convert-modal').style.display = 'flex';
 }
 function closeConvertModal() { document.getElementById('convert-modal').style.display = 'none'; }
 function claimConvert() {
   if (!walletAddress) { closeConvertModal(); connectMetaMask(); showToast('🦊 Connect MetaMask to claim $APES when available.', 'info'); return; }
   closeConvertModal();
-  showToast('✅ Wallet linked! Your banana score is recorded. $APES conversion goes live at token launch!', 'info');
+  showToast('✅ Wallet linked! $APES conversion goes live at token launch on Monad!', 'info');
 }
 
-// ── MUSIC ──
+// MUSIC
 var musicOn = true, musicStarted = false, musicAudioCtx = null, musicMasterGain = null, musicInterval = null;
 function startJungleMusic() {
   if (musicStarted) return;
@@ -1410,17 +1304,15 @@ function startJungleMusic() {
 }
 function toggleMusic() {
   var btn = document.getElementById('music-btn');
-  if (!musicStarted) { startJungleMusic(); musicOn=true; btn.textContent='🎵 ON'; btn.style.color='#FFD700'; btn.style.borderColor='#FFD700'; return; }
+  if (!musicStarted) { startJungleMusic(); musicOn=true; btn.textContent='🎵 ON'; btn.style.color='#05C582'; btn.style.borderColor='rgba(5,197,130,0.4)'; return; }
   musicOn=!musicOn;
   if (musicMasterGain) musicMasterGain.gain.setValueAtTime(musicOn?0.38:0, musicAudioCtx.currentTime);
   btn.textContent=musicOn?'🎵 ON':'🔇 OFF';
-  btn.style.color=musicOn?'#FFD700':'#6B7280';
-  btn.style.borderColor=musicOn?'#FFD700':'rgba(255,255,255,0.2)';
+  btn.style.color=musicOn?'#05C582':'#6B7280';
+  btn.style.borderColor=musicOn?'rgba(5,197,130,0.4)':'rgba(255,255,255,0.15)';
 }
 
-// ══════════════════════════════════════════
-// ── INIT ──
-// ══════════════════════════════════════════
+// INIT
 initMetaMask();
 loadSkinState();
 leaderboardData = loadLeaderboard();
