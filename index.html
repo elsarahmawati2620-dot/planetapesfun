@@ -55,7 +55,6 @@
     .animate-pulse { animation: pulse-anim 2s cubic-bezier(0.4,0,0.6,1) infinite; }
     .lb-pop { animation: lbPop 0.5s ease forwards; }
 
-    /* Particles */
     .particle-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
     .particle {
       position: absolute; font-size: 1.5rem;
@@ -74,7 +73,6 @@
       opacity: 0.4;
     }
 
-    /* Navbar */
     #navbar {
       position: fixed; top:0; left:0; right:0; z-index:9000;
       background: rgba(8,11,16,0.97); border-bottom: 1px solid rgba(5,197,130,0.25);
@@ -98,7 +96,6 @@
     @media(max-width:640px) { .nav-logo-text { display:none; } .btn-x { display:none; } }
     @media(max-width:400px) { .btn-tg { padding:0.5rem 0.6rem; } }
 
-    /* Hero */
     .jungle-bg {
       min-height:100vh; padding-top:68px;
       background: radial-gradient(ellipse at top, #02120d 0%, #080b10 60%);
@@ -110,7 +107,6 @@
     .ticker-inner { display:inline-flex; animation:ticker-scroll 30s linear infinite; white-space:nowrap; }
     .ticker-inner span { margin:0 3rem; color:var(--primary); font-size:0.8rem; letter-spacing:3px; }
 
-    /* Game */
     .game-container {
       position:relative; width:100%; height:400px; border-radius:1.5rem;
       border:1px solid rgba(5,197,130,0.3);
@@ -121,13 +117,11 @@
     .progress-fill { height:100%; background:linear-gradient(90deg,#05C582,#00D97B); border-radius:9999px; transition:width 0.3s; }
     .float-emoji { position:absolute; font-size:3rem; pointer-events:none; animation:particle-rise 0.8s forwards; }
 
-    /* Cards */
     .lb-card { background:#0d1117; border:1px solid rgba(5,197,130,0.2); border-radius:1.5rem; padding:1.5rem; }
     .token-card { background:#0d1117; border:1px solid rgba(5,197,130,0.2); border-radius:1.5rem; padding:2rem; text-align:center; }
     .step { display:flex; align-items:flex-start; gap:1.5rem; background:#0d1117; border-radius:1.5rem; padding:1.5rem; border:1px solid rgba(5,197,130,0.15); }
     .step-num { min-width:3rem; height:3rem; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#05C582,#00D97B); color:#000; font-weight:900; font-size:1.5rem; border-radius:50%; flex-shrink:0; }
 
-    /* FAQ */
     .faq-item { background:#0d1117; border:1px solid rgba(5,197,130,0.15); border-radius:1rem; margin-bottom:0.75rem; overflow:hidden; }
     .faq-q { padding:1.25rem 1.5rem; display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-weight:700; }
     .faq-q:hover { background:rgba(5,197,130,0.04); }
@@ -137,14 +131,12 @@
     .faq-ans.open { max-height:300px; }
     .faq-ans-inner { padding:0 1.5rem 1.25rem; color:#9CA3AF; line-height:1.7; }
 
-    /* Social / Skin cards */
     .social-card { background:#0d1117; border:1px solid rgba(5,197,130,0.15); border-radius:1.5rem; padding:2rem; text-align:center; cursor:pointer; transition:all 0.2s; }
     .social-card:hover { border-color:var(--primary); transform:translateY(-4px); box-shadow:0 10px 40px rgba(5,197,130,0.12); }
     .skin-card { background:#0d1117; border:1px solid rgba(5,197,130,0.15); border-radius:1.5rem; padding:1.25rem; text-align:center; transition:all 0.2s; cursor:pointer; }
     .skin-card:hover { transform:translateY(-4px); }
     .skin-card.equipped { border-width:2px; }
 
-    /* Buttons */
     .meme-btn { transition:transform 0.2s, box-shadow 0.2s; }
     .meme-btn:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 8px 30px rgba(5,197,130,0.35); }
     .btn-buy-usdc { background:linear-gradient(90deg,#2775CA,#1a5fa8); color:#fff; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
@@ -155,17 +147,14 @@
     .btn-convert { background:linear-gradient(90deg,#05C582,#00D97B); color:#000; font-weight:900; border:none; border-radius:0.75rem; padding:0.65rem 1.25rem; font-size:0.8rem; cursor:pointer; transition:all 0.2s; width:100%; }
     .btn-convert:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(5,197,130,0.4); }
 
-    /* Modal */
     .modal-overlay { position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.88); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; padding:1rem; }
     .modal-box { background:#0d1117; border:1px solid rgba(5,197,130,0.25); border-radius:1.5rem; padding:2rem; max-width:460px; width:100%; animation:modal-in 0.25s ease; max-height:90vh; overflow-y:auto; }
     .modal-close { background:none; border:none; color:#9CA3AF; font-size:1.5rem; line-height:1; cursor:pointer; flex-shrink:0; }
     .modal-close:hover { color:#fff; }
 
-    /* Input */
     input[type=text] { width:100%; padding:0.75rem 1rem; background:rgba(255,255,255,0.05); border:1px solid rgba(5,197,130,0.25); border-radius:0.75rem; color:#fff; font-size:1rem; outline:none; transition:border-color 0.2s; }
     input[type=text]:focus { border-color:var(--primary); }
 
-    /* Toast */
     #toast-container { position:fixed; top:5rem; right:1rem; z-index:99999; display:flex; flex-direction:column; gap:0.5rem; pointer-events:none; }
     .toast { display:flex; align-items:center; gap:0.75rem; padding:0.875rem 1.25rem; border-radius:1rem; font-size:0.875rem; font-weight:600; max-width:340px; animation:toast-in 0.35s cubic-bezier(0.22,1,0.36,1); pointer-events:auto; box-shadow:0 4px 24px rgba(0,0,0,0.5); }
     .toast-success { background:#011a10; border:1px solid #05C582; color:#05C582; }
@@ -177,10 +166,7 @@
 </head>
 <body>
 
-<!-- Toast -->
 <div id="toast-container"></div>
-
-<!-- Particle Background -->
 <div class="particle-bg" id="particle-bg" aria-hidden="true"></div>
 
 <!-- NAVBAR -->
@@ -201,7 +187,7 @@
     <button class="btn-wallet" id="wallet-btn" onclick="handleWalletBtnClick()">
       <span>🦊</span><span id="wallet-btn-txt">Connect MetaMask</span>
     </button>
-    <button class="btn-x" onclick="window.open('https://alt.fun/','_blank')">𝕏 @planetapesxyz</button>
+    <button class="btn-x" onclick="window.open('https://nad.fun/','_blank')">𝕏 @planetapesxyz</button>
     <button class="btn-tg" onclick="window.open('https://t.me/planetapesfun','_blank')">📱 TG</button>
   </div>
 </nav>
@@ -238,7 +224,7 @@
     </div>
 
     <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;align-items:center">
-      <button class="meme-btn" onclick="window.open('https://alt.fun/','_blank')" style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;display:flex;align-items:center;gap:0.75rem;box-shadow:0 10px 40px rgba(5,197,130,0.4)">
+      <button class="meme-btn" onclick="window.open('https://nad.fun/','_blank')" style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;display:flex;align-items:center;gap:0.75rem;box-shadow:0 10px 40px rgba(5,197,130,0.4)">
         <span>BUY $APES</span><span>🚀</span>
       </button>
       <button onclick="smoothScroll('game')" style="padding:1.25rem 2.5rem;border:2px solid #05C582;background:rgba(5,197,130,0.06);color:#fff;font-weight:900;font-size:1.1rem;border-radius:1rem">
@@ -256,16 +242,16 @@
 
   <div class="ticker-wrap">
     <div class="ticker-inner">
-      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON MONAD MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON ALT.FUN 🚀</span><span>🦍 KING OF THE JUNGLE ON MONAD 🦍</span><span>💎 APE SKINS FROM 3 USDC 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
-      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON MONAD MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON ALT.FUN 🚀</span><span>🦍 KING OF THE JUNGLE ON MONAD 🦍</span><span>💎 APE SKINS FROM 3 USDC 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
+      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON MONAD MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON NAD.FUN 🚀</span><span>🦍 KING OF THE JUNGLE ON MONAD 🦍</span><span>💎 APE SKINS FROM 3 USDC 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
+      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON MONAD MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON NAD.FUN 🚀</span><span>🦍 KING OF THE JUNGLE ON MONAD 🦍</span><span>💎 APE SKINS FROM 3 USDC 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
     </div>
   </div>
 </section>
 
 <!-- Available on bar -->
-<div onclick="window.open('https://alt.fun/','_blank')" style="background:#050709;border-bottom:1px solid rgba(5,197,130,0.15);padding:1.25rem;text-align:center;cursor:pointer;position:relative;z-index:1">
+<div onclick="window.open('https://nad.fun/','_blank')" style="background:#050709;border-bottom:1px solid rgba(5,197,130,0.15);padding:1.25rem;text-align:center;cursor:pointer;position:relative;z-index:1">
   <div style="color:#05C582;font-size:0.75rem;letter-spacing:0.2em">AVAILABLE ON</div>
-  <div style="font-size:2.25rem;font-weight:900;color:#05C582">ALT.FUN 🚀</div>
+  <div style="font-size:2.25rem;font-weight:900;color:#05C582">NAD.FUN 🚀</div>
 </div>
 
 <!-- GAME -->
@@ -284,7 +270,6 @@
   </div>
 
   <div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center">
-    <!-- Game box -->
     <div style="flex:1;min-width:280px;max-width:620px">
       <div class="game-container" id="game-container" onclick="handleGameClick(event)" ontouchstart="handleGameTouch(event)">
         <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.1;pointer-events:none;font-size:180px">🌴</div>
@@ -325,7 +310,6 @@
       <div style="text-align:center;margin-top:1rem;font-size:0.75rem;color:#6B7280">Every 10,000 bananas × level = level up • Equip a skin for tap boost multipliers!</div>
     </div>
 
-    <!-- Leaderboard -->
     <div style="width:100%;max-width:320px;flex-shrink:0">
       <div class="lb-card">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
@@ -362,17 +346,17 @@
   <div style="text-align:center;margin-bottom:3rem">
     <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(39,117,202,0.15);color:#2775CA;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">💎 BUY WITH USDC — FROM 3 USDC</div>
     <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem">APE SKINS</h2>
-    <p style="color:#9CA3AF;font-size:1.05rem;margin-top:0.5rem">Buy with USDC on Monad. Each skin gives you a <strong style="color:#05C582">tap boost multiplier</strong> that applies instantly when equipped in-game!</p>
+    <p style="color:#9CA3AF;font-size:1.05rem;margin-top:0.5rem">Buy with USDC on Monad Mainnet. Each skin gives you a <strong style="color:#05C582">tap boost multiplier</strong> that applies instantly when equipped in-game!</p>
     <div style="display:flex;justify-content:center;gap:1rem;margin-top:1rem;flex-wrap:wrap">
       <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(5,197,130,0.08);border:1px solid rgba(5,197,130,0.25);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#05C582">⚡ Equipped skin multiplies every tap</div>
-      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(39,117,202,0.08);border:1px solid rgba(39,117,202,0.25);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#2775CA">💎 Monad USDC payments</div>
+      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(39,117,202,0.08);border:1px solid rgba(39,117,202,0.25);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#2775CA">💎 Monad Mainnet USDC payments</div>
     </div>
   </div>
   <div id="skins-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.75rem"></div>
   <div style="text-align:center;margin-top:2.5rem">
     <div style="display:inline-flex;align-items:center;gap:0.5rem;background:#0d1117;border:1px solid rgba(5,197,130,0.2);border-radius:9999px;padding:0.5rem 1.25rem">
       <span style="color:#05C582">🦍</span>
-      <span style="font-size:0.875rem;color:#9CA3AF">Connect MetaMask to purchase • Skins are saved permanently</span>
+      <span style="font-size:0.875rem;color:#9CA3AF">Connect MetaMask to Monad Mainnet to purchase • Skins are saved permanently</span>
     </div>
   </div>
 </section>
@@ -405,13 +389,13 @@
     <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff">HOW TO BUY $APES</h2>
   </div>
   <div style="display:flex;flex-direction:column;gap:1rem">
-    <div class="step"><div class="step-num">1</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Install MetaMask &amp; Add Monad</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Install MetaMask and add the Monad network (Chain ID: 10143). Click <strong style="color:#05C582">Connect MetaMask</strong> in the navbar to link your wallet instantly!</div></div></div>
-    <div class="step"><div class="step-num">2</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Get USDC on Monad</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Bridge or obtain USDC on Monad. You need at least <strong style="color:#05C582">3 USDC</strong> to buy the starter Jungle Chad skin. Skins give tap boost multipliers in the game!</div></div></div>
-    <div class="step"><div class="step-num">3</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy Skins &amp; Play</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Head to the <strong style="color:#C084FC">APE SKINS</strong> section, choose your skin, and buy with USDC via MetaMask. Equip it in-game for an instant tap boost. Stack banana scores and convert them to $APES!</div></div></div>
-    <div class="step"><div class="step-num">4</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy $APES on alt.fun</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Visit <strong style="color:#05C582">alt.fun</strong> — the premier platform to buy $APES. Connect MetaMask and swap instantly.<br><span style="color:#05C582;font-size:0.8rem">CA: SOON</span></div></div></div>
+    <div class="step"><div class="step-num">1</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Install MetaMask &amp; Add Monad Mainnet</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Install MetaMask and add the Monad Mainnet network (Chain ID: 41454). Click <strong style="color:#05C582">Connect MetaMask</strong> in the navbar to link your wallet instantly — it will switch to Monad Mainnet automatically!</div></div></div>
+    <div class="step"><div class="step-num">2</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Get USDC on Monad Mainnet</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Bridge or obtain USDC on Monad Mainnet. You need at least <strong style="color:#05C582">3 USDC</strong> to buy the starter Jungle Chad skin. Skins give tap boost multipliers in the game!</div></div></div>
+    <div class="step"><div class="step-num">3</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy Skins &amp; Play</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Head to the <strong style="color:#C084FC">APE SKINS</strong> section, choose your skin, and buy with USDC via MetaMask on Monad Mainnet. Equip it in-game for an instant tap boost. Stack banana scores and convert them to $APES!</div></div></div>
+    <div class="step"><div class="step-num">4</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy $APES on nad.fun</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Visit <strong style="color:#05C582">nad.fun</strong> — the premier platform to buy $APES on Monad Mainnet. Connect MetaMask and swap instantly.<br><span style="color:#05C582;font-size:0.8rem">CA: SOON</span></div></div></div>
   </div>
   <div style="margin-top:2rem;text-align:center">
-    <button class="meme-btn" onclick="window.open('https://alt.fun/','_blank')" style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;box-shadow:0 10px 40px rgba(5,197,130,0.35)">🚀 BUY $APES ON ALT.FUN</button>
+    <button class="meme-btn" onclick="window.open('https://nad.fun/','_blank')" style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;box-shadow:0 10px 40px rgba(5,197,130,0.35)">🚀 BUY $APES ON NAD.FUN</button>
   </div>
 </section>
 
@@ -430,7 +414,7 @@
         <div class="pixel-font" style="font-size:0.7rem;color:#05C582;margin-bottom:0.5rem">PHASE 1</div>
         <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🚀 LAUNCH</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Token launch on Monad</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Token launch on Monad Mainnet</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Website &amp; Take Banana game live</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Persistent leaderboard</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Skin shop with USDC payments</li>
@@ -456,7 +440,7 @@
         <div class="pixel-font" style="font-size:0.7rem;color:#C084FC;margin-bottom:0.5rem">PHASE 3</div>
         <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🦍 NFT DROP</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>NFT Ape Skin collection (Monad)</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>NFT Ape Skin collection (Monad Mainnet)</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>1,000 NFT holder milestone</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>Holder-only events &amp; giveaways</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>$APES weekly prize pool</li>
@@ -487,10 +471,10 @@
     <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff">JOIN THE JUNGLE</h2>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem">
-    <div class="social-card" onclick="window.open('https://alt.fun/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">𝕏</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Twitter / X</div><div style="color:#9CA3AF;font-size:0.875rem">Follow for alpha, memes &amp; updates</div></div>
+    <div class="social-card" onclick="window.open('https://nad.fun/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">𝕏</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Twitter / X</div><div style="color:#9CA3AF;font-size:0.875rem">Follow for alpha, memes &amp; updates</div></div>
     <div class="social-card" onclick="window.open('https://t.me/planetapesfun','_blank')"><div style="font-size:3rem;margin-bottom:1rem">📱</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Telegram</div><div style="color:#9CA3AF;font-size:0.875rem">Join the jungle chat</div></div>
-    <div class="social-card" onclick="window.open('https://alt.fun/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">🚀</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">alt.fun</div><div style="color:#9CA3AF;font-size:0.875rem">Buy $APES now on alt.fun</div></div>
-    <div class="social-card" onclick="window.open('https://alt.fun/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">📊</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Dexscreener</div><div style="color:#9CA3AF;font-size:0.875rem">Track $APES price live</div></div>
+    <div class="social-card" onclick="window.open('https://nad.fun/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">🚀</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">nad.fun</div><div style="color:#9CA3AF;font-size:0.875rem">Buy $APES now on nad.fun</div></div>
+    <div class="social-card" onclick="window.open('https://nad.fun/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">📊</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Dexscreener</div><div style="color:#9CA3AF;font-size:0.875rem">Track $APES price live</div></div>
   </div>
 </section>
 
@@ -512,23 +496,22 @@
   <div class="pixel-font" style="font-size:1rem;color:#05C582;margin-bottom:0.5rem">PLANET APES</div>
   <div style="color:#6B7280;font-size:0.875rem;margin-bottom:1.5rem">The most based meme coin on Monad.</div>
   <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap">
-    <a href="https://alt.fun/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#05C582'" onmouseout="this.style.color='#9CA3AF'">Twitter</a>
+    <a href="https://nad.fun/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#05C582'" onmouseout="this.style.color='#9CA3AF'">Twitter</a>
     <a href="https://t.me/planetapesfun" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#229ED9'" onmouseout="this.style.color='#9CA3AF'">Telegram</a>
-    <a href="https://alt.fun/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#05C582'" onmouseout="this.style.color='#9CA3AF'">Buy $APES</a>
+    <a href="https://nad.fun/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#05C582'" onmouseout="this.style.color='#9CA3AF'">Buy $APES</a>
   </div>
   <div style="color:#4B5563;font-size:0.75rem">$APES is a meme coin with no intrinsic value. Always do your own research. Not financial advice.</div>
-  <div style="color:#374151;font-size:0.65rem;margin-top:0.5rem">Monad Network | High-Performance EVM Blockchain</div>
+  <div style="color:#374151;font-size:0.65rem;margin-top:0.5rem">Monad Mainnet | High-Performance EVM Blockchain</div>
 </footer>
 
-<!-- ═══════════ MODALS ═══════════ -->
+<!-- MODALS -->
 
-<!-- WALLET INFO MODAL -->
 <div id="wallet-info-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeWalletInfoModal()">
   <div class="modal-box" style="max-width:420px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
       <div>
         <div style="font-weight:900;font-size:1.4rem">🦊 MetaMask Wallet</div>
-        <div style="font-size:0.75rem;color:#05C582;margin-top:0.2rem">Connected to Monad</div>
+        <div style="font-size:0.75rem;color:#05C582;margin-top:0.2rem">Connected to Monad Mainnet</div>
       </div>
       <button class="modal-close" onclick="closeWalletInfoModal()">✕</button>
     </div>
@@ -538,14 +521,13 @@
       <div id="wallet-info-short" style="font-size:1rem;font-weight:700;color:#05C582;margin-bottom:0.6rem;font-family:monospace"></div>
       <div id="wallet-info-addr" style="font-family:monospace;font-size:0.62rem;color:#9CA3AF;background:#1a1f2e;padding:0.6rem 0.75rem;border-radius:0.75rem;word-break:break-all;margin-bottom:1.25rem;text-align:left"></div>
       <div style="background:rgba(5,197,130,0.06);border:1px solid rgba(5,197,130,0.2);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;text-align:left;line-height:1.6">
-        ✅ Submit scores to the leaderboard<br>✅ Buy skins with USDC on Monad<br>✅ Convert bananas to $APES at launch
+        ✅ Submit scores to the leaderboard<br>✅ Buy skins with USDC on Monad Mainnet<br>✅ Convert bananas to $APES at launch
       </div>
       <button onclick="disconnectWallet()" style="padding:0.75rem 2rem;border:1px solid rgba(239,68,68,0.4);background:rgba(239,68,68,0.08);color:#ef4444;font-weight:700;border-radius:0.75rem;width:100%;cursor:pointer;font-size:0.9rem">🔌 Disconnect Wallet</button>
     </div>
   </div>
 </div>
 
-<!-- SUBMIT MODAL -->
 <div id="submit-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this&&!submitting)closeSubmitModal()">
   <div class="modal-box">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
@@ -569,7 +551,6 @@
   </div>
 </div>
 
-<!-- SKIN MODAL -->
 <div id="skin-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeSkinModal()">
   <div class="modal-box" style="max-width:480px">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem">
@@ -586,18 +567,17 @@
     <div id="skin-modal-desc" style="color:#9CA3AF;font-size:0.9rem;line-height:1.6;text-align:center;margin-bottom:1rem"></div>
     <div style="background:#1a1f2e;border:1px solid rgba(5,197,130,0.15);border-radius:1rem;padding:1rem;margin-bottom:1.25rem">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
-        <div style="font-size:0.75rem;color:#9CA3AF">PRICE (USDC — Monad)</div>
+        <div style="font-size:0.75rem;color:#9CA3AF">PRICE (USDC — Monad Mainnet)</div>
         <div id="skin-modal-price" style="font-weight:900;color:#2775CA;font-size:1.1rem"></div>
       </div>
       <div style="font-size:0.7rem;color:#05C582;margin-bottom:0.25rem">BOOST UTILITY</div>
       <div id="skin-modal-unlock" style="font-weight:700;color:#fff;font-size:0.85rem"></div>
     </div>
     <div id="skin-modal-actions" style="display:flex;gap:0.75rem;flex-wrap:wrap"></div>
-    <div style="text-align:center;margin-top:0.75rem;font-size:0.65rem;color:#6B7280">Monad • USDC Payment • Permanent Ownership • Equip in Game</div>
+    <div style="text-align:center;margin-top:0.75rem;font-size:0.65rem;color:#6B7280">Monad Mainnet • USDC Payment • Permanent Ownership • Equip in Game</div>
   </div>
 </div>
 
-<!-- PAYMENT MODAL -->
 <div id="payment-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closePaymentModal()">
   <div class="modal-box" style="max-width:460px">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem">
@@ -611,12 +591,12 @@
       <div>
         <div style="font-size:0.65rem;color:#9CA3AF;letter-spacing:0.1em">SEND EXACTLY</div>
         <div id="pay-amount-display" style="font-size:2rem;font-weight:900;color:#2775CA;font-family:monospace"></div>
-        <div style="font-size:0.65rem;color:#6B7280;margin-top:0.1rem">via MetaMask on Monad</div>
+        <div style="font-size:0.65rem;color:#6B7280;margin-top:0.1rem">via MetaMask on Monad Mainnet</div>
       </div>
       <div style="font-size:3rem">💎</div>
     </div>
     <div style="background:#1a1f2e;border:1px solid rgba(255,255,255,0.08);border-radius:0.75rem;padding:0.75rem 1rem;margin-bottom:1rem">
-      <div style="font-size:0.65rem;color:#9CA3AF;margin-bottom:0.3rem;letter-spacing:0.1em">DESTINATION ADDRESS (Monad)</div>
+      <div style="font-size:0.65rem;color:#9CA3AF;margin-bottom:0.3rem;letter-spacing:0.1em">DESTINATION ADDRESS (Monad Mainnet)</div>
       <div style="font-family:monospace;font-size:0.72rem;color:#05C582;word-break:break-all;line-height:1.5">0x206DEd182FB54c58Cce0b33BC5d31876b20fB41A</div>
     </div>
     <div style="margin-bottom:1rem">
@@ -626,18 +606,17 @@
     </div>
     <div id="pay-status" style="display:none;background:rgba(5,197,130,0.06);border:1px solid rgba(5,197,130,0.25);border-radius:0.75rem;padding:0.75rem;margin-bottom:1rem;font-size:0.8rem;color:#05C582;text-align:center;line-height:1.5"></div>
     <div style="background:rgba(5,197,130,0.05);border:1px solid rgba(5,197,130,0.2);border-radius:0.75rem;padding:0.75rem;margin-bottom:1rem;font-size:0.75rem;color:#05C582;text-align:center;line-height:1.5">
-      Click <strong>Pay with MetaMask</strong> — MetaMask will open and send USDC automatically.<br>
+      Click <strong>Pay with MetaMask</strong> — MetaMask will open and send USDC automatically on Monad Mainnet.<br>
       <span style="color:#6B7280;font-size:0.65rem">Purchase is stored permanently after payment confirms.</span>
     </div>
     <div style="display:flex;gap:0.75rem">
       <button onclick="closePaymentModal()" style="flex:1;padding:0.85rem;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CANCEL</button>
       <button id="pay-confirm-btn" onclick="confirmPayment()" style="flex:2;padding:0.85rem;background:rgba(5,197,130,0.1);border:1px solid #05C582;color:#05C582;font-weight:900;border-radius:0.75rem;cursor:pointer;font-size:0.95rem">✅ I've Paid — Unlock Skin</button>
     </div>
-    <div style="text-align:center;margin-top:0.75rem;font-size:0.6rem;color:#6B7280">Monad • USDC ERC-20 Transfer • Sent to Planet Apes treasury</div>
+    <div style="text-align:center;margin-top:0.75rem;font-size:0.6rem;color:#6B7280">Monad Mainnet • USDC ERC-20 Transfer • Sent to Planet Apes treasury</div>
   </div>
 </div>
 
-<!-- CONVERT MODAL -->
 <div id="convert-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeConvertModal()">
   <div class="modal-box" style="max-width:420px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
@@ -653,7 +632,7 @@
     </div>
     <div id="convert-boost-note" style="display:none;background:rgba(5,197,130,0.07);border:1px solid rgba(5,197,130,0.25);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#05C582;text-align:center"></div>
     <div style="background:#1a1f2e;border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;line-height:1.6">
-      <strong style="color:#fff">How it works:</strong> Submit your score, then connect MetaMask. When $APES token launches on Monad, your banana score converts to real $APES tokens — the more bananas (boosted by skins!), the more $APES you earn.
+      <strong style="color:#fff">How it works:</strong> Submit your score, then connect MetaMask. When $APES token launches on Monad Mainnet, your banana score converts to real $APES tokens — the more bananas (boosted by skins!), the more $APES you earn.
     </div>
     <div style="display:flex;gap:0.75rem">
       <button onclick="closeConvertModal()" style="flex:1;padding:0.75rem;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CLOSE</button>
@@ -662,23 +641,13 @@
   </div>
 </div>
 
-<!-- ═══════════ SCRIPTS ═══════════ -->
 <script>
 'use strict';
 
-// ══════════════════════════════════════════
-// CONFIG
-// ══════════════════════════════════════════
-// Monad Mainnet — Chain ID 10143 (hex: 0x279F)
-var MONAD_CHAIN_ID = '0x279F';
-
-// USDC contract on Monad mainnet
+// CONFIG — Monad Mainnet (Chain ID: 41454 / 0xA1EE)
+var MONAD_CHAIN_ID = '0xA1EE';
 var USDC_CONTRACT = '0xf817257fed379853cDe0fa4F97AB987181B1E5Ea';
-
-// Planet Apes treasury — receives all skin USDC payments
 var PLANET_APES_WALLET = '0x206DEd182FB54c58Cce0b33BC5d31876b20fB41A';
-
-// Minimal ERC-20 ABI for USDC transfers
 var ERC20_ABI = [
   'function transfer(address to, uint256 amount) returns (bool)',
   'function decimals() view returns (uint8)',
@@ -686,7 +655,6 @@ var ERC20_ABI = [
   'function symbol() view returns (string)'
 ];
 
-// ── PARTICLES ──
 (function() {
   var bg = document.getElementById('particle-bg');
   var EMOJIS = ['🍌','🍌','🍌','🦍','🐵','✨','⭐','💫'];
@@ -707,7 +675,6 @@ var ERC20_ABI = [
   }
 })();
 
-// ── TOAST ──
 function showToast(msg, type) {
   type = type || 'info';
   var c = document.getElementById('toast-container');
@@ -718,19 +685,17 @@ function showToast(msg, type) {
   setTimeout(function() { t.style.opacity='0'; t.style.transition='opacity 0.4s'; setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 400); }, 4500);
 }
 
-// ── SMOOTH SCROLL ──
 function smoothScroll(id) { var el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); return false; }
 
-// ── FAQ ──
 var FAQS = [
-  { q:'🍌 What is Planet Apes?', a:'Planet Apes ($APES) is the most based meme coin on Monad. Take bananas, climb the leaderboard, convert your bananas to $APES, and rule the jungle with your fellow apes.' },
+  { q:'🍌 What is Planet Apes?', a:'Planet Apes ($APES) is the most based meme coin on Monad Mainnet. Take bananas, climb the leaderboard, convert your bananas to $APES, and rule the jungle with your fellow apes.' },
   { q:'🎮 How do I play Take Banana?', a:'Click anywhere in the game area to collect bananas. The more you click, the higher your score. Equip a skin to activate a tap boost multiplier for faster banana collection!' },
-  { q:'💎 How do skins work?', a:'Each Ape Skin costs USDC on Monad (starting at 3 USDC). Once purchased, equip the skin and it applies a boost multiplier to every tap — from +0.5× all the way up to +2× for the King Ape skin.' },
-  { q:'🍌 How do I convert bananas to $APES?', a:'Play the game to collect bananas, then click "Convert to $APES". When $APES launches on Monad, your banana score converts to real $APES at 1,000 bananas = 1 $APES.' },
+  { q:'💎 How do skins work?', a:'Each Ape Skin costs USDC on Monad Mainnet (starting at 3 USDC). Once purchased, equip the skin and it applies a boost multiplier to every tap — from +0.5× all the way up to +2× for the King Ape skin.' },
+  { q:'🍌 How do I convert bananas to $APES?', a:'Play the game to collect bananas, then click "Convert to $APES". When $APES launches on Monad Mainnet, your banana score converts to real $APES at 1,000 bananas = 1 $APES.' },
   { q:'🏆 Will my score be saved?', a:'Your leaderboard score is saved permanently in your browser using localStorage. Submit via MetaMask to link your score to your wallet address permanently.' },
-  { q:'🚀 Where can I buy $APES?', a:'$APES is available on alt.fun. Follow us on Twitter for the exact launch time and contract address.' },
-  { q:'🔗 What blockchain is $APES on?', a:'Planet Apes ($APES) is on Monad — a high-performance EVM-compatible blockchain. All skin purchases use USDC on Monad via MetaMask.' },
-  { q:'🦊 How do I connect MetaMask?', a:'Install MetaMask, then click "Connect MetaMask" in the navbar. Make sure you are on the Monad network (Chain ID: 10143). MetaMask will prompt you to switch networks automatically.' },
+  { q:'🚀 Where can I buy $APES?', a:'$APES is available on nad.fun. Follow us on Twitter for the exact launch time and contract address.' },
+  { q:'🔗 What blockchain is $APES on?', a:'Planet Apes ($APES) is on Monad Mainnet — a high-performance EVM-compatible blockchain. All skin purchases use USDC on Monad Mainnet via MetaMask.' },
+  { q:'🦊 How do I connect MetaMask?', a:'Install MetaMask, then click "Connect MetaMask" in the navbar. Make sure you are on the Monad Mainnet network (Chain ID: 41454). MetaMask will prompt you to switch networks automatically.' },
 ];
 (function() {
   var list = document.getElementById('faq-list');
@@ -750,9 +715,6 @@ function toggleFaq(qEl) {
   if (!isOpen) { ans.classList.add('open'); arrow.classList.add('open'); }
 }
 
-// ══════════════════════════════════════════
-// METAMASK
-// ══════════════════════════════════════════
 var walletAddress = null;
 var walletRawAddress = null;
 
@@ -779,7 +741,7 @@ function initMetaMask() {
 }
 
 function formatAddress(addr) {
-  return addr.length > 12 ? addr.slice(0,6) + '…' + addr.slice(-4) : addr;
+  return addr.length > 12 ? addr.slice(0,6) + '...' + addr.slice(-4) : addr;
 }
 
 async function connectMetaMask() {
@@ -795,7 +757,7 @@ async function connectMetaMask() {
     walletAddress = formatAddress(accounts[0]);
     await switchToMonad();
     refreshWalletUI(true); renderSkinsGrid();
-    showToast('🦊 MetaMask connected! You can now submit scores & buy skins.', 'success');
+    showToast('🦊 MetaMask connected to Monad Mainnet! You can now submit scores & buy skins.', 'success');
   } catch (err) {
     if (err.code === 4001) { showToast('⚠️ Connection cancelled.', 'error'); }
     else { showToast('⚠️ Could not connect: ' + (err.message || err), 'error'); }
@@ -818,7 +780,7 @@ async function switchToMonad() {
             blockExplorerUrls: ['https://explorer.monad.xyz']
           }]
         });
-      } catch (addErr) { showToast('⚠️ Could not add Monad: ' + (addErr.message || addErr), 'error'); }
+      } catch (addErr) { showToast('⚠️ Could not add Monad Mainnet: ' + (addErr.message || addErr), 'error'); }
     }
   }
 }
@@ -848,9 +810,6 @@ function refreshWalletUI(connected) {
   }
 }
 
-// ══════════════════════════════════════════
-// USDC PAYMENT via MetaMask
-// ══════════════════════════════════════════
 var pendingBuySkinId = -1;
 
 function buySkin(id) { closeSkinModal(); openPaymentModal(id); }
@@ -887,9 +846,9 @@ async function payWithMetaMask() {
   var payBtn = document.getElementById('metamask-pay-btn');
   var statusEl = document.getElementById('pay-status');
   payBtn.disabled = true; payBtn.style.opacity = '0.7';
-  payBtn.innerHTML = '<span style="font-size:1.25rem">⏳</span> Waiting for MetaMask…';
+  payBtn.innerHTML = '<span style="font-size:1.25rem">⏳</span> Waiting for MetaMask...';
   statusEl.style.display = 'block'; statusEl.style.color = '#93c5fd';
-  statusEl.textContent = '⏳ Opening MetaMask…';
+  statusEl.textContent = '⏳ Switching to Monad Mainnet...';
 
   try {
     await switchToMonad();
@@ -897,13 +856,13 @@ async function payWithMetaMask() {
     var signer = await provider.getSigner();
     var usdc = new ethers.Contract(USDC_CONTRACT, ERC20_ABI, signer);
     var amount = ethers.parseUnits(String(price), 6);
-    statusEl.textContent = '⏳ Sending ' + price + ' USDC — approve in MetaMask…';
+    statusEl.textContent = '⏳ Sending ' + price + ' USDC on Monad Mainnet — approve in MetaMask...';
     var tx = await usdc.transfer(PLANET_APES_WALLET, amount);
-    statusEl.textContent = '⏳ Transaction sent! Waiting for confirmation…';
-    payBtn.innerHTML = '<span style="font-size:1.25rem">⏳</span> Confirming…';
+    statusEl.textContent = '⏳ Transaction sent! Waiting for confirmation...';
+    payBtn.innerHTML = '<span style="font-size:1.25rem">⏳</span> Confirming...';
     var receipt = await tx.wait(1);
     statusEl.style.color = '#05C582';
-    statusEl.textContent = '✅ Payment confirmed! Tx: ' + receipt.hash.slice(0,10) + '…';
+    statusEl.textContent = '✅ Payment confirmed on Monad Mainnet! Tx: ' + receipt.hash.slice(0,10) + '...';
     payBtn.innerHTML = '<span style="font-size:1.25rem">✅</span> Payment Successful!';
     payBtn.style.background = 'linear-gradient(90deg,#05C582,#00D97B)';
     payBtn.disabled = false; payBtn.style.opacity = '1';
@@ -911,7 +870,7 @@ async function payWithMetaMask() {
     confirmBtn.style.background = 'linear-gradient(90deg,#05C582,#00D97B)';
     confirmBtn.style.color = '#000';
     confirmBtn.textContent = '✅ Payment Done — Unlock Skin!';
-    showToast('✅ USDC sent! Click "Unlock Skin" to equip.', 'success');
+    showToast('✅ USDC sent on Monad Mainnet! Click "Unlock Skin" to equip.', 'success');
   } catch (err) {
     payBtn.disabled = false; payBtn.style.opacity = '1';
     payBtn.innerHTML = '<span style="font-size:1.25rem">🦊</span> Pay with MetaMask';
@@ -940,11 +899,8 @@ function confirmPayment() {
   showToast('🎉 ' + s.name + ' unlocked! ' + s.boostLabel + ' now active!', 'success');
 }
 
-// ══════════════════════════════════════════
-// SKINS DATA
-// ══════════════════════════════════════════
 var SKINS = [
-  { id:0, name:'JUNGLE CHAD',  img:'https://i.imgur.com/4rUjNtO.jpg', rarity:'💪 CHAD',      rarityColor:'#05C582', border:'#05C582', price:3,  boost:1.5, boostLabel:'+0.5× per tap (1.5× total)', desc:'The alpha starter pack. Maximum gains, never skips banana day. Buy with 3 USDC and get an immediate +50% tap boost.',   unlock:'+0.5× per tap • 1.5× total • Perfect starter boost' },
+  { id:0, name:'JUNGLE CHAD',  img:'https://i.imgur.com/4rUjNtO.jpg', rarity:'💪 CHAD',      rarityColor:'#05C582', border:'#05C582', price:3,  boost:1.5, boostLabel:'+0.5× per tap (1.5× total)', desc:'The alpha starter pack. Maximum gains, never skips banana day. Buy with 3 USDC on Monad Mainnet and get an immediate +50% tap boost.',   unlock:'+0.5× per tap • 1.5× total • Perfect starter boost' },
   { id:1, name:'DEGEN APE',    img:'https://i.imgur.com/7VFGhCb.jpg', rarity:'🔥 DEGEN',     rarityColor:'#3b82f6', border:'#3b82f6', price:8,  boost:2.0, boostLabel:'+1× per tap (2× total)',    desc:'Laser eyes activated. This ape never sells. For the true degens who want double tap power.',         unlock:'+1× per tap • 2× total • Double your banana rate' },
   { id:2, name:'BANANA GOD',   img:'https://i.imgur.com/eyQoioN.jpg', rarity:'🌟 MYTHIC',    rarityColor:'#34D399', border:'#34D399', price:15, boost:2.5, boostLabel:'+1.5× per tap (2.5× total)', desc:'Blessed by the ancient Banana Pantheon. Reserved for those who want to dominate the leaderboard with 2.5× the banana rate.',        unlock:'+1.5× per tap • 2.5× total • Dominate the leaderboard' },
   { id:3, name:'KING APE',     img:'https://i.imgur.com/YestlX1.jpg', rarity:'👑 LEGENDARY', rarityColor:'#C084FC', border:'#C084FC', price:25, boost:3.0, boostLabel:'+2× per tap (3× total)',    desc:'The one true ruler of Planet Apes. Maximum boost available. Triple your tap power and convert to more $APES than any other ape.',    unlock:'+2× per tap • 3× total • Maximum boost in existence' }
@@ -984,16 +940,18 @@ function applyEquippedSkinToGame() {
   var badge = document.getElementById('game-skin-badge');
   var boostInd = document.getElementById('boost-indicator');
   if (s) {
-    apeImg.src = s.img; apeImg.style.borderColor = s.border;
-    apeImg.style.boxShadow = '0 0 50px ' + s.border + '88';
+    apeImg.src = s.img;
+    apeImg.style.borderColor = s.border;
+    apeImg.style.boxShadow = '0 0 50px ' + s.border + '80';
     boostBar.style.display = 'block';
-    document.getElementById('boost-bar-label').textContent = '🦍 ' + s.name + ' EQUIPPED';
-    document.getElementById('boost-bar-tag').textContent = '⚡ ' + s.boostLabel;
-    badge.style.display = 'block'; badge.style.color = s.rarityColor;
-    badge.style.border = '1px solid ' + s.rarityColor;
-    badge.textContent = '⚡ ' + s.boostLabel;
+    document.getElementById('boost-bar-label').textContent = s.name + ' equipped';
+    document.getElementById('boost-bar-tag').textContent = s.boostLabel;
+    badge.style.display = 'block';
+    badge.textContent = s.name + ' • ' + s.boostLabel;
+    badge.style.borderColor = s.border;
+    badge.style.color = s.border;
     boostInd.style.display = 'block';
-    boostInd.textContent = '⚡ ' + s.boost + '× boost active';
+    boostInd.textContent = '⚡ ' + s.boostLabel;
   } else {
     apeImg.src = 'https://i.imgur.com/KlM5HWE.jpg';
     apeImg.style.borderColor = '#05C582';
@@ -1068,9 +1026,6 @@ function showSkinModal(id) {
 }
 function closeSkinModal() { document.getElementById('skin-modal').style.display = 'none'; }
 
-// ══════════════════════════════════════════
-// LEADERBOARD
-// ══════════════════════════════════════════
 var LB_KEY = 'apes_leaderboard_v3';
 var PB_KEY = 'apes_personal_best_v2';
 var MEDALS = ['👑','🥈','🥉'];
@@ -1109,9 +1064,6 @@ function renderLeaderboard() {
   });
 }
 
-// ══════════════════════════════════════════
-// GAME
-// ══════════════════════════════════════════
 var score = 0, level = 1, bananasNeeded = 10000;
 var comboCount = 0, lastClickTime = 0;
 
@@ -1214,7 +1166,6 @@ setInterval(function(){
   if (score > 5 && Math.random() < 0.32) spawnFloat('💣', Math.random()*80+10, Math.random()*60+10);
 }, 6000);
 
-// SUBMIT MODAL
 function openSubmitModal() {
   if (Math.floor(score) === 0) { showToast('⚠️ Play the game first to collect bananas!', 'error'); return; }
   if (!walletAddress || !walletRawAddress) { showToast('🦊 Connect MetaMask first to submit!', 'error'); setTimeout(function(){ connectMetaMask(); }, 300); return; }
@@ -1231,7 +1182,7 @@ function submitScore() {
   if (!walletAddress) { showToast('🦊 Connect MetaMask to submit!', 'error'); return; }
   submitting = true;
   var btn = document.getElementById('submit-btn');
-  btn.textContent = '⏳ Saving…'; btn.disabled = true;
+  btn.textContent = '⏳ Saving...'; btn.disabled = true;
   var currentScore = Math.floor(score);
   setTimeout(function() {
     var entry = { name: name, score: currentScore, wallet: walletRawAddress || '' };
@@ -1247,7 +1198,6 @@ function submitScore() {
   }, 600);
 }
 
-// CONVERT MODAL
 function openConvertModal() {
   var currentScore = Math.floor(score);
   document.getElementById('convert-score-display').textContent = currentScore.toLocaleString();
@@ -1262,10 +1212,9 @@ function closeConvertModal() { document.getElementById('convert-modal').style.di
 function claimConvert() {
   if (!walletAddress) { closeConvertModal(); connectMetaMask(); showToast('🦊 Connect MetaMask to claim $APES when available.', 'info'); return; }
   closeConvertModal();
-  showToast('✅ Wallet linked! $APES conversion goes live at token launch on Monad!', 'info');
+  showToast('✅ Wallet linked! $APES conversion goes live at token launch on Monad Mainnet!', 'info');
 }
 
-// MUSIC
 var musicOn = true, musicStarted = false, musicAudioCtx = null, musicMasterGain = null, musicInterval = null;
 function startJungleMusic() {
   if (musicStarted) return;
@@ -1312,7 +1261,6 @@ function toggleMusic() {
   btn.style.borderColor=musicOn?'rgba(5,197,130,0.4)':'rgba(255,255,255,0.15)';
 }
 
-// INIT
 initMetaMask();
 loadSkinState();
 leaderboardData = loadLeaderboard();
