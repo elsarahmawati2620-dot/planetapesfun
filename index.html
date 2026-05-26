@@ -4,8 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   <meta name="description" content="Planet Apes ($APES) — The most based meme coin on Monad. Take bananas, rule the jungle, earn rewards!" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Planet Apes ($APES) — King of the Jungle on Monad" />
+  <meta property="og:description" content="The most based meme coin on Monad Mainnet. Take bananas, buy skins, rule the jungle." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Planet Apes ($APES)" />
+  <meta name="twitter:description" content="The most based meme coin on Monad Mainnet." />
   <title>Planet Apes ($APES) — King of the Jungle on Monad</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
@@ -37,13 +43,14 @@
     @keyframes particle-rise { 0% { opacity:1; transform:translateY(0) scale(1); } 100% { opacity:0; transform:translateY(-80px) scale(1.5); } }
     @keyframes modal-in { 0% { opacity:0; transform:scale(0.9); } 100% { opacity:1; transform:scale(1); } }
     @keyframes particle-drift {
-      0% { transform: translate(0, 100vh) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.8; }
-      100% { transform: translate(var(--drift-x, 30px), -10vh) rotate(360deg); opacity: 0; }
+      0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+      8% { opacity: 0.9; }
+      92% { opacity: 0.6; }
+      100% { transform: translate(var(--drift-x, 30px), -105vh) rotate(720deg); opacity: 0; }
     }
     @keyframes twinkle {
-      0%, 100% { opacity: 0.2; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.2); }
+      0%, 100% { opacity: 0.15; transform: scale(0.7); }
+      50% { opacity: 1; transform: scale(1.3); }
     }
     @keyframes glow-pulse {
       0%, 100% { box-shadow: 0 0 80px rgba(5,197,130,0.4); }
@@ -57,20 +64,12 @@
 
     .particle-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
     .particle {
-      position: absolute; font-size: 1.5rem;
+      position: absolute;
       animation: particle-drift linear infinite;
       animation-duration: var(--duration, 12s);
       animation-delay: var(--delay, 0s);
       bottom: -5%; opacity: 0;
       user-select: none; pointer-events: none;
-    }
-    .star-particle {
-      position: absolute; width: 4px; height: 4px;
-      border-radius: 50%;
-      animation: twinkle linear infinite;
-      animation-duration: var(--duration, 2s);
-      animation-delay: var(--delay, 0s);
-      opacity: 0.4;
     }
 
     #navbar {
@@ -83,7 +82,7 @@
     .nav-logo img { width:40px; height:40px; border-radius:50%; border:2px solid var(--primary); object-fit:cover; }
     .nav-logo-text { font-family:'Press Start 2P',monospace; font-size:0.75rem; color:var(--primary); letter-spacing:1px; }
     .nav-links { display:flex; align-items:center; gap:2rem; }
-    .nav-links a { color:#6B7280; font-size:0.8rem; font-weight:600; letter-spacing:1px; transition:color 0.2s; }
+    .nav-links a { color:#6B7280; font-size:0.8rem; font-weight:600; letter-spacing:1px; transition:color 0.2s; cursor:pointer; }
     .nav-links a:hover { color:var(--primary); }
     .nav-actions { display:flex; gap:0.6rem; align-items:center; }
     .btn-x { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; border-radius:0.75rem; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.04); color:#fff; font-size:0.75rem; font-weight:700; transition:all 0.2s; }
@@ -94,7 +93,6 @@
     .btn-wallet.connected { border-color:rgba(52,211,153,0.6); background:rgba(52,211,153,0.1); color:#34D399; }
     @media(max-width:900px) { .nav-links { display:none; } }
     @media(max-width:640px) { .nav-logo-text { display:none; } .btn-x { display:none; } }
-    @media(max-width:400px) { .btn-tg { padding:0.5rem 0.6rem; } }
 
     .jungle-bg {
       min-height:100vh; padding-top:68px;
@@ -135,7 +133,6 @@
     .social-card:hover { border-color:var(--primary); transform:translateY(-4px); box-shadow:0 10px 40px rgba(5,197,130,0.12); }
     .skin-card { background:#0d1117; border:1px solid rgba(5,197,130,0.15); border-radius:1.5rem; padding:1.25rem; text-align:center; transition:all 0.2s; cursor:pointer; }
     .skin-card:hover { transform:translateY(-4px); }
-    .skin-card.equipped { border-width:2px; }
 
     .meme-btn { transition:transform 0.2s, box-shadow 0.2s; }
     .meme-btn:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 8px 30px rgba(5,197,130,0.35); }
@@ -161,6 +158,12 @@
     .toast-error { background:#1f0a0a; border:1px solid #ef4444; color:#ef4444; }
     .toast-info { background:#0c1a2e; border:1px solid #3b82f6; color:#93c5fd; }
 
+    .wallet-option { display:flex; align-items:center; gap:1rem; padding:0.875rem 1rem; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:1rem; cursor:pointer; transition:all 0.2s; margin-bottom:0.6rem; }
+    .wallet-option:hover { background:rgba(5,197,130,0.08); border-color:rgba(5,197,130,0.35); }
+    .wallet-option-icon { font-size:2rem; width:2.5rem; text-align:center; flex-shrink:0; }
+    .wallet-option-name { font-weight:700; font-size:0.95rem; }
+    .wallet-option-desc { font-size:0.72rem; color:#6B7280; margin-top:0.1rem; }
+
     @media(max-width:640px) { .game-container { height:340px; } .modal-box { padding:1.5rem; } }
   </style>
 </head>
@@ -176,16 +179,16 @@
     <span class="nav-logo-text">PLANET&nbsp;APES</span>
   </div>
   <div class="nav-links">
-    <a href="#game" onclick="smoothScroll('game');return false;">TAKE BANANA</a>
-    <a href="#skins" onclick="smoothScroll('skins');return false;">SKINS</a>
-    <a href="#tokenomics" onclick="smoothScroll('tokenomics');return false;">TOKENOMICS</a>
-    <a href="#how" onclick="smoothScroll('how');return false;">HOW TO BUY</a>
-    <a href="#roadmap" onclick="smoothScroll('roadmap');return false;">ROADMAP</a>
-    <a href="#community" onclick="smoothScroll('community');return false;">COMMUNITY</a>
+    <a onclick="smoothScroll('game')">TAKE BANANA</a>
+    <a onclick="smoothScroll('skins')">SKINS</a>
+    <a onclick="smoothScroll('tokenomics')">TOKENOMICS</a>
+    <a onclick="smoothScroll('how')">HOW TO BUY</a>
+    <a onclick="smoothScroll('roadmap')">ROADMAP</a>
+    <a onclick="smoothScroll('community')">COMMUNITY</a>
   </div>
   <div class="nav-actions">
     <button class="btn-wallet" id="wallet-btn" onclick="handleWalletBtnClick()">
-      <span>🦊</span><span id="wallet-btn-txt">Connect MetaMask</span>
+      <span id="wallet-btn-icon">🔮</span><span id="wallet-btn-txt">Connect Wallet</span>
     </button>
     <button class="btn-x" onclick="window.open('https://nad.fun/','_blank')">𝕏 @planetapesxyz</button>
     <button class="btn-tg" onclick="window.open('https://t.me/planetapesfun','_blank')">📱 TG</button>
@@ -200,7 +203,7 @@
 
     <div style="display:flex;justify-content:center;margin-bottom:2rem">
       <div style="position:relative">
-        <img src="https://i.imgur.com/KlM5HWE.jpg" alt="Planet Apes" style="width:min(20rem,80vw);height:min(20rem,80vw);border-radius:50%;border:10px solid #05C582;box-shadow:0 0 100px rgba(5,197,130,0.6),0 0 200px rgba(5,197,130,0.2);object-fit:cover;animation:glow-pulse 3s ease-in-out infinite" />
+        <img src="https://i.imgur.com/KlM5HWE.jpg" alt="Planet Apes" style="width:min(18rem,78vw);height:min(18rem,78vw);border-radius:50%;border:10px solid #05C582;box-shadow:0 0 100px rgba(5,197,130,0.6),0 0 200px rgba(5,197,130,0.2);object-fit:cover;animation:glow-pulse 3s ease-in-out infinite" />
         <div class="animate-pulse" style="position:absolute;inset:-1rem;border-radius:50%;border:3px solid rgba(5,197,130,0.3)"></div>
       </div>
     </div>
@@ -220,7 +223,7 @@
 
     <div style="max-width:36rem;margin:0 auto 2rem;display:flex;align-items:center">
       <div style="flex:1;background:rgba(5,197,130,0.07);border:1px solid rgba(5,197,130,0.3);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">CA: SOON</div>
-      <div style="background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:0.78rem;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;white-space:nowrap;display:flex;align-items:center">⏳ SOON</div>
+      <div style="background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:0.78rem;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;white-space:nowrap">⏳ SOON</div>
     </div>
 
     <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;align-items:center">
@@ -236,19 +239,19 @@
       <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#05C582">✔</span>FAIR LAUNCH</div>
       <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#05C582">✔</span>0 TAX</div>
       <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#05C582">✔</span>LP BURNED</div>
-      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#05C582">🔮</span>MONAD MAINNET</div>
+      <div style="display:flex;align-items:center;gap:0.5rem"><span style="color:#C084FC">🔮</span>MONAD MAINNET (ID: 143)</div>
     </div>
   </div>
 
   <div class="ticker-wrap">
     <div class="ticker-inner">
-      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON MONAD MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON NAD.FUN 🚀</span><span>🦍 KING OF THE JUNGLE ON MONAD 🦍</span><span>💎 APE SKINS FROM 3 USDC 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
-      <span>🍌 CONVERT BANANAS TO $APES! 🍌</span><span>🐵 LIVE ON MONAD MAINNET 🐵</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN! 🏆</span><span>🚀 BUY $APES ON NAD.FUN 🚀</span><span>🦍 KING OF THE JUNGLE ON MONAD 🦍</span><span>💎 APE SKINS FROM 3 USDC 💎</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS ⚡</span>
+      <span>🍌 CONVERT BANANAS TO $APES!</span><span>🐵 LIVE ON MONAD MAINNET</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN!</span><span>🚀 BUY $APES ON NAD.FUN</span><span>🦍 KING OF THE JUNGLE ON MONAD</span><span>♈ APE SKINS FROM 3 USDC</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS</span>
+      <span>🍌 CONVERT BANANAS TO $APES!</span><span>🐵 LIVE ON MONAD MAINNET</span><span>🏆 WEEKLY LEADERBOARD — TOP APES WIN!</span><span>🚀 BUY $APES ON NAD.FUN</span><span>🦍 KING OF THE JUNGLE ON MONAD</span><span>♉ APE SKINS FROM 3 USDC</span><span>⚡ BOOST UP TO 3× PER TAP WITH SKINS</span>
     </div>
   </div>
 </section>
 
-<!-- Available on bar -->
+<!-- NAD.FUN bar -->
 <div onclick="window.open('https://nad.fun/','_blank')" style="background:#050709;border-bottom:1px solid rgba(5,197,130,0.15);padding:1.25rem;text-align:center;cursor:pointer;position:relative;z-index:1">
   <div style="color:#05C582;font-size:0.75rem;letter-spacing:0.2em">AVAILABLE ON</div>
   <div style="font-size:2.25rem;font-weight:900;color:#05C582">NAD.FUN 🚀</div>
@@ -272,7 +275,7 @@
   <div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center">
     <div style="flex:1;min-width:280px;max-width:620px">
       <div class="game-container" id="game-container" onclick="handleGameClick(event)" ontouchstart="handleGameTouch(event)">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.1;pointer-events:none;font-size:180px">🌴</div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.07;pointer-events:none;font-size:200px">🌴</div>
         <div id="game-skin-badge" style="display:none;position:absolute;top:1.5rem;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);padding:0.3rem 0.9rem;border-radius:9999px;font-size:0.6rem;font-weight:700;z-index:30;pointer-events:none;white-space:nowrap"></div>
         <div id="ape-wrap" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;pointer-events:none;text-align:center">
           <div style="position:relative">
@@ -303,9 +306,9 @@
         </div>
       </div>
       <div style="display:flex;justify-content:center;gap:0.75rem;margin-top:1.5rem;flex-wrap:wrap">
-        <button onclick="resetGame()" style="padding:0.75rem 1.75rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#fff;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">↺ RESET JUNGLE</button>
-        <button onclick="openConvertModal()" style="padding:0.75rem 1.75rem;border:1px solid rgba(5,197,130,0.35);background:rgba(5,197,130,0.06);color:#05C582;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">🍌 Convert to $APES</button>
-        <button onclick="smoothScroll('skins')" style="padding:0.75rem 1.75rem;border:1px solid rgba(39,117,202,0.4);background:rgba(39,117,202,0.08);color:#2775CA;font-weight:700;border-radius:1rem;display:flex;align-items:center;gap:0.5rem;font-size:0.875rem">💎 Get Skin Boost</button>
+        <button onclick="resetGame()" style="padding:0.75rem 1.75rem;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#fff;font-weight:700;border-radius:1rem;font-size:0.875rem">↺ RESET</button>
+        <button onclick="openConvertModal()" style="padding:0.75rem 1.75rem;border:1px solid rgba(5,197,130,0.35);background:rgba(5,197,130,0.06);color:#05C582;font-weight:700;border-radius:1rem;font-size:0.875rem">🍌 Convert to $APES</button>
+        <button onclick="smoothScroll('skins')" style="padding:0.75rem 1.75rem;border:1px solid rgba(39,117,202,0.4);background:rgba(39,117,202,0.08);color:#2775CA;font-weight:700;border-radius:1rem;font-size:0.875rem">💎 Get Skin Boost</button>
       </div>
       <div style="text-align:center;margin-top:1rem;font-size:0.75rem;color:#6B7280">Every 10,000 bananas × level = level up • Equip a skin for tap boost multipliers!</div>
     </div>
@@ -315,7 +318,7 @@
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
           <div>
             <div style="font-weight:900;font-size:1.4rem">🏆 LEADERBOARD</div>
-            <div style="font-size:0.6rem;color:#05C582;letter-spacing:1px;margin-top:-2px">TOP APES • CONVERT TO $APES • WEEKLY</div>
+            <div style="font-size:0.6rem;color:#05C582;letter-spacing:1px;margin-top:-2px">TOP APES • WEEKLY</div>
           </div>
           <button onclick="openSubmitModal()" style="padding:0.5rem 1.25rem;font-size:0.75rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;border-radius:1rem;border:none;white-space:nowrap">SUBMIT</button>
         </div>
@@ -333,10 +336,6 @@
           <button onclick="openConvertModal()" class="btn-convert">🍌 Convert Bananas to $APES</button>
         </div>
       </div>
-      <div style="text-align:center;font-size:0.65rem;color:#6B7280;margin-top:0.5rem">Submit your high score to climb the ranks!</div>
-      <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.07);font-size:0.6rem;color:#6B7280;line-height:1.5">
-        <strong>LEADERBOARD RULES:</strong> Top banana collectors each week can convert to $APES. <span style="color:#05C582">Resets every Sunday 00:00 UTC.</span>
-      </div>
     </div>
   </div>
 </section>
@@ -352,11 +351,11 @@
       <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(39,117,202,0.08);border:1px solid rgba(39,117,202,0.25);border-radius:9999px;padding:0.4rem 1rem;font-size:0.8rem;color:#2775CA">💎 Monad Mainnet USDC payments</div>
     </div>
   </div>
-  <div id="skins-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.75rem"></div>
+  <div id="skins-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.75rem"></div>
   <div style="text-align:center;margin-top:2.5rem">
     <div style="display:inline-flex;align-items:center;gap:0.5rem;background:#0d1117;border:1px solid rgba(5,197,130,0.2);border-radius:9999px;padding:0.5rem 1.25rem">
-      <span style="color:#05C582">🦍</span>
-      <span style="font-size:0.875rem;color:#9CA3AF">Connect MetaMask to Monad Mainnet to purchase • Skins are saved permanently</span>
+      <span style="color:#C084FC">🔮</span>
+      <span style="font-size:0.875rem;color:#9CA3AF">Connect any Web3 wallet to Monad Mainnet (Chain ID: 143) to purchase</span>
     </div>
   </div>
 </section>
@@ -367,17 +366,12 @@
     <div style="text-align:center;margin-bottom:3rem">
       <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(5,197,130,0.1);color:#05C582;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">TOKENOMICS</div>
       <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem">THE ECONOMICS</h2>
-      <p style="color:#9CA3AF;font-size:1rem;margin-top:0.5rem">Simple, fair, and transparent.</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-bottom:3rem">
       <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">TOTAL SUPPLY</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#05C582">1,000,000,000</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">$APES forever</div></div>
       <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">BUY/SELL TAX</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#34D399">0%</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">Zero tax — keep every banana</div></div>
       <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">LP BURNED</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#C084FC">100%</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">Liquidity locked forever</div></div>
       <div class="token-card"><div style="font-size:0.75rem;color:#9CA3AF;letter-spacing:0.1em;margin-bottom:0.5rem">OWNER</div><div style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;color:#05C582">Renounced</div><div style="font-size:0.75rem;color:#6B7280;margin-top:0.5rem">No control, true community coin</div></div>
-    </div>
-    <div style="margin-bottom:2rem;display:flex;align-items:center;max-width:640px;margin-left:auto;margin-right:auto">
-      <div style="flex:1;background:rgba(5,197,130,0.06);border:1px solid rgba(5,197,130,0.25);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">CA: SOON</div>
-      <div style="background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:0.78rem;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;white-space:nowrap;display:flex;align-items:center">⏳ SOON</div>
     </div>
   </div>
 </section>
@@ -389,10 +383,10 @@
     <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff">HOW TO BUY $APES</h2>
   </div>
   <div style="display:flex;flex-direction:column;gap:1rem">
-    <div class="step"><div class="step-num">1</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Install MetaMask &amp; Add Monad Mainnet</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Install MetaMask and add the Monad Mainnet network (Chain ID: 41454). Click <strong style="color:#05C582">Connect MetaMask</strong> in the navbar to link your wallet instantly — it will switch to Monad Mainnet automatically!</div></div></div>
-    <div class="step"><div class="step-num">2</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Get USDC on Monad Mainnet</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Bridge or obtain USDC on Monad Mainnet. You need at least <strong style="color:#05C582">3 USDC</strong> to buy the starter Jungle Chad skin. Skins give tap boost multipliers in the game!</div></div></div>
-    <div class="step"><div class="step-num">3</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy Skins &amp; Play</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Head to the <strong style="color:#C084FC">APE SKINS</strong> section, choose your skin, and buy with USDC via MetaMask on Monad Mainnet. Equip it in-game for an instant tap boost. Stack banana scores and convert them to $APES!</div></div></div>
-    <div class="step"><div class="step-num">4</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy $APES on nad.fun</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Visit <strong style="color:#05C582">nad.fun</strong> — the premier platform to buy $APES on Monad Mainnet. Connect MetaMask and swap instantly.<br><span style="color:#05C582;font-size:0.8rem">CA: SOON</span></div></div></div>
+    <div class="step"><div class="step-num">1</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Install a Web3 Wallet &amp; Add Monad Mainnet</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Install MetaMask, Trust Wallet, Rabby, OKX, Coinbase Wallet, or any EIP-1193 wallet. Click <strong style="color:#05C582">Connect Wallet</strong> in the navbar — it will auto-switch your wallet to Monad Mainnet (Chain ID: <strong style="color:#C084FC">143 / 0x8f</strong>) instantly!</div></div></div>
+    <div class="step"><div class="step-num">2</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Get USDC on Monad Mainnet</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Bridge or obtain USDC on Monad Mainnet. USDC contract: <span style="font-family:monospace;color:#C084FC;font-size:0.8rem">0x754704Bc059F8C67012fEd69BC8A327a5aafb603</span>. You need at least <strong style="color:#05C582">3 USDC</strong> for the starter skin + some MON for gas.</div></div></div>
+    <div class="step"><div class="step-num">3</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy Skins &amp; Play</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Go to <strong style="color:#C084FC">APE SKINS</strong>, choose your skin, and buy with USDC. Payment is sent directly on-chain. Equip your skin for an instant tap boost in-game!</div></div></div>
+    <div class="step"><div class="step-num">4</div><div><div style="font-weight:900;font-size:1.1rem;margin-bottom:0.5rem">Buy $APES on nad.fun</div><div style="color:#9CA3AF;font-size:0.9rem;line-height:1.7">Visit <strong style="color:#05C582">nad.fun</strong> and swap instantly. Token is launching on Monad Mainnet.<br><span style="color:#05C582;font-size:0.8rem">CA: SOON</span></div></div></div>
   </div>
   <div style="margin-top:2rem;text-align:center">
     <button class="meme-btn" onclick="window.open('https://nad.fun/','_blank')" style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;box-shadow:0 10px 40px rgba(5,197,130,0.35)">🚀 BUY $APES ON NAD.FUN</button>
@@ -405,7 +399,6 @@
     <div style="text-align:center;margin-bottom:3rem">
       <div style="display:inline-block;padding:0.375rem 1.25rem;background:rgba(5,197,130,0.1);color:#05C582;border-radius:9999px;font-size:0.875rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.75rem">THE PLAN</div>
       <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem">ROADMAP</h2>
-      <p style="color:#9CA3AF;font-size:1rem;margin-top:0.5rem">From jungle to the moon — one banana at a time.</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem">
       <div style="background:#0d1117;border:1px solid #05C582;border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
@@ -416,9 +409,9 @@
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Token launch on Monad Mainnet</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Website &amp; Take Banana game live</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Persistent leaderboard</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Leaderboard system</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Skin shop with USDC payments</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Community Twitter launch</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#05C582">✔</span>Multi-wallet support</li>
         </ul>
       </div>
       <div style="background:#0d1117;border:1px solid rgba(5,197,130,0.3);border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
@@ -431,7 +424,6 @@
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#00D97B">◆</span>Convert bananas to $APES live</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#00D97B">◆</span>Major influencer partnerships</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#00D97B">◆</span>Telegram community 5,000+</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#00D97B">◆</span>Cross-platform marketing blitz</li>
         </ul>
       </div>
       <div style="background:#0d1117;border:1px solid rgba(192,132,252,0.35);border-radius:1.5rem;padding:1.75rem;position:relative;overflow:hidden">
@@ -440,9 +432,8 @@
         <div class="pixel-font" style="font-size:0.7rem;color:#C084FC;margin-bottom:0.5rem">PHASE 3</div>
         <div style="font-weight:900;font-size:1.25rem;margin-bottom:1rem">🦍 NFT DROP</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>NFT Ape Skin collection (Monad Mainnet)</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>1,000 NFT holder milestone</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>Holder-only events &amp; giveaways</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>NFT Ape Skin collection (Monad)</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>1,000 holder milestone events</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>$APES weekly prize pool</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#C084FC">◆</span>Strategic CEX talks begin</li>
         </ul>
@@ -456,8 +447,7 @@
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#34D399">◆</span>Planet Apes mobile game</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#34D399">◆</span>CEX listings (major exchanges)</li>
           <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#34D399">◆</span>$APES merch store</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#34D399">◆</span>Cross-chain bridge to other networks</li>
-          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#34D399">◆</span>10,000 holder celebration event</li>
+          <li style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem"><span style="color:#34D399">◆</span>10,000 holder celebration</li>
         </ul>
       </div>
     </div>
@@ -471,9 +461,9 @@
     <h2 class="pixel-font" style="font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:#fff">JOIN THE JUNGLE</h2>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem">
-    <div class="social-card" onclick="window.open('https://nad.fun/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">𝕏</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Twitter / X</div><div style="color:#9CA3AF;font-size:0.875rem">Follow for alpha, memes &amp; updates</div></div>
+    <div class="social-card" onclick="window.open('https://nad.fun/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">𝕏</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Twitter / X</div><div style="color:#9CA3AF;font-size:0.875rem">Follow for alpha &amp; memes</div></div>
     <div class="social-card" onclick="window.open('https://t.me/planetapesfun','_blank')"><div style="font-size:3rem;margin-bottom:1rem">📱</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Telegram</div><div style="color:#9CA3AF;font-size:0.875rem">Join the jungle chat</div></div>
-    <div class="social-card" onclick="window.open('https://nad.fun/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">🚀</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">nad.fun</div><div style="color:#9CA3AF;font-size:0.875rem">Buy $APES now on nad.fun</div></div>
+    <div class="social-card" onclick="window.open('https://nad.fun/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">🚀</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">nad.fun</div><div style="color:#9CA3AF;font-size:0.875rem">Buy $APES now</div></div>
     <div class="social-card" onclick="window.open('https://nad.fun/','_blank')"><div style="font-size:3rem;margin-bottom:1rem">📊</div><div style="font-weight:900;font-size:1.25rem;margin-bottom:0.5rem">Dexscreener</div><div style="color:#9CA3AF;font-size:0.875rem">Track $APES price live</div></div>
   </div>
 </section>
@@ -490,44 +480,63 @@
 
 <!-- FOOTER -->
 <footer style="background:#050709;border-top:1px solid rgba(5,197,130,0.15);padding:3rem 1.5rem;text-align:center;position:relative;z-index:1">
-  <div style="display:flex;justify-content:center;margin-bottom:1.5rem">
-    <img src="https://i.imgur.com/KlM5HWE.jpg" alt="APES" style="width:56px;height:56px;border-radius:50%;border:2px solid #05C582;object-fit:cover" />
-  </div>
+  <img src="https://i.imgur.com/KlM5HWE.jpg" alt="APES" style="width:56px;height:56px;border-radius:50%;border:2px solid #05C582;object-fit:cover;margin-bottom:1.5rem" />
   <div class="pixel-font" style="font-size:1rem;color:#05C582;margin-bottom:0.5rem">PLANET APES</div>
   <div style="color:#6B7280;font-size:0.875rem;margin-bottom:1.5rem">The most based meme coin on Monad.</div>
   <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap">
-    <a href="https://nad.fun/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#05C582'" onmouseout="this.style.color='#9CA3AF'">Twitter</a>
-    <a href="https://t.me/planetapesfun" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#229ED9'" onmouseout="this.style.color='#9CA3AF'">Telegram</a>
-    <a href="https://nad.fun/" target="_blank" style="color:#9CA3AF;font-size:0.875rem;transition:color 0.2s" onmouseover="this.style.color='#05C582'" onmouseout="this.style.color='#9CA3AF'">Buy $APES</a>
+    <a href="https://nad.fun/" target="_blank" style="color:#9CA3AF;font-size:0.875rem">Twitter</a>
+    <a href="https://t.me/planetapesfun" target="_blank" style="color:#9CA3AF;font-size:0.875rem">Telegram</a>
+    <a href="https://nad.fun/" target="_blank" style="color:#9CA3AF;font-size:0.875rem">Buy $APES</a>
   </div>
   <div style="color:#4B5563;font-size:0.75rem">$APES is a meme coin with no intrinsic value. Always do your own research. Not financial advice.</div>
-  <div style="color:#374151;font-size:0.65rem;margin-top:0.5rem">Monad Mainnet | High-Performance EVM Blockchain</div>
+  <div style="color:#374151;font-size:0.65rem;margin-top:0.5rem">Monad Mainnet — Chain ID: 143 (0x8f)</div>
 </footer>
 
-<!-- MODALS -->
+<!-- ==================== MODALS ==================== -->
 
-<div id="wallet-info-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeWalletInfoModal()">
+<!-- Wallet Select Modal -->
+<div id="wallet-select-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeWalletSelectModal()">
   <div class="modal-box" style="max-width:420px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
       <div>
-        <div style="font-weight:900;font-size:1.4rem">🦊 MetaMask Wallet</div>
-        <div style="font-size:0.75rem;color:#05C582;margin-top:0.2rem">Connected to Monad Mainnet</div>
+        <div style="font-weight:900;font-size:1.4rem">🔮 Connect Wallet</div>
+        <div style="font-size:0.75rem;color:#C084FC;margin-top:0.25rem">Monad Mainnet · Chain ID: 143</div>
       </div>
-      <button class="modal-close" onclick="closeWalletInfoModal()">✕</button>
+      <button class="modal-close" onclick="closeWalletSelectModal()">✕</button>
     </div>
-    <div style="text-align:center;padding:0.5rem 0 1.5rem">
-      <div style="font-size:3rem;margin-bottom:0.75rem">✅</div>
-      <div style="font-weight:900;font-size:1.1rem;color:#05C582;margin-bottom:0.35rem">Wallet Connected</div>
-      <div id="wallet-info-short" style="font-size:1rem;font-weight:700;color:#05C582;margin-bottom:0.6rem;font-family:monospace"></div>
-      <div id="wallet-info-addr" style="font-family:monospace;font-size:0.62rem;color:#9CA3AF;background:#1a1f2e;padding:0.6rem 0.75rem;border-radius:0.75rem;word-break:break-all;margin-bottom:1.25rem;text-align:left"></div>
-      <div style="background:rgba(5,197,130,0.06);border:1px solid rgba(5,197,130,0.2);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;text-align:left;line-height:1.6">
-        ✅ Submit scores to the leaderboard<br>✅ Buy skins with USDC on Monad Mainnet<br>✅ Convert bananas to $APES at launch
-      </div>
-      <button onclick="disconnectWallet()" style="padding:0.75rem 2rem;border:1px solid rgba(239,68,68,0.4);background:rgba(239,68,68,0.08);color:#ef4444;font-weight:700;border-radius:0.75rem;width:100%;cursor:pointer;font-size:0.9rem">🔌 Disconnect Wallet</button>
+    <p style="font-size:0.82rem;color:#9CA3AF;margin-bottom:1.25rem">Select your wallet. It will auto-switch to Monad Mainnet.</p>
+    <div id="wallet-options-list"></div>
+    <div style="margin-top:1rem;padding:0.75rem;background:rgba(192,132,252,0.06);border:1px solid rgba(192,132,252,0.2);border-radius:0.75rem;font-size:0.72rem;color:#9CA3AF;line-height:1.7">
+      🔗 Monad Mainnet &nbsp;|&nbsp; Chain ID: <strong style="color:#C084FC">143 (0x8f)</strong> &nbsp;|&nbsp; Symbol: MON<br>
+      💎 USDC: <span style="font-family:monospace;color:#C084FC">0x754704Bc…b603</span>
     </div>
   </div>
 </div>
 
+<!-- Wallet Info Modal -->
+<div id="wallet-info-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeWalletInfoModal()">
+  <div class="modal-box" style="max-width:400px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
+      <div>
+        <div style="font-weight:900;font-size:1.4rem">🔮 Wallet</div>
+        <div style="font-size:0.75rem;color:#C084FC;margin-top:0.2rem">Monad Mainnet · 143</div>
+      </div>
+      <button class="modal-close" onclick="closeWalletInfoModal()">✕</button>
+    </div>
+    <div style="text-align:center;padding-bottom:1.5rem">
+      <div style="font-size:3rem;margin-bottom:0.75rem">✅</div>
+      <div style="font-weight:900;font-size:1.1rem;color:#05C582;margin-bottom:0.35rem">Connected</div>
+      <div id="wallet-info-short" style="font-size:1rem;font-weight:700;color:#05C582;margin-bottom:0.6rem;font-family:monospace"></div>
+      <div id="wallet-info-addr" style="font-family:monospace;font-size:0.62rem;color:#9CA3AF;background:#1a1f2e;padding:0.6rem 0.75rem;border-radius:0.75rem;word-break:break-all;margin-bottom:1.25rem;text-align:left"></div>
+      <div style="background:rgba(5,197,130,0.06);border:1px solid rgba(5,197,130,0.2);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;text-align:left;line-height:1.7">
+        ✅ Submit scores to leaderboard<br>✅ Buy skins with USDC<br>✅ Convert bananas to $APES at launch
+      </div>
+      <button onclick="disconnectWallet()" style="padding:0.75rem 2rem;border:1px solid rgba(239,68,68,0.4);background:rgba(239,68,68,0.08);color:#ef4444;font-weight:700;border-radius:0.75rem;width:100%;cursor:pointer;font-size:0.9rem">🔌 Disconnect</button>
+    </div>
+  </div>
+</div>
+
+<!-- Submit Score Modal -->
 <div id="submit-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this&&!submitting)closeSubmitModal()">
   <div class="modal-box">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
@@ -539,11 +548,11 @@
       <div id="submit-score-display" style="font-family:monospace;font-weight:900;font-size:3rem;color:#05C582">0</div>
     </div>
     <div style="background:rgba(5,197,130,0.07);border:1px solid rgba(5,197,130,0.25);border-radius:0.75rem;padding:0.6rem 0.9rem;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem">
-      <span style="font-size:0.8rem">🦊</span>
+      <span>🔮</span>
       <span id="submit-wallet-display" style="font-family:monospace;font-size:0.72rem;color:#05C582;font-weight:700"></span>
     </div>
     <input type="text" id="submit-name-input" placeholder="Enter your ape name..." maxlength="20" onkeydown="if(event.key==='Enter')submitScore();if(event.key==='Escape')closeSubmitModal()" style="margin-bottom:0.5rem" />
-    <p style="font-size:0.7rem;color:#6B7280;text-align:center;margin-bottom:1rem">Score saved permanently — linked to your wallet!</p>
+    <p style="font-size:0.7rem;color:#6B7280;text-align:center;margin-bottom:1rem">Score saved — linked to your wallet!</p>
     <div style="display:flex;gap:0.75rem">
       <button onclick="closeSubmitModal()" style="flex:1;padding:0.75rem;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CANCEL</button>
       <button id="submit-btn" onclick="submitScore()" style="flex:1;padding:0.75rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;border-radius:0.75rem;border:none;cursor:pointer">🏆 SUBMIT</button>
@@ -551,6 +560,7 @@
   </div>
 </div>
 
+<!-- Skin Detail Modal -->
 <div id="skin-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeSkinModal()">
   <div class="modal-box" style="max-width:480px">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem">
@@ -566,438 +576,503 @@
     </div>
     <div id="skin-modal-desc" style="color:#9CA3AF;font-size:0.9rem;line-height:1.6;text-align:center;margin-bottom:1rem"></div>
     <div style="background:#1a1f2e;border:1px solid rgba(5,197,130,0.15);border-radius:1rem;padding:1rem;margin-bottom:1.25rem">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
-        <div style="font-size:0.75rem;color:#9CA3AF">PRICE (USDC — Monad Mainnet)</div>
-        <div id="skin-modal-price" style="font-weight:900;color:#2775CA;font-size:1.1rem"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem">
+        <span style="color:#9CA3AF;font-size:0.8rem">Price</span>
+        <span id="skin-modal-price" style="font-weight:900;color:#2775CA;font-size:1.1rem"></span>
       </div>
-      <div style="font-size:0.7rem;color:#05C582;margin-bottom:0.25rem">BOOST UTILITY</div>
-      <div id="skin-modal-unlock" style="font-weight:700;color:#fff;font-size:0.85rem"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="color:#9CA3AF;font-size:0.8rem">Requirement</span>
+        <span id="skin-modal-unlock" style="font-weight:700;color:#05C582;font-size:0.8rem"></span>
+      </div>
     </div>
-    <div id="skin-modal-actions" style="display:flex;gap:0.75rem;flex-wrap:wrap"></div>
-    <div style="text-align:center;margin-top:0.75rem;font-size:0.65rem;color:#6B7280">Monad Mainnet • USDC Payment • Permanent Ownership • Equip in Game</div>
+    <div id="skin-modal-actions" style="display:flex;gap:0.75rem"></div>
+    <div style="margin-top:0.75rem;text-align:center;font-size:0.7rem;color:#6B7280">
+      USDC sent on-chain to dev wallet via Monad Mainnet
+    </div>
   </div>
 </div>
 
-<div id="payment-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closePaymentModal()">
-  <div class="modal-box" style="max-width:460px">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem">
-      <div>
-        <div style="font-weight:900;font-size:1.4rem">💎 Pay with USDC</div>
-        <div id="pay-skin-name" style="font-size:0.8rem;color:#2775CA;font-weight:700;margin-top:0.15rem"></div>
-      </div>
-      <button class="modal-close" onclick="closePaymentModal()">✕</button>
-    </div>
-    <div style="background:linear-gradient(135deg,rgba(39,117,202,0.12),rgba(39,117,202,0.04));border:1px solid rgba(39,117,202,0.4);border-radius:1rem;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <div style="font-size:0.65rem;color:#9CA3AF;letter-spacing:0.1em">SEND EXACTLY</div>
-        <div id="pay-amount-display" style="font-size:2rem;font-weight:900;color:#2775CA;font-family:monospace"></div>
-        <div style="font-size:0.65rem;color:#6B7280;margin-top:0.1rem">via MetaMask on Monad Mainnet</div>
-      </div>
-      <div style="font-size:3rem">💎</div>
-    </div>
-    <div style="background:#1a1f2e;border:1px solid rgba(255,255,255,0.08);border-radius:0.75rem;padding:0.75rem 1rem;margin-bottom:1rem">
-      <div style="font-size:0.65rem;color:#9CA3AF;margin-bottom:0.3rem;letter-spacing:0.1em">DESTINATION ADDRESS (Monad Mainnet)</div>
-      <div style="font-family:monospace;font-size:0.72rem;color:#05C582;word-break:break-all;line-height:1.5">0x206DEd182FB54c58Cce0b33BC5d31876b20fB41A</div>
-    </div>
-    <div style="margin-bottom:1rem">
-      <button id="metamask-pay-btn" onclick="payWithMetaMask()" style="width:100%;padding:1rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:1rem;border:none;border-radius:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.75rem;transition:all 0.2s">
-        <span style="font-size:1.25rem">🦊</span> Pay with MetaMask
-      </button>
-    </div>
-    <div id="pay-status" style="display:none;background:rgba(5,197,130,0.06);border:1px solid rgba(5,197,130,0.25);border-radius:0.75rem;padding:0.75rem;margin-bottom:1rem;font-size:0.8rem;color:#05C582;text-align:center;line-height:1.5"></div>
-    <div style="background:rgba(5,197,130,0.05);border:1px solid rgba(5,197,130,0.2);border-radius:0.75rem;padding:0.75rem;margin-bottom:1rem;font-size:0.75rem;color:#05C582;text-align:center;line-height:1.5">
-      Click <strong>Pay with MetaMask</strong> — MetaMask will open and send USDC automatically on Monad Mainnet.<br>
-      <span style="color:#6B7280;font-size:0.65rem">Purchase is stored permanently after payment confirms.</span>
-    </div>
-    <div style="display:flex;gap:0.75rem">
-      <button onclick="closePaymentModal()" style="flex:1;padding:0.85rem;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CANCEL</button>
-      <button id="pay-confirm-btn" onclick="confirmPayment()" style="flex:2;padding:0.85rem;background:rgba(5,197,130,0.1);border:1px solid #05C582;color:#05C582;font-weight:900;border-radius:0.75rem;cursor:pointer;font-size:0.95rem">✅ I've Paid — Unlock Skin</button>
-    </div>
-    <div style="text-align:center;margin-top:0.75rem;font-size:0.6rem;color:#6B7280">Monad Mainnet • USDC ERC-20 Transfer • Sent to Planet Apes treasury</div>
-  </div>
-</div>
-
+<!-- Convert Modal -->
 <div id="convert-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeConvertModal()">
-  <div class="modal-box" style="max-width:420px">
+  <div class="modal-box">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
       <div style="font-weight:900;font-size:1.5rem">🍌 Convert to $APES</div>
       <button class="modal-close" onclick="closeConvertModal()">✕</button>
     </div>
-    <div style="text-align:center;margin-bottom:1.5rem;background:#1a1f2e;border-radius:1rem;padding:1.5rem">
-      <div style="font-size:0.75rem;color:#9CA3AF;margin-bottom:0.25rem">YOUR BANANAS</div>
-      <div id="convert-score-display" style="font-family:monospace;font-weight:900;font-size:3rem;color:#05C582;margin-bottom:0.5rem">0</div>
-      <div style="font-size:0.85rem;color:#6B7280;margin-bottom:0.5rem">converts to</div>
-      <div id="convert-apes-display" style="font-family:monospace;font-weight:900;font-size:2rem;color:#34D399;margin-bottom:0.25rem">0 $APES</div>
-      <div style="font-size:0.7rem;color:#6B7280">Rate: 1,000 bananas = 1 $APES</div>
+    <div style="text-align:center;margin-bottom:1.5rem">
+      <div style="font-size:0.75rem;color:#9CA3AF;margin-bottom:0.25rem">BANANAS COLLECTED</div>
+      <div id="convert-score-display" style="font-family:monospace;font-weight:900;font-size:3rem;color:#05C582">0</div>
+      <div style="font-size:0.875rem;color:#9CA3AF;margin-top:0.5rem">→ Estimated</div>
+      <div id="convert-apes-display" style="font-family:monospace;font-weight:900;font-size:1.75rem;color:#34D399;margin-top:0.25rem">0 $APES</div>
     </div>
-    <div id="convert-boost-note" style="display:none;background:rgba(5,197,130,0.07);border:1px solid rgba(5,197,130,0.25);border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#05C582;text-align:center"></div>
-    <div style="background:#1a1f2e;border-radius:0.75rem;padding:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:#9CA3AF;line-height:1.6">
-      <strong style="color:#fff">How it works:</strong> Submit your score, then connect MetaMask. When $APES token launches on Monad Mainnet, your banana score converts to real $APES tokens — the more bananas (boosted by skins!), the more $APES you earn.
+    <div id="convert-boost-note" style="display:none;background:rgba(5,197,130,0.08);border:1px solid rgba(5,197,130,0.25);border-radius:0.75rem;padding:0.75rem;margin-bottom:1rem;font-size:0.8rem;color:#05C582;text-align:center"></div>
+    <div style="background:#1a1f2e;border:1px solid rgba(5,197,130,0.15);border-radius:1rem;padding:1rem;margin-bottom:1.25rem;font-size:0.85rem;color:#9CA3AF;line-height:1.7">
+      🚀 $APES conversion goes live at <strong style="color:#05C582">token launch on Monad Mainnet</strong>.<br>
+      Connect your wallet now to link your score!
     </div>
     <div style="display:flex;gap:0.75rem">
       <button onclick="closeConvertModal()" style="flex:1;padding:0.75rem;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#9CA3AF;font-weight:700;border-radius:0.75rem;cursor:pointer">CLOSE</button>
-      <button onclick="claimConvert()" style="flex:1;padding:0.75rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;border-radius:0.75rem;border:none;cursor:pointer">🍌 Convert (SOON)</button>
+      <button onclick="claimConvert()" class="btn-convert" style="flex:1;padding:0.75rem">🔮 Link Wallet</button>
     </div>
   </div>
 </div>
 
+<!-- ==================== SCRIPTS ==================== -->
 <script>
-'use strict';
+// ═══════════════════════════════════════════════════════════
+// CONSTANTS — Monad Mainnet (Chain ID 143 / 0x8f)
+// ═══════════════════════════════════════════════════════════
+var MONAD_CHAIN_ID_HEX = '0x8f';
+var MONAD_CHAIN_ID_DEC = 143;
+var MONAD_CHAIN_NAME  = 'Monad Mainnet';
+var MONAD_RPC_URL     = 'https://rpc.monad.xyz';
+var MONAD_EXPLORER    = 'https://explorer.monad.xyz';
+var MONAD_SYMBOL      = 'MON';
 
-// CONFIG — Monad Mainnet (Chain ID: 41454 / 0xA1EE)
-var MONAD_CHAIN_ID = '0xA1EE';
-var USDC_CONTRACT = '0xf817257fed379853cDe0fa4F97AB987181B1E5Ea';
-var PLANET_APES_WALLET = '0x206DEd182FB54c58Cce0b33BC5d31876b20fB41A';
+var USDC_ADDRESS = '0x754704Bc059F8C67012fEd69BC8A327a5aafb603';
+var DEV_ADDRESS  = '0xB2bDB0d88311A2c69027287eaD912EF86A95491E';
+
 var ERC20_ABI = [
   'function transfer(address to, uint256 amount) returns (bool)',
-  'function decimals() view returns (uint8)',
-  'function balanceOf(address owner) view returns (uint256)',
-  'function symbol() view returns (string)'
+  'function balanceOf(address account) view returns (uint256)'
 ];
 
-(function() {
+// ═══════════════════════════════════════════════════════════
+// ZODIAC PURPLE PARTICLE BACKGROUND
+// ═══════════════════════════════════════════════════════════
+var ZODIAC_SIGNS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+
+function initParticles() {
   var bg = document.getElementById('particle-bg');
-  var EMOJIS = ['🍌','🍌','🍌','🦍','🐵','✨','⭐','💫'];
-  var COLORS = ['#05C582','#00D97B','#34D399'];
-  for (var i = 0; i < 40; i++) {
-    var star = document.createElement('div');
-    star.className = 'star-particle';
-    star.style.cssText = 'left:' + (Math.random()*100) + '%;top:' + (Math.random()*100) + '%;--duration:' + (2+Math.random()*3) + 's;--delay:-' + (Math.random()*3) + 's;background:' + COLORS[i%3];
-    bg.appendChild(star);
-  }
-  for (var j = 0; j < 22; j++) {
+  if (!bg) return;
+
+  // Zodiac signs — purple, rising and drifting
+  for (var i = 0; i < 30; i++) {
     var p = document.createElement('div');
+    var dur = (10 + Math.random() * 18).toFixed(1);
+    var delay = -(Math.random() * 25).toFixed(1);
+    var drift = (Math.random() * 260 - 130).toFixed(0);
+    var size  = (1.1 + Math.random() * 1.5).toFixed(2);
     p.className = 'particle';
-    p.textContent = EMOJIS[j % EMOJIS.length];
-    var driftX = (Math.random()-0.5)*120;
-    p.style.cssText = 'left:' + (Math.random()*100) + '%;font-size:' + (1+Math.random()*1.2) + 'rem;--duration:' + (10+Math.random()*14) + 's;--delay:-' + (Math.random()*14) + 's;--drift-x:' + driftX + 'px';
+    p.style.left = (Math.random() * 100).toFixed(1) + '%';
+    p.style.fontSize = size + 'rem';
+    p.style.color = '#C084FC';
+    p.style.textShadow = '0 0 14px #C084FC, 0 0 28px #a855f7, 0 0 48px #7c3aed';
+    p.style.fontWeight = '900';
+    p.style.setProperty('--duration', dur + 's');
+    p.style.setProperty('--delay', delay + 's');
+    p.style.setProperty('--drift-x', drift + 'px');
+    p.style.animationDuration = dur + 's';
+    p.style.animationDelay = delay + 's';
+    p.textContent = ZODIAC_SIGNS[Math.floor(Math.random() * ZODIAC_SIGNS.length)];
     bg.appendChild(p);
   }
-})();
+
+  // Accent emojis — subtle
+  var EMOJIS = ['🍌','🌿','⚡','💫','🌙'];
+  for (var j = 0; j < 8; j++) {
+    var ep = document.createElement('div');
+    var edur = (14 + Math.random() * 14).toFixed(1);
+    var edelay = -(Math.random() * 20).toFixed(1);
+    var edrift = (Math.random() * 140 - 70).toFixed(0);
+    ep.className = 'particle';
+    ep.style.left = (Math.random() * 100).toFixed(1) + '%';
+    ep.style.fontSize = '1.2rem';
+    ep.style.opacity = '0.55';
+    ep.style.setProperty('--duration', edur + 's');
+    ep.style.setProperty('--delay', edelay + 's');
+    ep.style.setProperty('--drift-x', edrift + 'px');
+    ep.style.animationDuration = edur + 's';
+    ep.style.animationDelay = edelay + 's';
+    ep.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+    bg.appendChild(ep);
+  }
+
+  // Star dots — purple & green twinkling
+  for (var k = 0; k < 50; k++) {
+    var sp = document.createElement('div');
+    var isPurple = Math.random() > 0.45;
+    var sdur = (1.5 + Math.random() * 3.5).toFixed(2);
+    var sdelay = -(Math.random() * 5).toFixed(2);
+    var sz = (2 + Math.random() * 3).toFixed(1);
+    var col = isPurple ? '#C084FC' : '#05C582';
+    sp.style.cssText = [
+      'position:absolute',
+      'width:' + sz + 'px',
+      'height:' + sz + 'px',
+      'border-radius:50%',
+      'animation:twinkle linear infinite',
+      'left:' + (Math.random() * 100).toFixed(1) + '%',
+      'top:' + (Math.random() * 100).toFixed(1) + '%',
+      'background:' + col,
+      'box-shadow:0 0 6px ' + col,
+      'animation-duration:' + sdur + 's',
+      'animation-delay:' + sdelay + 's',
+      'opacity:0.4'
+    ].join(';');
+    bg.appendChild(sp);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════
+function smoothScroll(id) {
+  var el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
 
 function showToast(msg, type) {
   type = type || 'info';
   var c = document.getElementById('toast-container');
   var t = document.createElement('div');
   t.className = 'toast toast-' + type;
-  t.textContent = msg;
+  var icon = type === 'success' ? '✅' : (type === 'error' ? '❌' : 'ℹ️');
+  t.innerHTML = '<span style="flex-shrink:0">' + icon + '</span><span>' + msg + '</span>';
   c.appendChild(t);
-  setTimeout(function() { t.style.opacity='0'; t.style.transition='opacity 0.4s'; setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 400); }, 4500);
+  setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 5000);
 }
 
-function smoothScroll(id) { var el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); return false; }
-
-var FAQS = [
-  { q:'🍌 What is Planet Apes?', a:'Planet Apes ($APES) is the most based meme coin on Monad Mainnet. Take bananas, climb the leaderboard, convert your bananas to $APES, and rule the jungle with your fellow apes.' },
-  { q:'🎮 How do I play Take Banana?', a:'Click anywhere in the game area to collect bananas. The more you click, the higher your score. Equip a skin to activate a tap boost multiplier for faster banana collection!' },
-  { q:'💎 How do skins work?', a:'Each Ape Skin costs USDC on Monad Mainnet (starting at 3 USDC). Once purchased, equip the skin and it applies a boost multiplier to every tap — from +0.5× all the way up to +2× for the King Ape skin.' },
-  { q:'🍌 How do I convert bananas to $APES?', a:'Play the game to collect bananas, then click "Convert to $APES". When $APES launches on Monad Mainnet, your banana score converts to real $APES at 1,000 bananas = 1 $APES.' },
-  { q:'🏆 Will my score be saved?', a:'Your leaderboard score is saved permanently in your browser using localStorage. Submit via MetaMask to link your score to your wallet address permanently.' },
-  { q:'🚀 Where can I buy $APES?', a:'$APES is available on nad.fun. Follow us on Twitter for the exact launch time and contract address.' },
-  { q:'🔗 What blockchain is $APES on?', a:'Planet Apes ($APES) is on Monad Mainnet — a high-performance EVM-compatible blockchain. All skin purchases use USDC on Monad Mainnet via MetaMask.' },
-  { q:'🦊 How do I connect MetaMask?', a:'Install MetaMask, then click "Connect MetaMask" in the navbar. Make sure you are on the Monad Mainnet network (Chain ID: 41454). MetaMask will prompt you to switch networks automatically.' },
-];
-(function() {
-  var list = document.getElementById('faq-list');
-  FAQS.forEach(function(faq) {
-    var item = document.createElement('div');
-    item.className = 'faq-item';
-    item.innerHTML = '<div class="faq-q" onclick="toggleFaq(this)"><span>' + faq.q + '</span><span class="faq-arrow">▼</span></div><div class="faq-ans"><div class="faq-ans-inner">' + faq.a + '</div></div>';
-    list.appendChild(item);
-  });
-})();
-function toggleFaq(qEl) {
-  var arrow = qEl.querySelector('.faq-arrow');
-  var ans = qEl.nextElementSibling;
-  var isOpen = ans.classList.contains('open');
-  document.querySelectorAll('.faq-ans').forEach(function(a){ a.classList.remove('open'); });
-  document.querySelectorAll('.faq-arrow').forEach(function(a){ a.classList.remove('open'); });
-  if (!isOpen) { ans.classList.add('open'); arrow.classList.add('open'); }
+function shortAddr(addr) {
+  if (!addr) return '';
+  return addr.slice(0, 6) + '…' + addr.slice(-4);
 }
 
-var walletAddress = null;
-var walletRawAddress = null;
-
-function initMetaMask() {
-  if (!window.ethereum) return;
-  window.ethereum.on('accountsChanged', function(accounts) {
-    if (accounts.length === 0) {
-      walletAddress = null; walletRawAddress = null;
-      refreshWalletUI(false); renderSkinsGrid();
-    } else {
-      walletRawAddress = accounts[0];
-      walletAddress = formatAddress(accounts[0]);
-      refreshWalletUI(true); renderSkinsGrid();
-    }
-  });
-  window.ethereum.on('chainChanged', function() { window.location.reload(); });
-  window.ethereum.request({ method: 'eth_accounts' }).then(function(accounts) {
-    if (accounts && accounts.length > 0) {
-      walletRawAddress = accounts[0];
-      walletAddress = formatAddress(accounts[0]);
-      refreshWalletUI(true); renderSkinsGrid();
-    }
-  }).catch(function(){});
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-function formatAddress(addr) {
-  return addr.length > 12 ? addr.slice(0,6) + '...' + addr.slice(-4) : addr;
-}
+// ═══════════════════════════════════════════════════════════
+// WALLET STATE
+// ═══════════════════════════════════════════════════════════
+var walletAddress = '';
+var walletRawAddress = '';
+var activeProvider = null;
+var WALLET_KEY = 'apes_wallet_v3';
 
-async function connectMetaMask() {
-  if (!window.ethereum) {
-    showToast('🦊 MetaMask not detected! Please install MetaMask first.', 'error');
-    window.open('https://metamask.io/download/', '_blank');
-    return;
+function getStoredWallet() { try { return localStorage.getItem(WALLET_KEY) || ''; } catch(e) { return ''; } }
+function setStoredWallet(a) { try { localStorage.setItem(WALLET_KEY, a); } catch(e) {} }
+function clearStoredWallet() { try { localStorage.removeItem(WALLET_KEY); } catch(e) {} }
+
+// ═══════════════════════════════════════════════════════════
+// DETECT WALLETS  (EIP-6963 + legacy window.ethereum)
+// ═══════════════════════════════════════════════════════════
+function detectWallets() {
+  var found = [];
+  var eth = window.ethereum;
+  if (!eth) return found;
+
+  function classify(p) {
+    if (p.isMetaMask && !p.isBraveWallet && !p.isRabby) return { name:'MetaMask', icon:'🦊', desc:'Most popular Web3 wallet' };
+    if (p.isCoinbaseWallet || p.isCoinbaseBrowser)       return { name:'Coinbase Wallet', icon:'🔵', desc:'Coinbase official wallet' };
+    if (p.isTrustWallet)   return { name:'Trust Wallet', icon:'🛡️', desc:'Trust Wallet' };
+    if (p.isRabby)         return { name:'Rabby', icon:'🐰', desc:'Rabby Wallet by DeBank' };
+    if (p.isOKExWallet || p.isOkxWallet) return { name:'OKX Wallet', icon:'⭕', desc:'OKX Wallet' };
+    if (p.isBraveWallet)   return { name:'Brave Wallet', icon:'🦁', desc:'Brave Browser built-in' };
+    if (p.isPhantom)       return { name:'Phantom', icon:'👻', desc:'Phantom Wallet' };
+    return { name:'Web3 Wallet', icon:'🔮', desc:'EVM compatible wallet' };
   }
-  try {
-    var accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    if (!accounts || accounts.length === 0) { showToast('⚠️ No accounts found. Please unlock MetaMask.', 'error'); return; }
-    walletRawAddress = accounts[0];
-    walletAddress = formatAddress(accounts[0]);
-    await switchToMonad();
-    refreshWalletUI(true); renderSkinsGrid();
-    showToast('🦊 MetaMask connected to Monad Mainnet! You can now submit scores & buy skins.', 'success');
-  } catch (err) {
-    if (err.code === 4001) { showToast('⚠️ Connection cancelled.', 'error'); }
-    else { showToast('⚠️ Could not connect: ' + (err.message || err), 'error'); }
-  }
+
+  var arr = (eth.providers && Array.isArray(eth.providers)) ? eth.providers : [eth];
+  arr.forEach(function(p) {
+    var info = classify(p);
+    found.push({ name: info.name, icon: info.icon, desc: info.desc, provider: p });
+  });
+  return found;
 }
 
-async function switchToMonad() {
+// ═══════════════════════════════════════════════════════════
+// NETWORK — MONAD MAINNET
+// ═══════════════════════════════════════════════════════════
+async function switchToMonad(provider) {
   try {
-    await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: MONAD_CHAIN_ID }] });
-  } catch (switchErr) {
-    if (switchErr.code === 4902) {
+    await provider.request({ method:'wallet_switchEthereumChain', params:[{ chainId: MONAD_CHAIN_ID_HEX }] });
+    return true;
+  } catch(err) {
+    var code = err.code || (err.data && err.data.originalError && err.data.originalError.code);
+    if (code === 4902) {
       try {
-        await window.ethereum.request({
+        await provider.request({
           method: 'wallet_addEthereumChain',
           params: [{
-            chainId: MONAD_CHAIN_ID,
-            chainName: 'Monad Mainnet',
-            nativeCurrency: { name: 'MON', symbol: 'MON', decimals: 18 },
-            rpcUrls: ['https://rpc.monad.xyz'],
-            blockExplorerUrls: ['https://explorer.monad.xyz']
+            chainId: MONAD_CHAIN_ID_HEX,
+            chainName: MONAD_CHAIN_NAME,
+            nativeCurrency: { name:'MON', symbol: MONAD_SYMBOL, decimals:18 },
+            rpcUrls: [MONAD_RPC_URL],
+            blockExplorerUrls: [MONAD_EXPLORER]
           }]
         });
-      } catch (addErr) { showToast('⚠️ Could not add Monad Mainnet: ' + (addErr.message || addErr), 'error'); }
+        return true;
+      } catch(addErr) {
+        showToast('Could not add Monad Mainnet. Please add Chain ID 143 manually.', 'error');
+        return false;
+      }
     }
+    if (err.code === 4001) { showToast('Network switch cancelled.', 'error'); }
+    else { showToast('Could not switch to Monad Mainnet (ID: 143).', 'error'); }
+    return false;
+  }
+}
+
+async function ensureMonad(provider) {
+  try {
+    var chainId = await provider.request({ method:'eth_chainId' });
+    if (chainId.toLowerCase() === MONAD_CHAIN_ID_HEX.toLowerCase()) return true;
+    return await switchToMonad(provider);
+  } catch(e) { return false; }
+}
+
+// ═══════════════════════════════════════════════════════════
+// WALLET CONNECTION
+// ═══════════════════════════════════════════════════════════
+function updateWalletUI() {
+  var btn = document.getElementById('wallet-btn');
+  var txt = document.getElementById('wallet-btn-txt');
+  var icon = document.getElementById('wallet-btn-icon');
+  if (!btn) return;
+  if (walletRawAddress) {
+    btn.classList.add('connected');
+    if (txt) txt.textContent = shortAddr(walletRawAddress);
+    if (icon) icon.textContent = '✅';
+  } else {
+    btn.classList.remove('connected');
+    if (txt) txt.textContent = 'Connect Wallet';
+    if (icon) icon.textContent = '🔮';
+  }
+}
+
+async function connectWithProvider(wallet) {
+  closeWalletSelectModal();
+  var provider = wallet.provider;
+  try {
+    var accounts = await provider.request({ method:'eth_requestAccounts' });
+    if (!accounts || accounts.length === 0) { showToast('No accounts found. Unlock your wallet.', 'error'); return; }
+    var ok = await ensureMonad(provider);
+    if (!ok) return;
+
+    activeProvider = provider;
+    walletRawAddress = accounts[0].toLowerCase();
+    walletAddress = shortAddr(walletRawAddress);
+    setStoredWallet(walletRawAddress);
+    updateWalletUI();
+    showToast('✅ ' + wallet.name + ' connected to Monad Mainnet!', 'success');
+
+    provider.on('accountsChanged', function(accs) {
+      if (!accs || accs.length === 0) { disconnectWallet(); return; }
+      walletRawAddress = accs[0].toLowerCase();
+      walletAddress = shortAddr(walletRawAddress);
+      setStoredWallet(walletRawAddress);
+      updateWalletUI();
+      showToast('Account changed.', 'info');
+    });
+    provider.on('chainChanged', function(chainId) {
+      if (chainId.toLowerCase() !== MONAD_CHAIN_ID_HEX.toLowerCase()) {
+        showToast('⚠️ Switch back to Monad Mainnet (Chain ID: 143)', 'error');
+      }
+    });
+  } catch(e) {
+    if (e.code === 4001) { showToast('Connection cancelled.', 'error'); }
+    else { showToast('Connection failed: ' + (e.message || 'Unknown error'), 'error'); }
   }
 }
 
 function handleWalletBtnClick() {
-  if (walletAddress && walletRawAddress) {
-    document.getElementById('wallet-info-short').textContent = walletAddress;
+  if (walletRawAddress) {
+    document.getElementById('wallet-info-short').textContent = shortAddr(walletRawAddress);
     document.getElementById('wallet-info-addr').textContent = walletRawAddress;
     document.getElementById('wallet-info-modal').style.display = 'flex';
     return;
   }
-  connectMetaMask();
+  openWalletSelectModal();
 }
+
+function openWalletSelectModal() {
+  if (!window.ethereum) {
+    showToast('No wallet detected. Install MetaMask, Trust Wallet, Rabby, OKX or any EVM wallet.', 'error');
+    setTimeout(function(){ window.open('https://metamask.io/download/','_blank'); }, 1500);
+    return;
+  }
+  var wallets = detectWallets();
+  var list = document.getElementById('wallet-options-list');
+  list.innerHTML = '';
+  if (wallets.length === 0) {
+    list.innerHTML = '<p style="color:#9CA3AF;text-align:center;padding:1rem">No wallet detected.<br><a href="https://metamask.io/download/" target="_blank" style="color:#C084FC">Install MetaMask →</a></p>';
+  } else {
+    wallets.forEach(function(w) {
+      var btn = document.createElement('div');
+      btn.className = 'wallet-option';
+      btn.innerHTML = '<div class="wallet-option-icon">' + w.icon + '</div><div><div class="wallet-option-name">' + w.name + '</div><div class="wallet-option-desc">' + w.desc + '</div></div>';
+      btn.onclick = function(){ connectWithProvider(w); };
+      list.appendChild(btn);
+    });
+  }
+  document.getElementById('wallet-select-modal').style.display = 'flex';
+}
+
+function closeWalletSelectModal() { document.getElementById('wallet-select-modal').style.display = 'none'; }
 function closeWalletInfoModal() { document.getElementById('wallet-info-modal').style.display = 'none'; }
+
 function disconnectWallet() {
-  walletAddress = null; walletRawAddress = null;
-  refreshWalletUI(false); renderSkinsGrid(); closeWalletInfoModal();
+  walletRawAddress = ''; walletAddress = ''; activeProvider = null;
+  clearStoredWallet(); updateWalletUI(); closeWalletInfoModal();
   showToast('Wallet disconnected.', 'info');
 }
-function refreshWalletUI(connected) {
-  var btn = document.getElementById('wallet-btn');
-  var txt = document.getElementById('wallet-btn-txt');
-  if (connected && walletAddress) {
-    btn.classList.add('connected'); txt.textContent = walletAddress;
-  } else {
-    btn.classList.remove('connected'); txt.textContent = 'Connect MetaMask';
-  }
+
+async function initWallet() {
+  var stored = getStoredWallet();
+  if (!stored || !window.ethereum) { updateWalletUI(); return; }
+  try {
+    var provider = window.ethereum;
+    var accounts = await provider.request({ method:'eth_accounts' });
+    if (accounts && accounts.length > 0 && accounts[0].toLowerCase() === stored.toLowerCase()) {
+      var ok = await ensureMonad(provider);
+      if (ok) {
+        activeProvider = provider;
+        walletRawAddress = accounts[0].toLowerCase();
+        walletAddress = shortAddr(walletRawAddress);
+      }
+    }
+  } catch(e) {}
+  updateWalletUI();
 }
 
-var pendingBuySkinId = -1;
-
-function buySkin(id) { closeSkinModal(); openPaymentModal(id); }
-
-function openPaymentModal(id) {
+// ═══════════════════════════════════════════════════════════
+// BUY SKIN — REAL ERC-20 USDC TRANSFER TO DEV ADDRESS
+// ═══════════════════════════════════════════════════════════
+async function buySkin(id) {
   var s = SKINS[id]; if (!s) return;
-  pendingBuySkinId = id;
-  document.getElementById('pay-skin-name').textContent = s.rarity + ' ' + s.name;
-  document.getElementById('pay-amount-display').textContent = s.price + ' USDC';
-  document.getElementById('pay-status').style.display = 'none';
-  document.getElementById('pay-status').textContent = '';
-  var btn = document.getElementById('metamask-pay-btn');
-  btn.disabled = false; btn.style.opacity = '1';
-  btn.innerHTML = '<span style="font-size:1.25rem">🦊</span> Pay with MetaMask';
-  var confirmBtn = document.getElementById('pay-confirm-btn');
-  confirmBtn.style.background = 'rgba(5,197,130,0.1)';
-  confirmBtn.style.border = '1px solid #05C582';
-  confirmBtn.style.color = '#05C582';
-  confirmBtn.textContent = "✅ I've Paid — Unlock Skin";
-  document.getElementById('payment-modal').dataset.price = s.price;
-  document.getElementById('payment-modal').style.display = 'flex';
-}
 
-async function payWithMetaMask() {
-  var modal = document.getElementById('payment-modal');
-  var price = parseFloat(modal.dataset.price);
-  var s = SKINS[pendingBuySkinId]; if (!s) return;
-  if (!walletAddress || !walletRawAddress) {
-    showToast('🦊 Connect MetaMask first!', 'error');
-    closePaymentModal(); setTimeout(function(){ connectMetaMask(); }, 300); return;
+  if (!walletRawAddress || !activeProvider) {
+    showToast('Please connect your wallet first!', 'error');
+    closeSkinModal();
+    setTimeout(openWalletSelectModal, 350);
+    return;
   }
-  if (!window.ethereum) { showToast('🦊 MetaMask not detected!', 'error'); return; }
 
-  var payBtn = document.getElementById('metamask-pay-btn');
-  var statusEl = document.getElementById('pay-status');
-  payBtn.disabled = true; payBtn.style.opacity = '0.7';
-  payBtn.innerHTML = '<span style="font-size:1.25rem">⏳</span> Waiting for MetaMask...';
-  statusEl.style.display = 'block'; statusEl.style.color = '#93c5fd';
-  statusEl.textContent = '⏳ Switching to Monad Mainnet...';
+  var ok = await ensureMonad(activeProvider);
+  if (!ok) return;
+
+  var buyBtns = document.querySelectorAll('#skin-modal-actions button');
+  buyBtns.forEach(function(b){ b.disabled = true; b.textContent = '⏳ Waiting…'; });
 
   try {
-    await switchToMonad();
-    var provider = new ethers.BrowserProvider(window.ethereum);
-    var signer = await provider.getSigner();
-    var usdc = new ethers.Contract(USDC_CONTRACT, ERC20_ABI, signer);
-    var amount = ethers.parseUnits(String(price), 6);
-    statusEl.textContent = '⏳ Sending ' + price + ' USDC on Monad Mainnet — approve in MetaMask...';
-    var tx = await usdc.transfer(PLANET_APES_WALLET, amount);
-    statusEl.textContent = '⏳ Transaction sent! Waiting for confirmation...';
-    payBtn.innerHTML = '<span style="font-size:1.25rem">⏳</span> Confirming...';
-    var receipt = await tx.wait(1);
-    statusEl.style.color = '#05C582';
-    statusEl.textContent = '✅ Payment confirmed on Monad Mainnet! Tx: ' + receipt.hash.slice(0,10) + '...';
-    payBtn.innerHTML = '<span style="font-size:1.25rem">✅</span> Payment Successful!';
-    payBtn.style.background = 'linear-gradient(90deg,#05C582,#00D97B)';
-    payBtn.disabled = false; payBtn.style.opacity = '1';
-    var confirmBtn = document.getElementById('pay-confirm-btn');
-    confirmBtn.style.background = 'linear-gradient(90deg,#05C582,#00D97B)';
-    confirmBtn.style.color = '#000';
-    confirmBtn.textContent = '✅ Payment Done — Unlock Skin!';
-    showToast('✅ USDC sent on Monad Mainnet! Click "Unlock Skin" to equip.', 'success');
-  } catch (err) {
-    payBtn.disabled = false; payBtn.style.opacity = '1';
-    payBtn.innerHTML = '<span style="font-size:1.25rem">🦊</span> Pay with MetaMask';
-    statusEl.style.color = '#ef4444';
-    if (err.code === 4001 || (err.info && err.info.error && err.info.error.code === 4001)) {
-      statusEl.textContent = '❌ Transaction cancelled.';
-      showToast('❌ Transaction cancelled.', 'error');
-    } else {
-      statusEl.textContent = '❌ Error: ' + (err.reason || err.message || 'Unknown error');
-      showToast('❌ Payment failed: ' + (err.reason || err.message || 'Unknown'), 'error');
+    var ethersProvider = new ethers.BrowserProvider(activeProvider);
+    var signer = await ethersProvider.getSigner();
+    var usdcContract = new ethers.Contract(USDC_ADDRESS, ERC20_ABI, signer);
+
+    // USDC uses 6 decimals
+    var amount = ethers.parseUnits(String(s.price), 6);
+
+    // Check USDC balance
+    var balance = await usdcContract.balanceOf(walletRawAddress);
+    if (balance < amount) {
+      var bal = parseFloat(ethers.formatUnits(balance, 6)).toFixed(2);
+      showToast('Not enough USDC. You have ' + bal + ' USDC, need ' + s.price + ' USDC.', 'error');
+      buyBtns.forEach(function(b){ b.disabled = false; b.textContent = '💎 Buy for ' + s.price + ' USDC'; });
+      return;
     }
+
+    showToast('💎 Confirm the USDC transfer in your wallet…', 'info');
+    var tx = await usdcContract.transfer(DEV_ADDRESS, amount);
+
+    showToast('⏳ Transaction submitted! Waiting for confirmation…', 'info');
+    await tx.wait();
+
+    // Unlock skin
+    ownedSkins[id] = true;
+    saveSkinState();
+    renderSkinsGrid();
+    closeSkinModal();
+    showToast('🎉 ' + s.name + ' unlocked! Tx: ' + tx.hash.slice(0,10) + '… Equip it now!', 'success');
+
+  } catch(e) {
+    var code = e.code || (e.info && e.info.error && e.info.error.code);
+    if (code === 4001 || code === 'ACTION_REJECTED') {
+      showToast('Transaction cancelled by user.', 'error');
+    } else if (e.code === 'INSUFFICIENT_FUNDS') {
+      showToast('Not enough MON for gas fees.', 'error');
+    } else {
+      showToast('Transaction failed: ' + (e.shortMessage || e.message || 'Unknown error'), 'error');
+    }
+    buyBtns.forEach(function(b){ b.disabled = false; b.textContent = '💎 Buy for ' + s.price + ' USDC'; });
   }
 }
 
-function closePaymentModal() { document.getElementById('payment-modal').style.display = 'none'; pendingBuySkinId = -1; }
+// ═══════════════════════════════════════════════════════════
+// SKINS DATA & STATE
+// ═══════════════════════════════════════════════════════════
+var SKINS = {
+  1: { name:'Jungle Chad', img:'https://i.imgur.com/KlM5HWE.jpg', border:'#34D399', rarity:'Common', rarityColor:'#34D399', boostLabel:'1.5× Tap Boost', boost:1.5, price:3, unlock:'Connect wallet', desc:'The OG jungle warrior. Steady multiplier for new apes.' },
+  2: { name:'Neon Ape',    img:'https://i.imgur.com/KlM5HWE.jpg', border:'#C084FC', rarity:'Rare',   rarityColor:'#C084FC', boostLabel:'2.0× Tap Boost', boost:2.0, price:8, unlock:'Level 3+',       desc:'Glowing neon fur, powered by purple zodiac energy.' },
+  3: { name:'Monad God',   img:'https://i.imgur.com/KlM5HWE.jpg', border:'#F59E0B', rarity:'Epic',   rarityColor:'#F59E0B', boostLabel:'2.5× Tap Boost', boost:2.5, price:20, unlock:'Level 7+',      desc:'Forged in the fires of Monad. Epic power flows.' },
+  4: { name:'King Ape',    img:'https://i.imgur.com/KlM5HWE.jpg', border:'#EF4444', rarity:'Legendary',rarityColor:'#EF4444',boostLabel:'3.0× Tap Boost', boost:3.0, price:50, unlock:'Level 10+',    desc:'Supreme ruler of the jungle. Maximum banana power.' }
+};
 
-function confirmPayment() {
-  if (pendingBuySkinId < 0) return;
-  var id = pendingBuySkinId;
-  var s = SKINS[id];
-  closePaymentModal();
-  if (!isSkinOwned(id)) { ownedSkins.push(id); }
-  saveSkinState();
-  if (equippedSkinId < 0) { equippedSkinId = id; saveSkinState(); applyEquippedSkinToGame(); }
-  renderSkinsGrid();
-  showToast('🎉 ' + s.name + ' unlocked! ' + s.boostLabel + ' now active!', 'success');
-}
-
-var SKINS = [
-  { id:0, name:'JUNGLE CHAD',  img:'https://i.imgur.com/4rUjNtO.jpg', rarity:'💪 CHAD',      rarityColor:'#05C582', border:'#05C582', price:3,  boost:1.5, boostLabel:'+0.5× per tap (1.5× total)', desc:'The alpha starter pack. Maximum gains, never skips banana day. Buy with 3 USDC on Monad Mainnet and get an immediate +50% tap boost.',   unlock:'+0.5× per tap • 1.5× total • Perfect starter boost' },
-  { id:1, name:'DEGEN APE',    img:'https://i.imgur.com/7VFGhCb.jpg', rarity:'🔥 DEGEN',     rarityColor:'#3b82f6', border:'#3b82f6', price:8,  boost:2.0, boostLabel:'+1× per tap (2× total)',    desc:'Laser eyes activated. This ape never sells. For the true degens who want double tap power.',         unlock:'+1× per tap • 2× total • Double your banana rate' },
-  { id:2, name:'BANANA GOD',   img:'https://i.imgur.com/eyQoioN.jpg', rarity:'🌟 MYTHIC',    rarityColor:'#34D399', border:'#34D399', price:15, boost:2.5, boostLabel:'+1.5× per tap (2.5× total)', desc:'Blessed by the ancient Banana Pantheon. Reserved for those who want to dominate the leaderboard with 2.5× the banana rate.',        unlock:'+1.5× per tap • 2.5× total • Dominate the leaderboard' },
-  { id:3, name:'KING APE',     img:'https://i.imgur.com/YestlX1.jpg', rarity:'👑 LEGENDARY', rarityColor:'#C084FC', border:'#C084FC', price:25, boost:3.0, boostLabel:'+2× per tap (3× total)',    desc:'The one true ruler of Planet Apes. Maximum boost available. Triple your tap power and convert to more $APES than any other ape.',    unlock:'+2× per tap • 3× total • Maximum boost in existence' }
-];
-
-var OWNED_SKINS_KEY = 'apes_owned_skins_v2';
-var EQUIPPED_SKIN_KEY = 'apes_equipped_skin_v2';
-var ownedSkins = [];
-var equippedSkinId = -1;
+var SKIN_KEY     = 'apes_skins_v3';
+var EQUIPPED_KEY = 'apes_equipped_v3';
+var ownedSkins   = {};
+var equippedSkinId = null;
 
 function loadSkinState() {
-  try { var raw = localStorage.getItem(OWNED_SKINS_KEY); if (raw) { var p = JSON.parse(raw); if (Array.isArray(p)) ownedSkins = p; } } catch(e) {}
-  try { var eq = localStorage.getItem(EQUIPPED_SKIN_KEY); if (eq !== null && eq !== '') { var n = parseInt(eq, 10); if (!isNaN(n) && n >= -1) equippedSkinId = n; } } catch(e) {}
+  try { var r = localStorage.getItem(SKIN_KEY); if (r) ownedSkins = JSON.parse(r); } catch(e) { ownedSkins = {}; }
+  try { var e = localStorage.getItem(EQUIPPED_KEY); if (e) equippedSkinId = parseInt(e, 10) || null; } catch(e) { equippedSkinId = null; }
 }
 function saveSkinState() {
-  try { localStorage.setItem(OWNED_SKINS_KEY, JSON.stringify(ownedSkins)); } catch(e) {}
-  try { localStorage.setItem(EQUIPPED_SKIN_KEY, String(equippedSkinId)); } catch(e) {}
+  try { localStorage.setItem(SKIN_KEY, JSON.stringify(ownedSkins)); } catch(e) {}
+  try { localStorage.setItem(EQUIPPED_KEY, equippedSkinId ? String(equippedSkinId) : ''); } catch(e) {}
 }
-function isSkinOwned(id) { return ownedSkins.indexOf(id) !== -1; }
-function getEquippedSkin() { return equippedSkinId >= 0 ? SKINS[equippedSkinId] : null; }
-function getSkinBoostMultiplier() { var s = getEquippedSkin(); return s ? s.boost : 1.0; }
+function isSkinOwned(id) { return ownedSkins[id] === true; }
+function getSkinBoost() { return (equippedSkinId && SKINS[equippedSkinId]) ? SKINS[equippedSkinId].boost : 1.0; }
+function getEquippedSkin() { return (equippedSkinId && SKINS[equippedSkinId]) ? SKINS[equippedSkinId] : null; }
 
 function equipSkin(id) {
-  if (!isSkinOwned(id)) { showToast('❌ You don\'t own this skin! Buy it first.', 'error'); return; }
-  equippedSkinId = id; saveSkinState(); applyEquippedSkinToGame(); renderSkinsGrid(); closeSkinModal();
-  showToast('✅ ' + SKINS[id].name + ' equipped! Tap boost active.', 'success');
+  if (!isSkinOwned(id)) return;
+  equippedSkinId = id; saveSkinState(); applyEquippedSkin(); renderSkinsGrid(); closeSkinModal();
+  showToast('🦍 ' + SKINS[id].name + ' equipped! ' + SKINS[id].boostLabel + ' active!', 'success');
 }
 function unequipSkin() {
-  equippedSkinId = -1; saveSkinState(); applyEquippedSkinToGame(); renderSkinsGrid();
+  equippedSkinId = null; saveSkinState(); applyEquippedSkin(); renderSkinsGrid(); closeSkinModal();
   showToast('Skin unequipped.', 'info');
 }
 
-function applyEquippedSkinToGame() {
+function applyEquippedSkin() {
   var s = getEquippedSkin();
-  var apeImg = document.getElementById('ape-img');
-  var boostBar = document.getElementById('boost-bar');
   var badge = document.getElementById('game-skin-badge');
+  var boostBar = document.getElementById('boost-bar');
   var boostInd = document.getElementById('boost-indicator');
   if (s) {
-    apeImg.src = s.img;
-    apeImg.style.borderColor = s.border;
-    apeImg.style.boxShadow = '0 0 50px ' + s.border + '80';
-    boostBar.style.display = 'block';
-    document.getElementById('boost-bar-label').textContent = s.name + ' equipped';
-    document.getElementById('boost-bar-tag').textContent = s.boostLabel;
-    badge.style.display = 'block';
-    badge.textContent = s.name + ' • ' + s.boostLabel;
-    badge.style.borderColor = s.border;
-    badge.style.color = s.border;
-    boostInd.style.display = 'block';
-    boostInd.textContent = '⚡ ' + s.boostLabel;
+    if (badge) { badge.style.display='block'; badge.textContent=s.name+' · '+s.boostLabel; badge.style.color=s.border; }
+    if (boostBar) { boostBar.style.display='block'; document.getElementById('boost-bar-label').textContent=s.name+' Active'; document.getElementById('boost-bar-tag').textContent=s.boostLabel; }
+    if (boostInd) { boostInd.style.display='block'; boostInd.textContent=s.boostLabel; }
   } else {
-    apeImg.src = 'https://i.imgur.com/KlM5HWE.jpg';
-    apeImg.style.borderColor = '#05C582';
-    apeImg.style.boxShadow = '0 0 50px rgba(5,197,130,0.5)';
-    boostBar.style.display = 'none';
-    badge.style.display = 'none';
-    boostInd.style.display = 'none';
+    if (badge) badge.style.display='none';
+    if (boostBar) boostBar.style.display='none';
+    if (boostInd) boostInd.style.display='none';
   }
 }
 
 function renderSkinsGrid() {
-  var grid = document.getElementById('skins-grid');
-  grid.innerHTML = '';
-  SKINS.forEach(function(s) {
-    var owned = isSkinOwned(s.id);
-    var equipped = equippedSkinId === s.id;
-    var bColor = equipped ? s.border : (owned ? '#05C582' : 'rgba(5,197,130,0.15)');
+  var grid = document.getElementById('skins-grid'); grid.innerHTML = '';
+  Object.keys(SKINS).forEach(function(id) {
+    var s = SKINS[id]; var owned = isSkinOwned(parseInt(id)); var equipped = equippedSkinId === parseInt(id);
     var card = document.createElement('div');
-    card.className = 'skin-card' + (equipped ? ' equipped' : '');
-    card.style.borderColor = bColor;
-    if (equipped) card.style.borderWidth = '2px';
-    card.onclick = function() { showSkinModal(s.id); };
-    var badge1 = equipped
-      ? '<div style="position:absolute;top:12px;left:12px;background:#000;border:2px solid #05C582;border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:#05C582">✅ EQUIPPED</div>'
-      : (owned ? '<div style="position:absolute;top:12px;left:12px;background:#000;border:2px solid #22c55e;border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:#22c55e">✔ OWNED</div>' : '');
-    var btn = '';
-    if (owned) {
-      if (equipped) {
-        btn = '<button onclick="event.stopPropagation();unequipSkin()" class="btn-equip active-eq" style="font-size:0.75rem;border:1px solid #05C582">✅ EQUIPPED — Unequip</button>';
-      } else {
-        btn = '<button onclick="event.stopPropagation();equipSkin(' + s.id + ')" class="btn-equip" style="font-size:0.75rem">🦍 EQUIP IN GAME</button>';
-      }
-    } else {
-      btn = '<button onclick="event.stopPropagation();showSkinModal(' + s.id + ')" class="btn-buy-usdc" style="font-size:0.75rem">💎 Buy ' + s.price + ' USDC</button>';
-    }
-    card.innerHTML =
-      '<div style="position:relative">' +
-        '<img src="' + s.img + '" style="width:100%;height:220px;object-fit:cover;border-radius:1rem;border:3px solid ' + s.border + ';box-shadow:0 0 25px ' + s.border + '44;margin-bottom:0.75rem" />' +
-        '<div style="position:absolute;top:12px;right:12px;background:#000;border:1px solid ' + s.rarityColor + ';border-radius:9999px;padding:0.2rem 0.55rem;font-size:0.6rem;font-weight:900;color:' + s.rarityColor + '">' + s.rarity + '</div>' +
-        badge1 +
-      '</div>' +
-      '<div style="font-weight:900;font-size:1.15rem;margin-bottom:0.2rem">' + s.name + '</div>' +
-      '<div style="color:' + s.rarityColor + ';font-size:0.8rem;margin-bottom:0.4rem">' + s.rarity + '</div>' +
-      '<div style="display:inline-flex;align-items:center;gap:0.3rem;background:rgba(5,197,130,0.08);border:1px solid rgba(5,197,130,0.25);border-radius:0.4rem;padding:0.2rem 0.55rem;font-size:0.68rem;font-weight:900;color:#05C582;margin-bottom:0.5rem">⚡ ' + s.boostLabel + '</div>' +
-      '<div style="background:rgba(39,117,202,0.08);border:1px solid rgba(39,117,202,0.25);border-radius:0.75rem;padding:0.4rem 0.6rem;font-size:0.75rem;color:#2775CA;font-weight:700;margin-bottom:0.75rem;text-align:center">💎 ' + s.price + ' USDC</div>' +
-      btn;
+    card.className = 'skin-card';
+    if (equipped) { card.style.borderColor = s.border; card.style.borderWidth = '2px'; card.style.boxShadow = '0 0 30px ' + s.border + '44'; }
+    card.onclick = function(){ showSkinModal(parseInt(id)); };
+    card.innerHTML = [
+      '<div style="position:relative;display:inline-block;margin-bottom:0.75rem">',
+        '<img src="',s.img,'" style="width:100px;height:100px;border-radius:50%;border:4px solid ',s.border,';object-fit:cover;box-shadow:0 0 20px ',s.border,'55" />',
+        owned ? '<div style="position:absolute;bottom:0;right:0;background:#05C582;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:900">✓</div>' : '',
+      '</div>',
+      '<div style="font-weight:900;font-size:1rem;margin-bottom:0.25rem">',s.name,'</div>',
+      '<div style="font-size:0.7rem;color:',s.rarityColor,';font-weight:700;margin-bottom:0.5rem">',s.rarity,'</div>',
+      '<div style="font-size:0.75rem;color:#05C582;margin-bottom:0.75rem">⚡ ',s.boostLabel,'</div>',
+      owned
+        ? (equipped
+            ? '<div class="btn-equip active-eq" style="border:1px solid #05C582">✅ EQUIPPED</div>'
+            : '<div class="btn-equip">🦍 EQUIP</div>')
+        : '<div class="btn-buy-usdc">💎 ',s.price,' USDC</div>'
+    ].join('');
     grid.appendChild(card);
   });
 }
@@ -1017,55 +1092,57 @@ function showSkinModal(id) {
   actions.innerHTML = '';
   var owned = isSkinOwned(id); var equipped = equippedSkinId === id;
   if (owned) {
-    if (equipped) { actions.innerHTML = '<button onclick="unequipSkin()" class="btn-equip active-eq" style="flex:1;border:1px solid #05C582">✅ EQUIPPED — Unequip</button>'; }
-    else { actions.innerHTML = '<button onclick="equipSkin(' + id + ')" class="btn-equip" style="flex:1">🦍 EQUIP IN GAME</button>'; }
+    if (equipped) {
+      actions.innerHTML = '<button onclick="unequipSkin()" class="btn-equip active-eq" style="flex:1;border:1px solid #05C582">✅ EQUIPPED — Unequip</button>';
+    } else {
+      actions.innerHTML = '<button onclick="equipSkin(' + id + ')" class="btn-equip" style="flex:1">🦍 EQUIP IN GAME</button>';
+    }
   } else {
-    actions.innerHTML = '<button onclick="buySkin(' + id + ')" class="btn-buy-usdc" style="flex:1;padding:0.85rem">💎 Buy for ' + s.price + ' USDC</button>';
+    actions.innerHTML = '<button onclick="buySkin(' + id + ')" class="btn-buy-usdc" style="flex:1;padding:0.85rem">💎 Buy for ' + s.price + ' USDC (on-chain)</button>';
   }
   document.getElementById('skin-modal').style.display = 'flex';
 }
 function closeSkinModal() { document.getElementById('skin-modal').style.display = 'none'; }
 
-var LB_KEY = 'apes_leaderboard_v3';
-var PB_KEY = 'apes_personal_best_v2';
+// ═══════════════════════════════════════════════════════════
+// LEADERBOARD
+// ═══════════════════════════════════════════════════════════
+var LB_KEY = 'apes_lb_v3'; var PB_KEY = 'apes_pb_v2';
 var MEDALS = ['👑','🥈','🥉'];
-var leaderboardData = [];
-var personalBest = 0;
-var submitting = false;
+var leaderboardData = []; var personalBest = 0; var submitting = false;
 
 var FALLBACK_LB = [
-  { name:'HarambeReborn', score:12450 },
-  { name:'BananaSlayer',  score:9820  },
-  { name:'JungleChad',   score:8740  },
-  { name:'MoonApe420',   score:7650  },
-  { name:'PeelMaster',   score:6890  }
+  { name:'HarambeReborn', score:12450, wallet:'' },
+  { name:'BananaSlayer',  score:9820,  wallet:'' },
+  { name:'JungleChad',   score:8740,  wallet:'' },
+  { name:'MoonApe420',   score:7650,  wallet:'' },
+  { name:'PeelMaster',   score:6890,  wallet:'' }
 ];
 
 function loadLeaderboard() {
-  try { var raw = localStorage.getItem(LB_KEY); if (raw) { var p = JSON.parse(raw); if (Array.isArray(p) && p.length > 0) return p; } } catch(e) {}
+  try { var r = localStorage.getItem(LB_KEY); if (r) { var p = JSON.parse(r); if (Array.isArray(p) && p.length > 0) return p; } } catch(e) {}
   return FALLBACK_LB.slice();
 }
 function saveLeaderboard() { try { localStorage.setItem(LB_KEY, JSON.stringify(leaderboardData)); } catch(e) {} }
-function loadPersonalBest() { try { var v = parseInt(localStorage.getItem(PB_KEY),10); if (!isNaN(v) && v > 0) return v; } catch(e) {} return 0; }
+function loadPersonalBest() { try { var v = parseInt(localStorage.getItem(PB_KEY), 10); if (!isNaN(v) && v > 0) return v; } catch(e) {} return 0; }
 function savePersonalBest() { try { localStorage.setItem(PB_KEY, String(personalBest)); } catch(e) {} }
 
-function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
 function renderLeaderboard() {
-  var list = document.getElementById('leaderboard-list');
-  list.innerHTML = '';
+  var list = document.getElementById('leaderboard-list'); list.innerHTML = '';
   leaderboardData.slice(0,8).forEach(function(entry, i) {
     var div = document.createElement('div');
     div.className = 'lb-pop';
     div.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:7px 0.75rem;border-radius:1rem;animation-delay:' + (i*60) + 'ms;' + (i < 3 ? 'background:rgba(5,197,130,0.07);border:1px solid rgba(5,197,130,0.2)' : 'background:rgba(0,0,0,0.4)');
-    var walletBadge = entry.wallet ? '<span style="font-size:0.5rem;color:#05C582;background:rgba(5,197,130,0.1);border:1px solid rgba(5,197,130,0.25);border-radius:3px;padding:1px 4px;margin-left:5px;vertical-align:middle">🔮 MON</span>' : '';
-    div.innerHTML = '<div style="display:flex;align-items:center;gap:0.75rem"><div style="min-width:28px;text-align:right;font-family:monospace;font-size:0.75rem;font-weight:700;color:#05C582;padding-right:0.25rem">' + (i+1) + '</div><div style="font-weight:700">' + escHtml(entry.name) + (i < 3 ? ' ' + MEDALS[i] : '') + walletBadge + '</div></div><div style="font-family:monospace;color:#05C582;font-size:0.875rem">' + Math.floor(entry.score).toLocaleString() + '</div>';
+    var walletBadge = entry.wallet ? '<span style="font-size:0.5rem;color:#C084FC;background:rgba(192,132,252,0.1);border:1px solid rgba(192,132,252,0.25);border-radius:3px;padding:1px 4px;margin-left:4px;vertical-align:middle">🔮</span>' : '';
+    div.innerHTML = '<div style="display:flex;align-items:center;gap:0.75rem"><div style="min-width:24px;font-family:monospace;font-size:0.75rem;font-weight:700;color:#05C582">' + (i+1) + '</div><div style="font-weight:700">' + escHtml(entry.name) + (i < 3 ? ' ' + MEDALS[i] : '') + walletBadge + '</div></div><div style="font-family:monospace;color:#05C582;font-size:0.875rem">' + Math.floor(entry.score).toLocaleString() + '</div>';
     list.appendChild(div);
   });
 }
 
-var score = 0, level = 1, bananasNeeded = 10000;
-var comboCount = 0, lastClickTime = 0;
+// ═══════════════════════════════════════════════════════════
+// GAME ENGINE
+// ═══════════════════════════════════════════════════════════
+var score = 0, level = 1, bananasNeeded = 10000, comboCount = 0, lastClickTime = 0;
 
 function updateGameUI() {
   document.getElementById('score-display').textContent = Math.floor(score).toLocaleString();
@@ -1082,16 +1159,16 @@ function spawnFloat(emoji, xPct, yPct) {
   var c = document.getElementById('floats');
   var el = document.createElement('div');
   el.className = 'float-emoji';
-  el.style.cssText = 'left:' + (xPct||50) + '%;top:' + (yPct||50) + '%;';
+  el.style.cssText = 'left:' + (xPct||50) + '%;top:' + (yPct||50) + '%;font-size:2.5rem';
   el.textContent = emoji;
   c.appendChild(el);
-  setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 850);
+  setTimeout(function(){ if (el.parentNode) el.parentNode.removeChild(el); }, 850);
 }
 
 function showLevelMsg(msg) {
   var el = document.getElementById('level-msg');
   el.textContent = msg; el.style.display = 'block';
-  setTimeout(function(){ el.style.display = 'none'; }, 1800);
+  setTimeout(function(){ el.style.display='none'; }, 1800);
 }
 
 function animateApe(scale) {
@@ -1100,10 +1177,10 @@ function animateApe(scale) {
   setTimeout(function(){ img.style.transform = 'scale(1)'; }, 400);
 }
 
-function takeBanana(baseAmount) {
+function takeBanana(base) {
   var now = Date.now();
-  var boost = getSkinBoostMultiplier();
-  var pts = Math.round(baseAmount * boost);
+  var boost = getSkinBoost();
+  var pts = Math.round((base || 1) * boost);
   if (now - lastClickTime < 800) { comboCount++; pts += Math.floor(comboCount / 3); } else { comboCount = 0; }
   lastClickTime = now;
   score += pts;
@@ -1111,9 +1188,9 @@ function takeBanana(baseAmount) {
   var target = level * bananasNeeded;
   if (score >= target && level < 30) {
     level++; bananasNeeded = Math.floor(bananasNeeded * 1.25);
-    animateApe(1.4); showLevelMsg('LEVEL ' + level + ' UNLOCKED! 🔥');
-    if (level === 5) showToast('🔥 KING MODE! You are now a true Banana Lord!', 'info');
-    if (level === 10) showToast('👑 ULTIMATE KING OF THE JUNGLE! Try King Ape skin for 3× boost!', 'success');
+    animateApe(1.45); showLevelMsg('LEVEL ' + level + ' UNLOCKED! 🔥');
+    if (level === 5) showToast('🔥 BANANA LORD! Try a skin for more power!', 'info');
+    if (level === 10) showToast('👑 KING OF THE JUNGLE! King Ape skin = 3× boost!', 'success');
   }
   document.getElementById('game-instruction').style.display = 'none';
   updateGameUI();
@@ -1121,26 +1198,25 @@ function takeBanana(baseAmount) {
 
 function handleGameClick(e) {
   if (e.target.closest && e.target.closest('button')) return;
-  startJungleMusic();
+  startMusic();
   var c = document.getElementById('game-container');
   var rect = c.getBoundingClientRect();
-  var y = e.clientY - rect.top;
-  var x = e.clientX - rect.left;
+  var x = e.clientX - rect.left; var y = e.clientY - rect.top;
   if (y > 60 && y < rect.height - 70) {
     takeBanana(1);
-    var boost = getSkinBoostMultiplier();
+    var boost = getSkinBoost();
     var emoji = boost >= 3.0 ? '👑🍌' : (boost >= 2.0 ? '⚡🍌' : '🍌');
     spawnFloat(emoji, (x/rect.width)*100, (y/rect.height)*100);
-    if (Math.random() < 0.22) setTimeout(function(){ takeBanana(2); }, 180);
+    if (Math.random() < 0.2) setTimeout(function(){ takeBanana(1); }, 180);
   }
 }
 
 function handleGameTouch(e) {
-  e.preventDefault(); startJungleMusic();
+  e.preventDefault(); startMusic();
   var c = document.getElementById('game-container');
   var rect = c.getBoundingClientRect();
   var t = e.touches[0];
-  var y = t.clientY - rect.top; var x = t.clientX - rect.left;
+  var x = t.clientX - rect.left; var y = t.clientY - rect.top;
   if (y > 60 && y < rect.height - 70) {
     takeBanana(1); spawnFloat('🍌', (x/rect.width)*100, (y/rect.height)*100);
   }
@@ -1154,120 +1230,159 @@ function resetGame() {
 
 document.addEventListener('keydown', function(e) {
   var inp = document.getElementById('submit-name-input');
-  if ((e.key === ' ' || e.key === 'Enter') && document.activeElement !== inp && !document.activeElement.tagName.match(/INPUT|TEXTAREA/)) {
-    e.preventDefault(); takeBanana(1); spawnFloat('🍌', 50, 50);
+  if ((e.key === ' ' || e.key === 'Enter') && document.activeElement !== inp && !document.activeElement.tagName.match(/INPUT|TEXTAREA|BUTTON/)) {
+    e.preventDefault(); takeBanana(1); spawnFloat('🍌', 50, 40);
   }
   if (e.key === 'Escape') {
-    closeSubmitModal(); closeSkinModal(); closeWalletInfoModal(); closePaymentModal(); closeConvertModal();
+    closeSubmitModal(); closeSkinModal(); closeWalletInfoModal(); closeConvertModal(); closeWalletSelectModal();
   }
 });
 
-setInterval(function(){
-  if (score > 5 && Math.random() < 0.32) spawnFloat('💣', Math.random()*80+10, Math.random()*60+10);
-}, 6000);
-
+// ═══════════════════════════════════════════════════════════
+// SUBMIT SCORE
+// ═══════════════════════════════════════════════════════════
 function openSubmitModal() {
-  if (Math.floor(score) === 0) { showToast('⚠️ Play the game first to collect bananas!', 'error'); return; }
-  if (!walletAddress || !walletRawAddress) { showToast('🦊 Connect MetaMask first to submit!', 'error'); setTimeout(function(){ connectMetaMask(); }, 300); return; }
+  if (Math.floor(score) === 0) { showToast('⚠️ Play first to collect bananas!', 'error'); return; }
+  if (!walletRawAddress) { showToast('🔮 Connect wallet first!', 'error'); setTimeout(openWalletSelectModal, 300); return; }
   document.getElementById('submit-score-display').textContent = Math.floor(score).toLocaleString();
   document.getElementById('submit-wallet-display').textContent = walletAddress;
   document.getElementById('submit-name-input').value = '';
   document.getElementById('submit-modal').style.display = 'flex';
-  setTimeout(function(){ var inp=document.getElementById('submit-name-input'); if(inp) inp.focus(); }, 100);
+  setTimeout(function(){ var inp=document.getElementById('submit-name-input'); if(inp) inp.focus(); }, 120);
 }
 function closeSubmitModal() { if (!submitting) document.getElementById('submit-modal').style.display = 'none'; }
 function submitScore() {
-  var name = (document.getElementById('submit-name-input').value || '').trim();
-  if (!name) { showToast('⚠️ Enter your ape name first!', 'error'); return; }
-  if (!walletAddress) { showToast('🦊 Connect MetaMask to submit!', 'error'); return; }
+  var name = (document.getElementById('submit-name-input').value||'').trim();
+  if (!name) { showToast('⚠️ Enter your ape name!', 'error'); return; }
+  if (!walletRawAddress) { showToast('🔮 Connect wallet to submit!', 'error'); return; }
   submitting = true;
-  var btn = document.getElementById('submit-btn');
-  btn.textContent = '⏳ Saving...'; btn.disabled = true;
+  var btn = document.getElementById('submit-btn'); btn.textContent = '⏳ Saving…'; btn.disabled = true;
   var currentScore = Math.floor(score);
   setTimeout(function() {
-    var entry = { name: name, score: currentScore, wallet: walletRawAddress || '' };
+    var entry = { name:name, score:currentScore, wallet:walletRawAddress };
     var updated = leaderboardData.concat([entry]);
-    updated.sort(function(a,b){ return b.score - a.score; });
-    updated = updated.slice(0, 10);
+    updated.sort(function(a,b){ return b.score-a.score; });
+    updated = updated.slice(0,10);
     leaderboardData = updated; saveLeaderboard(); renderLeaderboard();
-    var rank = updated.findIndex(function(e){ return e.name === name && e.score === currentScore; }) + 1;
+    var rank = updated.findIndex(function(e){ return e.name===name && e.score===currentScore; }) + 1;
     if (currentScore > personalBest) { personalBest = currentScore; savePersonalBest(); updateGameUI(); }
     closeSubmitModal();
-    showToast('🏆 Score saved! Ranked #' + rank + ' — linked to your wallet!', 'success');
+    showToast('🏆 Score saved! Ranked #' + rank + '!', 'success');
     submitting = false; btn.textContent = '🏆 SUBMIT'; btn.disabled = false;
   }, 600);
 }
 
+// ═══════════════════════════════════════════════════════════
+// CONVERT MODAL
+// ═══════════════════════════════════════════════════════════
 function openConvertModal() {
-  var currentScore = Math.floor(score);
-  document.getElementById('convert-score-display').textContent = currentScore.toLocaleString();
-  document.getElementById('convert-apes-display').textContent = Math.floor(currentScore / 1000).toLocaleString() + ' $APES';
+  var cur = Math.floor(score);
+  document.getElementById('convert-score-display').textContent = cur.toLocaleString();
+  document.getElementById('convert-apes-display').textContent = Math.floor(cur/1000).toLocaleString() + ' $APES';
   var s = getEquippedSkin();
   var note = document.getElementById('convert-boost-note');
-  if (s) { note.style.display = 'block'; note.textContent = '⚡ ' + s.name + ' (' + s.boostLabel + ') is boosting your bananas — more $APES for you!'; }
-  else { note.style.display = 'none'; }
+  if (s) { note.style.display='block'; note.textContent='⚡ ' + s.name + ' (' + s.boostLabel + ') is boosting your bananas!'; }
+  else { note.style.display='none'; }
   document.getElementById('convert-modal').style.display = 'flex';
 }
 function closeConvertModal() { document.getElementById('convert-modal').style.display = 'none'; }
 function claimConvert() {
-  if (!walletAddress) { closeConvertModal(); connectMetaMask(); showToast('🦊 Connect MetaMask to claim $APES when available.', 'info'); return; }
+  if (!walletRawAddress) { closeConvertModal(); openWalletSelectModal(); return; }
   closeConvertModal();
-  showToast('✅ Wallet linked! $APES conversion goes live at token launch on Monad Mainnet!', 'info');
+  showToast('✅ Wallet linked! $APES conversion goes live at token launch!', 'success');
 }
 
-var musicOn = true, musicStarted = false, musicAudioCtx = null, musicMasterGain = null, musicInterval = null;
-function startJungleMusic() {
+// ═══════════════════════════════════════════════════════════
+// JUNGLE MUSIC
+// ═══════════════════════════════════════════════════════════
+var musicOn = true, musicStarted = false, audioCtx = null, masterGain = null, musicInterval = null;
+
+function startMusic() {
   if (musicStarted) return;
   musicStarted = true;
   try {
-    musicAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    musicMasterGain = musicAudioCtx.createGain();
-    musicMasterGain.gain.value = 0.38;
-    musicMasterGain.connect(musicAudioCtx.destination);
-    var BPM = 122, beat = 60/BPM;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain(); masterGain.gain.value = 0.35;
+    masterGain.connect(audioCtx.destination);
+    var BPM = 118, beat = 60/BPM;
     var NOTES = [196,233,261,294,349,392,466];
     var MELODY = [0,-1,2,-1,4,3,-1,2,0,-1,1,-1,3,2,-1,0];
-    var nextTime = musicAudioCtx.currentTime + 0.05, step = 0;
+    var nextTime = audioCtx.currentTime + 0.05, step = 0;
     function schedule() {
-      while (nextTime < musicAudioCtx.currentTime + 0.2) {
+      while (nextTime < audioCtx.currentTime + 0.2) {
         if (step%8===0||step%8===4) {
-          var o=musicAudioCtx.createOscillator(),g=musicAudioCtx.createGain();
-          o.connect(g);g.connect(musicMasterGain);
-          o.frequency.setValueAtTime(160,nextTime);o.frequency.exponentialRampToValueAtTime(0.01,nextTime+0.28);
-          g.gain.setValueAtTime(0.85,nextTime);g.gain.exponentialRampToValueAtTime(0.001,nextTime+0.28);
-          o.start(nextTime);o.stop(nextTime+0.3);
+          var o=audioCtx.createOscillator(),g=audioCtx.createGain();
+          o.connect(g);g.connect(masterGain);
+          o.frequency.setValueAtTime(155,nextTime);o.frequency.exponentialRampToValueAtTime(0.01,nextTime+0.26);
+          g.gain.setValueAtTime(0.8,nextTime);g.gain.exponentialRampToValueAtTime(0.001,nextTime+0.26);
+          o.start(nextTime);o.stop(nextTime+0.28);
         }
         var mIdx=MELODY[step%MELODY.length];
         if (mIdx>=0) {
-          var oM=musicAudioCtx.createOscillator(),gM=musicAudioCtx.createGain();
-          oM.type='triangle';oM.connect(gM);gM.connect(musicMasterGain);
-          oM.frequency.value=NOTES[mIdx];
-          gM.gain.setValueAtTime(0.22,nextTime);gM.gain.exponentialRampToValueAtTime(0.001,nextTime+beat*0.75);
-          oM.start(nextTime);oM.stop(nextTime+beat);
+          var om=audioCtx.createOscillator(),gm=audioCtx.createGain();
+          om.type='triangle';om.connect(gm);gm.connect(masterGain);
+          om.frequency.value=NOTES[mIdx];
+          gm.gain.setValueAtTime(0.2,nextTime);gm.gain.exponentialRampToValueAtTime(0.001,nextTime+beat*0.7);
+          om.start(nextTime);om.stop(nextTime+beat);
         }
-        nextTime+=beat/2;step++;
+        nextTime+=beat/2; step++;
       }
     }
-    musicInterval=setInterval(schedule,50);schedule();
+    musicInterval=setInterval(schedule,50); schedule();
   } catch(e){}
 }
+
 function toggleMusic() {
   var btn = document.getElementById('music-btn');
-  if (!musicStarted) { startJungleMusic(); musicOn=true; btn.textContent='🎵 ON'; btn.style.color='#05C582'; btn.style.borderColor='rgba(5,197,130,0.4)'; return; }
-  musicOn=!musicOn;
-  if (musicMasterGain) musicMasterGain.gain.setValueAtTime(musicOn?0.38:0, musicAudioCtx.currentTime);
-  btn.textContent=musicOn?'🎵 ON':'🔇 OFF';
-  btn.style.color=musicOn?'#05C582':'#6B7280';
-  btn.style.borderColor=musicOn?'rgba(5,197,130,0.4)':'rgba(255,255,255,0.15)';
+  if (!musicStarted) { startMusic(); musicOn=true; }
+  else { musicOn=!musicOn; if (masterGain) masterGain.gain.setValueAtTime(musicOn?0.35:0, audioCtx.currentTime); }
+  btn.textContent = musicOn ? '🎵 ON' : '🔇 OFF';
+  btn.style.color = musicOn ? '#05C582' : '#6B7280';
+  btn.style.borderColor = musicOn ? 'rgba(5,197,130,0.4)' : 'rgba(255,255,255,0.15)';
 }
 
-initMetaMask();
+// ═══════════════════════════════════════════════════════════
+// FAQ
+// ═══════════════════════════════════════════════════════════
+var FAQS = [
+  { q:'What is Planet Apes ($APES)?', a:'Planet Apes is the most based meme coin on Monad Mainnet. Take bananas, rule the jungle, earn rewards. Pure community vibes — no team tokens, 0% tax, LP burned.' },
+  { q:'Which wallets are supported?', a:'Any EIP-1193 compatible wallet: MetaMask, Trust Wallet, Rabby, OKX Wallet, Coinbase Wallet, Brave Wallet, Phantom, and more. Click Connect Wallet and select yours.' },
+  { q:'What is Monad Mainnet? Chain ID?', a:'Monad is a high-performance EVM blockchain. Chain ID: 143 (hex: 0x8f). RPC: https://rpc.monad.xyz. Our Connect Wallet button adds it automatically.' },
+  { q:'How do I buy APE skins with USDC?', a:'Connect your wallet to Monad Mainnet, have USDC (contract: 0x754704Bc059F8C67012fEd69BC8A327a5aafb603) in your wallet, then choose a skin from the APE SKINS section. The USDC is sent directly on-chain.' },
+  { q:'Where does my USDC go?', a:'Your USDC is transferred directly on-chain to the Planet Apes dev wallet on Monad Mainnet. Fully transparent — you can verify on the Monad Explorer.' },
+  { q:'How do skins boost gameplay?', a:'Equipping a skin multiplies your banana score per tap: Jungle Chad 1.5×, Neon Ape 2×, Monad God 2.5×, King Ape 3× (max). Boosts apply as long as the skin is equipped.' },
+  { q:'When can I convert bananas to $APES?', a:'$APES conversion activates at token launch on Monad Mainnet. Connect your wallet now to link your score for the airdrop!' },
+  { q:'Is the contract safe?', a:'Yes — contract owner renounced, LP burned 100%, 0% buy/sell tax. True community coin on Monad Mainnet.' }
+];
+
+function initFAQ() {
+  var list = document.getElementById('faq-list');
+  FAQS.forEach(function(item, i) {
+    var div = document.createElement('div'); div.className = 'faq-item';
+    div.innerHTML = '<div class="faq-q" onclick="toggleFAQ(' + i + ')"><span>' + item.q + '</span><span class="faq-arrow" id="fa-' + i + '">▼</span></div><div class="faq-ans" id="fans-' + i + '"><div class="faq-ans-inner">' + item.a + '</div></div>';
+    list.appendChild(div);
+  });
+}
+function toggleFAQ(i) {
+  var ans = document.getElementById('fans-' + i); var arrow = document.getElementById('fa-' + i);
+  var isOpen = ans.classList.contains('open');
+  document.querySelectorAll('.faq-ans').forEach(function(a){ a.classList.remove('open'); });
+  document.querySelectorAll('.faq-arrow').forEach(function(a){ a.classList.remove('open'); });
+  if (!isOpen) { ans.classList.add('open'); arrow.classList.add('open'); }
+}
+
+// ═══════════════════════════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════════════════════════
+initParticles();
+initFAQ();
+initWallet();
 loadSkinState();
 leaderboardData = loadLeaderboard();
 personalBest = loadPersonalBest();
 renderLeaderboard();
 renderSkinsGrid();
-applyEquippedSkinToGame();
+applyEquippedSkin();
 updateGameUI();
 </script>
 </body>
