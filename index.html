@@ -221,15 +221,7 @@
       Take bananas. Rule the jungle. <span style="color:#05C582">To the moon.</span>
     </p>
 
-    <div style="max-width:36rem;margin:0 auto 2rem;display:flex;align-items:center">
-      <div style="flex:1;background:rgba(5,197,130,0.07);border:1px solid rgba(5,197,130,0.3);border-right:none;border-radius:0.75rem 0 0 0.75rem;padding:0.75rem 1rem;font-family:monospace;font-size:0.78rem;color:#9CA3AF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">CA: 0x0cfb4CB67B0f8ae522444d2419350b31046F7777</div>
-      <button onclick="navigator.clipboard&&navigator.clipboard.writeText('0x0cfb4CB67B0f8ae522444d2419350b31046F7777').then(function(){showToast('CA copied!','success')})" style="background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:0.78rem;border-radius:0 0.75rem 0.75rem 0;padding:0.75rem 1.25rem;white-space:nowrap;border:none;cursor:pointer">📋 COPY</button>
-    </div>
-
     <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;align-items:center">
-      <button class="meme-btn" onclick="window.open('https://nad.fun/tokens/0x0cfb4CB67B0f8ae522444d2419350b31046F7777','_blank')" style="padding:1.25rem 3.5rem;background:linear-gradient(90deg,#05C582,#00D97B);color:#000;font-weight:900;font-size:1.1rem;border-radius:1rem;border:none;display:flex;align-items:center;gap:0.75rem;box-shadow:0 10px 40px rgba(5,197,130,0.4)">
-        <span>BUY $APES</span><span>🚀</span>
-      </button>
       <button onclick="smoothScroll('game')" style="padding:1.25rem 2.5rem;border:2px solid #05C582;background:rgba(5,197,130,0.06);color:#fff;font-weight:900;font-size:1.1rem;border-radius:1rem">
         🎮 PLAY TAKE BANANA
       </button>
@@ -638,54 +630,44 @@ var ERC20_ABI = [
 ];
 
 // ═══════════════════════════════════════════════════════════
-// ZODIAC PURPLE PARTICLE BACKGROUND
+// APE PARTICLE BACKGROUND
 // ═══════════════════════════════════════════════════════════
-var ZODIAC_SIGNS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+var APE_PARTICLES = ['🦍','🐵','🍌','🌿','👑','💎','⚡','🚀','🏆','💫','🔥','🌙'];
 
 function initParticles() {
   var bg = document.getElementById('particle-bg');
   if (!bg) return;
 
-  // Zodiac signs — purple, rising and drifting
-  for (var i = 0; i < 30; i++) {
+  // Glow colours per emoji type
+  var APE_GLOWS = {
+    '🦍':'rgba(5,197,130,0.7)','🐵':'rgba(5,197,130,0.5)',
+    '🍌':'rgba(250,204,21,0.6)','🌿':'rgba(5,197,130,0.4)',
+    '👑':'rgba(250,204,21,0.8)','💎':'rgba(96,165,250,0.7)',
+    '⚡':'rgba(250,204,21,0.7)','🚀':'rgba(5,197,130,0.6)',
+    '🏆':'rgba(250,204,21,0.6)','💫':'rgba(200,200,255,0.6)',
+    '🔥':'rgba(251,146,60,0.6)','🌙':'rgba(192,132,252,0.5)'
+  };
+
+  for (var i = 0; i < 35; i++) {
     var p = document.createElement('div');
     var dur = (10 + Math.random() * 18).toFixed(1);
     var delay = -(Math.random() * 25).toFixed(1);
     var drift = (Math.random() * 260 - 130).toFixed(0);
-    var size  = (1.1 + Math.random() * 1.5).toFixed(2);
+    var size  = (1.0 + Math.random() * 1.6).toFixed(2);
+    var sym   = APE_PARTICLES[Math.floor(Math.random() * APE_PARTICLES.length)];
+    var glow  = APE_GLOWS[sym] || 'rgba(5,197,130,0.5)';
     p.className = 'particle';
     p.style.left = (Math.random() * 100).toFixed(1) + '%';
     p.style.fontSize = size + 'rem';
-    p.style.color = '#C084FC';
-    p.style.textShadow = '0 0 14px #C084FC, 0 0 28px #a855f7, 0 0 48px #7c3aed';
-    p.style.fontWeight = '900';
+    p.style.filter = 'drop-shadow(0 0 8px ' + glow + ')';
+    p.style.opacity = (0.55 + Math.random() * 0.35).toFixed(2);
     p.style.setProperty('--duration', dur + 's');
     p.style.setProperty('--delay', delay + 's');
     p.style.setProperty('--drift-x', drift + 'px');
     p.style.animationDuration = dur + 's';
     p.style.animationDelay = delay + 's';
-    p.textContent = ZODIAC_SIGNS[Math.floor(Math.random() * ZODIAC_SIGNS.length)];
+    p.textContent = sym;
     bg.appendChild(p);
-  }
-
-  // Accent emojis — subtle
-  var EMOJIS = ['🍌','🌿','⚡','💫','🌙'];
-  for (var j = 0; j < 8; j++) {
-    var ep = document.createElement('div');
-    var edur = (14 + Math.random() * 14).toFixed(1);
-    var edelay = -(Math.random() * 20).toFixed(1);
-    var edrift = (Math.random() * 140 - 70).toFixed(0);
-    ep.className = 'particle';
-    ep.style.left = (Math.random() * 100).toFixed(1) + '%';
-    ep.style.fontSize = '1.2rem';
-    ep.style.opacity = '0.55';
-    ep.style.setProperty('--duration', edur + 's');
-    ep.style.setProperty('--delay', edelay + 's');
-    ep.style.setProperty('--drift-x', edrift + 'px');
-    ep.style.animationDuration = edur + 's';
-    ep.style.animationDelay = edelay + 's';
-    ep.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
-    bg.appendChild(ep);
   }
 
   // Star dots — purple & green twinkling
