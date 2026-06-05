@@ -1,0 +1,1577 @@
+[
+  {
+    "index": 1,
+    "row": 1,
+    "col": 1,
+    "filename": "monad_01_r1c1.jpg",
+    "x1": 2,
+    "y1": 2,
+    "x2": 128,
+    "y2": 124,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 1, column 1 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #1",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "1"
+      },
+      {
+        "trait_type": "Column",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "index": 2,
+    "row": 1,
+    "col": 2,
+    "filename": "monad_02_r1c2.jpg",
+    "x1": 132,
+    "y1": 2,
+    "x2": 259,
+    "y2": 124,
+    "width": 127,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 1, column 2 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #2",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "1"
+      },
+      {
+        "trait_type": "Column",
+        "value": "2"
+      }
+    ]
+  },
+  {
+    "index": 3,
+    "row": 1,
+    "col": 3,
+    "filename": "monad_03_r1c3.jpg",
+    "x1": 263,
+    "y1": 2,
+    "x2": 389,
+    "y2": 124,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 1, column 3 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #3",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "1"
+      },
+      {
+        "trait_type": "Column",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "index": 4,
+    "row": 1,
+    "col": 4,
+    "filename": "monad_04_r1c4.jpg",
+    "x1": 393,
+    "y1": 2,
+    "x2": 519,
+    "y2": 124,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 1, column 4 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #4",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "1"
+      },
+      {
+        "trait_type": "Column",
+        "value": "4"
+      }
+    ]
+  },
+  {
+    "index": 5,
+    "row": 1,
+    "col": 5,
+    "filename": "monad_05_r1c5.jpg",
+    "x1": 523,
+    "y1": 2,
+    "x2": 649,
+    "y2": 124,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 1, column 5 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #5",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "1"
+      },
+      {
+        "trait_type": "Column",
+        "value": "5"
+      }
+    ]
+  },
+  {
+    "index": 6,
+    "row": 1,
+    "col": 6,
+    "filename": "monad_06_r1c6.jpg",
+    "x1": 653,
+    "y1": 2,
+    "x2": 780,
+    "y2": 124,
+    "width": 127,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 1, column 6 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #6",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "1"
+      },
+      {
+        "trait_type": "Column",
+        "value": "6"
+      }
+    ]
+  },
+  {
+    "index": 7,
+    "row": 1,
+    "col": 7,
+    "filename": "monad_07_r1c7.jpg",
+    "x1": 784,
+    "y1": 2,
+    "x2": 910,
+    "y2": 124,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 1, column 7 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #7",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "1"
+      },
+      {
+        "trait_type": "Column",
+        "value": "7"
+      }
+    ]
+  },
+  {
+    "index": 8,
+    "row": 2,
+    "col": 1,
+    "filename": "monad_08_r2c1.jpg",
+    "x1": 2,
+    "y1": 128,
+    "x2": 128,
+    "y2": 250,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 2, column 1 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #8",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "2"
+      },
+      {
+        "trait_type": "Column",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "index": 9,
+    "row": 2,
+    "col": 2,
+    "filename": "monad_09_r2c2.jpg",
+    "x1": 132,
+    "y1": 128,
+    "x2": 259,
+    "y2": 250,
+    "width": 127,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 2, column 2 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #9",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "2"
+      },
+      {
+        "trait_type": "Column",
+        "value": "2"
+      }
+    ]
+  },
+  {
+    "index": 10,
+    "row": 2,
+    "col": 3,
+    "filename": "monad_10_r2c3.jpg",
+    "x1": 263,
+    "y1": 128,
+    "x2": 389,
+    "y2": 250,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 2, column 3 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #10",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "2"
+      },
+      {
+        "trait_type": "Column",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "index": 11,
+    "row": 2,
+    "col": 4,
+    "filename": "monad_11_r2c4.jpg",
+    "x1": 393,
+    "y1": 128,
+    "x2": 519,
+    "y2": 250,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 2, column 4 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #11",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "2"
+      },
+      {
+        "trait_type": "Column",
+        "value": "4"
+      }
+    ]
+  },
+  {
+    "index": 12,
+    "row": 2,
+    "col": 5,
+    "filename": "monad_12_r2c5.jpg",
+    "x1": 523,
+    "y1": 128,
+    "x2": 649,
+    "y2": 250,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 2, column 5 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #12",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "2"
+      },
+      {
+        "trait_type": "Column",
+        "value": "5"
+      }
+    ]
+  },
+  {
+    "index": 13,
+    "row": 2,
+    "col": 6,
+    "filename": "monad_13_r2c6.jpg",
+    "x1": 653,
+    "y1": 128,
+    "x2": 780,
+    "y2": 250,
+    "width": 127,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 2, column 6 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #13",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "2"
+      },
+      {
+        "trait_type": "Column",
+        "value": "6"
+      }
+    ]
+  },
+  {
+    "index": 14,
+    "row": 2,
+    "col": 7,
+    "filename": "monad_14_r2c7.jpg",
+    "x1": 784,
+    "y1": 128,
+    "x2": 910,
+    "y2": 250,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 2, column 7 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #14",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "2"
+      },
+      {
+        "trait_type": "Column",
+        "value": "7"
+      }
+    ]
+  },
+  {
+    "index": 15,
+    "row": 3,
+    "col": 1,
+    "filename": "monad_15_r3c1.jpg",
+    "x1": 2,
+    "y1": 254,
+    "x2": 128,
+    "y2": 377,
+    "width": 126,
+    "height": 123,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 3, column 1 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #15",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "3"
+      },
+      {
+        "trait_type": "Column",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "index": 16,
+    "row": 3,
+    "col": 2,
+    "filename": "monad_16_r3c2.jpg",
+    "x1": 132,
+    "y1": 254,
+    "x2": 259,
+    "y2": 377,
+    "width": 127,
+    "height": 123,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 3, column 2 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #16",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "3"
+      },
+      {
+        "trait_type": "Column",
+        "value": "2"
+      }
+    ]
+  },
+  {
+    "index": 17,
+    "row": 3,
+    "col": 3,
+    "filename": "monad_17_r3c3.jpg",
+    "x1": 263,
+    "y1": 254,
+    "x2": 389,
+    "y2": 377,
+    "width": 126,
+    "height": 123,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 3, column 3 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #17",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "3"
+      },
+      {
+        "trait_type": "Column",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "index": 18,
+    "row": 3,
+    "col": 4,
+    "filename": "monad_18_r3c4.jpg",
+    "x1": 393,
+    "y1": 254,
+    "x2": 519,
+    "y2": 377,
+    "width": 126,
+    "height": 123,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 3, column 4 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #18",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "3"
+      },
+      {
+        "trait_type": "Column",
+        "value": "4"
+      }
+    ]
+  },
+  {
+    "index": 19,
+    "row": 3,
+    "col": 5,
+    "filename": "monad_19_r3c5.jpg",
+    "x1": 523,
+    "y1": 254,
+    "x2": 649,
+    "y2": 377,
+    "width": 126,
+    "height": 123,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 3, column 5 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #19",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "3"
+      },
+      {
+        "trait_type": "Column",
+        "value": "5"
+      }
+    ]
+  },
+  {
+    "index": 20,
+    "row": 3,
+    "col": 6,
+    "filename": "monad_20_r3c6.jpg",
+    "x1": 653,
+    "y1": 254,
+    "x2": 780,
+    "y2": 377,
+    "width": 127,
+    "height": 123,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 3, column 6 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #20",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "3"
+      },
+      {
+        "trait_type": "Column",
+        "value": "6"
+      }
+    ]
+  },
+  {
+    "index": 21,
+    "row": 3,
+    "col": 7,
+    "filename": "monad_21_r3c7.jpg",
+    "x1": 784,
+    "y1": 254,
+    "x2": 910,
+    "y2": 377,
+    "width": 126,
+    "height": 123,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 3, column 7 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #21",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "3"
+      },
+      {
+        "trait_type": "Column",
+        "value": "7"
+      }
+    ]
+  },
+  {
+    "index": 22,
+    "row": 4,
+    "col": 1,
+    "filename": "monad_22_r4c1.jpg",
+    "x1": 2,
+    "y1": 381,
+    "x2": 128,
+    "y2": 503,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 4, column 1 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #22",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "4"
+      },
+      {
+        "trait_type": "Column",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "index": 23,
+    "row": 4,
+    "col": 2,
+    "filename": "monad_23_r4c2.jpg",
+    "x1": 132,
+    "y1": 381,
+    "x2": 259,
+    "y2": 503,
+    "width": 127,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 4, column 2 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #23",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "4"
+      },
+      {
+        "trait_type": "Column",
+        "value": "2"
+      }
+    ]
+  },
+  {
+    "index": 24,
+    "row": 4,
+    "col": 3,
+    "filename": "monad_24_r4c3.jpg",
+    "x1": 263,
+    "y1": 381,
+    "x2": 389,
+    "y2": 503,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 4, column 3 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #24",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "4"
+      },
+      {
+        "trait_type": "Column",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "index": 25,
+    "row": 4,
+    "col": 4,
+    "filename": "monad_25_r4c4.jpg",
+    "x1": 393,
+    "y1": 381,
+    "x2": 519,
+    "y2": 503,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 4, column 4 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #25",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "4"
+      },
+      {
+        "trait_type": "Column",
+        "value": "4"
+      }
+    ]
+  },
+  {
+    "index": 26,
+    "row": 4,
+    "col": 5,
+    "filename": "monad_26_r4c5.jpg",
+    "x1": 523,
+    "y1": 381,
+    "x2": 649,
+    "y2": 503,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 4, column 5 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #26",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "4"
+      },
+      {
+        "trait_type": "Column",
+        "value": "5"
+      }
+    ]
+  },
+  {
+    "index": 27,
+    "row": 4,
+    "col": 6,
+    "filename": "monad_27_r4c6.jpg",
+    "x1": 653,
+    "y1": 381,
+    "x2": 780,
+    "y2": 503,
+    "width": 127,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 4, column 6 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #27",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "4"
+      },
+      {
+        "trait_type": "Column",
+        "value": "6"
+      }
+    ]
+  },
+  {
+    "index": 28,
+    "row": 4,
+    "col": 7,
+    "filename": "monad_28_r4c7.jpg",
+    "x1": 784,
+    "y1": 381,
+    "x2": 910,
+    "y2": 503,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 4, column 7 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #28",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "4"
+      },
+      {
+        "trait_type": "Column",
+        "value": "7"
+      }
+    ]
+  },
+  {
+    "index": 29,
+    "row": 5,
+    "col": 1,
+    "filename": "monad_29_r5c1.jpg",
+    "x1": 2,
+    "y1": 507,
+    "x2": 128,
+    "y2": 629,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 5, column 1 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #29",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "5"
+      },
+      {
+        "trait_type": "Column",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "index": 30,
+    "row": 5,
+    "col": 2,
+    "filename": "monad_30_r5c2.jpg",
+    "x1": 132,
+    "y1": 507,
+    "x2": 259,
+    "y2": 629,
+    "width": 127,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 5, column 2 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #30",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "5"
+      },
+      {
+        "trait_type": "Column",
+        "value": "2"
+      }
+    ]
+  },
+  {
+    "index": 31,
+    "row": 5,
+    "col": 3,
+    "filename": "monad_31_r5c3.jpg",
+    "x1": 263,
+    "y1": 507,
+    "x2": 389,
+    "y2": 629,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 5, column 3 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #31",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "5"
+      },
+      {
+        "trait_type": "Column",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "index": 32,
+    "row": 5,
+    "col": 4,
+    "filename": "monad_32_r5c4.jpg",
+    "x1": 393,
+    "y1": 507,
+    "x2": 519,
+    "y2": 629,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 5, column 4 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #32",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "5"
+      },
+      {
+        "trait_type": "Column",
+        "value": "4"
+      }
+    ]
+  },
+  {
+    "index": 33,
+    "row": 5,
+    "col": 5,
+    "filename": "monad_33_r5c5.jpg",
+    "x1": 523,
+    "y1": 507,
+    "x2": 649,
+    "y2": 629,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 5, column 5 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #33",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "5"
+      },
+      {
+        "trait_type": "Column",
+        "value": "5"
+      }
+    ]
+  },
+  {
+    "index": 34,
+    "row": 5,
+    "col": 6,
+    "filename": "monad_34_r5c6.jpg",
+    "x1": 653,
+    "y1": 507,
+    "x2": 780,
+    "y2": 629,
+    "width": 127,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 5, column 6 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #34",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "5"
+      },
+      {
+        "trait_type": "Column",
+        "value": "6"
+      }
+    ]
+  },
+  {
+    "index": 35,
+    "row": 5,
+    "col": 7,
+    "filename": "monad_35_r5c7.jpg",
+    "x1": 784,
+    "y1": 507,
+    "x2": 910,
+    "y2": 629,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 5, column 7 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #35",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "5"
+      },
+      {
+        "trait_type": "Column",
+        "value": "7"
+      }
+    ]
+  },
+  {
+    "index": 36,
+    "row": 6,
+    "col": 1,
+    "filename": "monad_36_r6c1.jpg",
+    "x1": 2,
+    "y1": 633,
+    "x2": 128,
+    "y2": 755,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 6, column 1 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #36",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "6"
+      },
+      {
+        "trait_type": "Column",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "index": 37,
+    "row": 6,
+    "col": 2,
+    "filename": "monad_37_r6c2.jpg",
+    "x1": 132,
+    "y1": 633,
+    "x2": 259,
+    "y2": 755,
+    "width": 127,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 6, column 2 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #37",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "6"
+      },
+      {
+        "trait_type": "Column",
+        "value": "2"
+      }
+    ]
+  },
+  {
+    "index": 38,
+    "row": 6,
+    "col": 3,
+    "filename": "monad_38_r6c3.jpg",
+    "x1": 263,
+    "y1": 633,
+    "x2": 389,
+    "y2": 755,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 6, column 3 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #38",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "6"
+      },
+      {
+        "trait_type": "Column",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "index": 39,
+    "row": 6,
+    "col": 4,
+    "filename": "monad_39_r6c4.jpg",
+    "x1": 393,
+    "y1": 633,
+    "x2": 519,
+    "y2": 755,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 6, column 4 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #39",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "6"
+      },
+      {
+        "trait_type": "Column",
+        "value": "4"
+      }
+    ]
+  },
+  {
+    "index": 40,
+    "row": 6,
+    "col": 5,
+    "filename": "monad_40_r6c5.jpg",
+    "x1": 523,
+    "y1": 633,
+    "x2": 649,
+    "y2": 755,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 6, column 5 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #40",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "6"
+      },
+      {
+        "trait_type": "Column",
+        "value": "5"
+      }
+    ]
+  },
+  {
+    "index": 41,
+    "row": 6,
+    "col": 6,
+    "filename": "monad_41_r6c6.jpg",
+    "x1": 653,
+    "y1": 633,
+    "x2": 780,
+    "y2": 755,
+    "width": 127,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 6, column 6 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #41",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "6"
+      },
+      {
+        "trait_type": "Column",
+        "value": "6"
+      }
+    ]
+  },
+  {
+    "index": 42,
+    "row": 6,
+    "col": 7,
+    "filename": "monad_42_r6c7.jpg",
+    "x1": 784,
+    "y1": 633,
+    "x2": 910,
+    "y2": 755,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 6, column 7 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #42",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "6"
+      },
+      {
+        "trait_type": "Column",
+        "value": "7"
+      }
+    ]
+  },
+  {
+    "index": 43,
+    "row": 7,
+    "col": 1,
+    "filename": "monad_43_r7c1.jpg",
+    "x1": 2,
+    "y1": 759,
+    "x2": 128,
+    "y2": 882,
+    "width": 126,
+    "height": 123,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 7, column 1 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #43",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "7"
+      },
+      {
+        "trait_type": "Column",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "index": 44,
+    "row": 7,
+    "col": 2,
+    "filename": "monad_44_r7c2.jpg",
+    "x1": 132,
+    "y1": 759,
+    "x2": 259,
+    "y2": 882,
+    "width": 127,
+    "height": 123,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 7, column 2 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #44",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "7"
+      },
+      {
+        "trait_type": "Column",
+        "value": "2"
+      }
+    ]
+  },
+  {
+    "index": 45,
+    "row": 7,
+    "col": 3,
+    "filename": "monad_45_r7c3.jpg",
+    "x1": 263,
+    "y1": 759,
+    "x2": 389,
+    "y2": 882,
+    "width": 126,
+    "height": 123,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 7, column 3 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #45",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "7"
+      },
+      {
+        "trait_type": "Column",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "index": 46,
+    "row": 7,
+    "col": 4,
+    "filename": "monad_46_r7c4.jpg",
+    "x1": 393,
+    "y1": 759,
+    "x2": 519,
+    "y2": 882,
+    "width": 126,
+    "height": 123,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 7, column 4 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #46",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "7"
+      },
+      {
+        "trait_type": "Column",
+        "value": "4"
+      }
+    ]
+  },
+  {
+    "index": 47,
+    "row": 7,
+    "col": 5,
+    "filename": "monad_47_r7c5.jpg",
+    "x1": 523,
+    "y1": 759,
+    "x2": 649,
+    "y2": 882,
+    "width": 126,
+    "height": 123,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 7, column 5 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #47",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "7"
+      },
+      {
+        "trait_type": "Column",
+        "value": "5"
+      }
+    ]
+  },
+  {
+    "index": 48,
+    "row": 7,
+    "col": 6,
+    "filename": "monad_48_r7c6.jpg",
+    "x1": 653,
+    "y1": 759,
+    "x2": 780,
+    "y2": 882,
+    "width": 127,
+    "height": 123,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 7, column 6 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #48",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "7"
+      },
+      {
+        "trait_type": "Column",
+        "value": "6"
+      }
+    ]
+  },
+  {
+    "index": 49,
+    "row": 7,
+    "col": 7,
+    "filename": "monad_49_r7c7.jpg",
+    "x1": 784,
+    "y1": 759,
+    "x2": 910,
+    "y2": 882,
+    "width": 126,
+    "height": 123,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 7, column 7 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #49",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "7"
+      },
+      {
+        "trait_type": "Column",
+        "value": "7"
+      }
+    ]
+  },
+  {
+    "index": 50,
+    "row": 8,
+    "col": 1,
+    "filename": "monad_50_r8c1.jpg",
+    "x1": 2,
+    "y1": 886,
+    "x2": 128,
+    "y2": 1008,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 8, column 1 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #50",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "8"
+      },
+      {
+        "trait_type": "Column",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "index": 51,
+    "row": 8,
+    "col": 2,
+    "filename": "monad_51_r8c2.jpg",
+    "x1": 132,
+    "y1": 886,
+    "x2": 259,
+    "y2": 1008,
+    "width": 127,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 8, column 2 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #51",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "8"
+      },
+      {
+        "trait_type": "Column",
+        "value": "2"
+      }
+    ]
+  },
+  {
+    "index": 52,
+    "row": 8,
+    "col": 3,
+    "filename": "monad_52_r8c3.jpg",
+    "x1": 263,
+    "y1": 886,
+    "x2": 389,
+    "y2": 1008,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 8, column 3 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #52",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "8"
+      },
+      {
+        "trait_type": "Column",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "index": 53,
+    "row": 8,
+    "col": 4,
+    "filename": "monad_53_r8c4.jpg",
+    "x1": 393,
+    "y1": 886,
+    "x2": 519,
+    "y2": 1008,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 8, column 4 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #53",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "8"
+      },
+      {
+        "trait_type": "Column",
+        "value": "4"
+      }
+    ]
+  },
+  {
+    "index": 54,
+    "row": 8,
+    "col": 5,
+    "filename": "monad_54_r8c5.jpg",
+    "x1": 523,
+    "y1": 886,
+    "x2": 649,
+    "y2": 1008,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 8, column 5 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #54",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "8"
+      },
+      {
+        "trait_type": "Column",
+        "value": "5"
+      }
+    ]
+  },
+  {
+    "index": 55,
+    "row": 8,
+    "col": 6,
+    "filename": "monad_55_r8c6.jpg",
+    "x1": 653,
+    "y1": 886,
+    "x2": 780,
+    "y2": 1008,
+    "width": 127,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 8, column 6 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #55",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "8"
+      },
+      {
+        "trait_type": "Column",
+        "value": "6"
+      }
+    ]
+  },
+  {
+    "index": 56,
+    "row": 8,
+    "col": 7,
+    "filename": "monad_56_r8c7.jpg",
+    "x1": 784,
+    "y1": 886,
+    "x2": 910,
+    "y2": 1008,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 8, column 7 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #56",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "8"
+      },
+      {
+        "trait_type": "Column",
+        "value": "7"
+      }
+    ]
+  },
+  {
+    "index": 57,
+    "row": 9,
+    "col": 1,
+    "filename": "monad_57_r9c1.jpg",
+    "x1": 2,
+    "y1": 1012,
+    "x2": 128,
+    "y2": 1134,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 9, column 1 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #57",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "9"
+      },
+      {
+        "trait_type": "Column",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "index": 58,
+    "row": 9,
+    "col": 2,
+    "filename": "monad_58_r9c2.jpg",
+    "x1": 132,
+    "y1": 1012,
+    "x2": 259,
+    "y2": 1134,
+    "width": 127,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 9, column 2 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #58",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "9"
+      },
+      {
+        "trait_type": "Column",
+        "value": "2"
+      }
+    ]
+  },
+  {
+    "index": 59,
+    "row": 9,
+    "col": 3,
+    "filename": "monad_59_r9c3.jpg",
+    "x1": 263,
+    "y1": 1012,
+    "x2": 389,
+    "y2": 1134,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 9, column 3 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #59",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "9"
+      },
+      {
+        "trait_type": "Column",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "index": 60,
+    "row": 9,
+    "col": 4,
+    "filename": "monad_60_r9c4.jpg",
+    "x1": 393,
+    "y1": 1012,
+    "x2": 519,
+    "y2": 1134,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 9, column 4 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #60",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "9"
+      },
+      {
+        "trait_type": "Column",
+        "value": "4"
+      }
+    ]
+  },
+  {
+    "index": 61,
+    "row": 9,
+    "col": 5,
+    "filename": "monad_61_r9c5.jpg",
+    "x1": 523,
+    "y1": 1012,
+    "x2": 649,
+    "y2": 1134,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 9, column 5 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #61",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "9"
+      },
+      {
+        "trait_type": "Column",
+        "value": "5"
+      }
+    ]
+  },
+  {
+    "index": 62,
+    "row": 9,
+    "col": 6,
+    "filename": "monad_62_r9c6.jpg",
+    "x1": 653,
+    "y1": 1012,
+    "x2": 780,
+    "y2": 1134,
+    "width": 127,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 9, column 6 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #62",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "9"
+      },
+      {
+        "trait_type": "Column",
+        "value": "6"
+      }
+    ]
+  },
+  {
+    "index": 63,
+    "row": 9,
+    "col": 7,
+    "filename": "monad_63_r9c7.jpg",
+    "x1": 784,
+    "y1": 1012,
+    "x2": 910,
+    "y2": 1134,
+    "width": 126,
+    "height": 122,
+    "source": "grok-image-ac76d587-43f7-4852-87aa-f3dd5e188243_1.jpg",
+    "description": "Monad character tile at row 9, column 7 (cropped with 2px inset to avoid neighbor bleed)",
+    "name": "Monad Tile #63",
+    "attributes": [
+      {
+        "trait_type": "Row",
+        "value": "9"
+      },
+      {
+        "trait_type": "Column",
+        "value": "7"
+      }
+    ]
+  }
+]
