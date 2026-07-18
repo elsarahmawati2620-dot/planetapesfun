@@ -649,7 +649,7 @@
     <div class="contract-box reveal">
       <h4>OFFICIAL CONTRACT ADDRESS</h4>
       <div class="contract-inner">
-        <code id="contract">0x000000000000000000000000000000000000APES</code>
+        <code id="contract">0x0856F71C65268DA154DA4413d961cb348Dc6119d</code>
         <button class="btn-copy" onclick="copyContract()">COPY</button>
       </div>
     </div>
@@ -792,126 +792,70 @@
 </footer>
 
 <script>
-  // ===================== FIXED & IMPROVED SCRIPT =====================
-  // Stars background
-  (function createStars() {
+  // Stars
+  (function() {
     var c = document.getElementById('stars-container');
-    if (!c) return;
     for (var i = 0; i < 120; i++) {
       var s = document.createElement('div');
       s.className = 'star';
-      s.style.left = (Math.random() * 100) + '%';
-      s.style.top = (Math.random() * 100) + '%';
-      var sz = Math.random() * 3 + 1;
-      s.style.width = sz + 'px';
-      s.style.height = sz + 'px';
-      s.style.animationDelay = (Math.random() * 4) + 's';
-      s.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      s.style.left = (Math.random()*100)+'%';
+      s.style.top = (Math.random()*100)+'%';
+      var sz = Math.random()*3+1;
+      s.style.width = sz+'px'; s.style.height = sz+'px';
+      s.style.animationDelay = (Math.random()*4)+'s';
+      s.style.animationDuration = (Math.random()*2+2)+'s';
       c.appendChild(s);
     }
   })();
 
-  // Navbar scroll effect (with safety check)
+  // Navbar scroll
   window.addEventListener('scroll', function() {
     var nav = document.getElementById('navbar');
-    if (!nav) return;
-    if (window.scrollY > 60) {
-      nav.classList.add('scrolled');
-    } else {
-      nav.classList.remove('scrolled');
-    }
+    if (window.scrollY > 60) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
   });
 
-  // Smooth scroll to section (kept original name for compatibility with onclick)
+  // Smooth scroll
   function scrollTo(id) {
     var el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    if (el) el.scrollIntoView({behavior:'smooth'});
   }
 
-  // Mobile menu toggle
+  // Mobile menu
   function toggleMobile() {
-    var menu = document.getElementById('mobile-menu');
-    if (menu) menu.classList.toggle('open');
+    document.getElementById('mobile-menu').classList.toggle('open');
   }
-
   function closeMobile() {
-    var menu = document.getElementById('mobile-menu');
-    if (menu) menu.classList.remove('open');
+    document.getElementById('mobile-menu').classList.remove('open');
   }
 
-  // Scroll reveal + tokenomics bar animation
+  // Scroll reveal
   var reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
   var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-
-        // Animate any tokenomics bars inside this element
-        var bar = entry.target.querySelector('.toko-fill');
-        if (bar && bar.getAttribute('data-width')) {
-          bar.style.width = bar.getAttribute('data-width');
-        }
-
-        // Optional: unobserve after first trigger (prevents re-animation on scroll back)
-        observer.unobserve(entry.target);
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // Animate tokenomics bars
+        var bar = e.target.querySelector('.toko-fill');
+        if (bar) { bar.style.width = bar.getAttribute('data-width'); }
       }
     });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.15 });
+  reveals.forEach(function(r) { observer.observe(r); });
 
-  reveals.forEach(function(r) {
-    observer.observe(r);
+  // Animate tokenomics bars when visible
+  document.querySelectorAll('.toko-card').forEach(function(card) {
+    observer.observe(card);
   });
 
-  // Copy contract address (ROBUST VERSION with fallback)
+  // Copy contract
   function copyContract() {
-    var contractEl = document.getElementById('contract');
-    if (!contractEl) return;
-
-    var txt = contractEl.textContent.trim();
-    var btn = document.querySelector('.btn-copy');
-
-    function showCopied() {
-      if (!btn) return;
-      var originalText = btn.textContent;
+    var txt = document.getElementById('contract').textContent;
+    navigator.clipboard.writeText(txt).then(function() {
+      var btn = document.querySelector('.btn-copy');
       btn.textContent = 'COPIED!';
-      setTimeout(function() {
-        if (btn) btn.textContent = originalText || 'COPY';
-      }, 2200);
-    }
-
-    function fallbackCopy() {
-      try {
-        var textarea = document.createElement('textarea');
-        textarea.value = txt;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        document.body.appendChild(textarea);
-        textarea.select();
-        var success = document.execCommand('copy');
-        document.body.removeChild(textarea);
-
-        if (success) {
-          showCopied();
-        } else {
-          // Last resort: show the address
-          prompt('Copy this address manually:', txt);
-        }
-      } catch (e) {
-        prompt('Copy this address manually:', txt);
-      }
-    }
-
-    // Modern clipboard API (preferred)
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(txt)
-        .then(showCopied)
-        .catch(fallbackCopy);
-    } else {
-      // Fallback for file:// or older browsers
-      fallbackCopy();
-    }
+      setTimeout(function() { btn.textContent = 'COPY'; }, 2000);
+    });
   }
 </script>
 </body>
