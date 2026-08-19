@@ -7,7 +7,7 @@ Static website inspired by unks.fun, rebranded for **Planet Apes** with ticker *
 ## Files
 - `index.html` — main page
 - `styles.css` — styles (lime green + pixel font theme)
-- `assets/logo.png` — logo / hero image (astronaut ape)
+- `assets/logo.jpg` — logo / hero image (astronaut ape)
 
 ## How to use
 1. Open `index.html` in a browser, or
