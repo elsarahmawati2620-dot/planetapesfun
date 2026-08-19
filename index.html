@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PLANET APES — 3,000 on-chain Apes | $uAPES</title>
+  <meta name="description" content="Planet Apes is a 3,000-supply generative collection. Every whole $uAPES token mints one unique cosmic ape from on-chain layers. Buy the token, get an Ape." />
+  <link rel="icon" type="image/jpeg" href="assets/logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Extra overrides for Planet Apes logo */
+    .hero .logo {
+      width: min(80vw, 480px);
+      height: auto;
+      border: 4px solid #000;
+      border-radius: 12px;
+      image-rendering: auto;
+      box-shadow: 8px 8px 0 #000;
+    }
+    .ticker-track img {
+      width: 64px;
+      height: 64px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 2px solid #000;
+    }
+    .unk img {
+      image-rendering: auto !important;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+    .nav-mark {
+      font-family: "Pixelify Sans", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+    .hero-kicker, .eyebrow, .foot p:first-child, .stats strong, .steps span {
+      font-family: "Pixelify Sans", sans-serif;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="nav-mark" href="#top">PLANET APES</a>
+    <nav class="nav-links">
+      <a href="#collection">Collection</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#how">How it works</a>
+      <a href="https://x.com/Planetapesking" target="_blank" rel="noopener noreferrer">X</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <img
+        class="logo"
+        src="assets/logo.jpg"
+        width="500"
+        height="500"
+        alt="Planet Apes $uAPES"
+      />
+      <p class="hero-kicker">A 3K GENERATIVE COLLECTION</p>
+      <h1>3,000 unique Apes.<br />Minted on-chain.</h1>
+      <p class="hero-lede">
+        Planet Apes is a µToken collection: a 3,000-supply ERC-20 ($uAPES) where every whole token
+        mints one unique cosmic ape from an on-chain layer set. Buy the token, get an Ape.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-ink" href="https://utoken.gg" target="_blank" rel="noopener noreferrer">Buy Now</a>
+        <a class="btn btn-ghost" href="https://x.com/Planetapesking" target="_blank" rel="noopener noreferrer">Follow on X</a>
+      </div>
+    </section>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track" id="ticker-track"></div>
+    </div>
+
+    <section class="stats" aria-label="Collection stats">
+      <article>
+        <strong>3K</strong>
+        <span>Supply / max Apes</span>
+      </article>
+      <article>
+        <strong>COSMIC</strong>
+        <span>Space jungle vibe</span>
+      </article>
+      <article>
+        <strong>ON-CHAIN</strong>
+        <span>Layers in storage</span>
+      </article>
+      <article>
+        <strong>ERC-20</strong>
+        <span>One token = one Ape</span>
+      </article>
+    </section>
+
+    <section class="band" id="collection">
+      <p class="eyebrow">THE COLLECTION</p>
+      <h2>Not an NFT mint.<br />A generative token.</h2>
+      <div class="split">
+        <p>
+          Pieces carry identity and traits like NFTs, but the token itself is fungible
+          and trades like an ERC-20. First on a bonding curve, then on Uniswap after
+          graduation. Ownership of a whole $uAPES token is what mints and holds an Ape.
+        </p>
+        <p>
+          Art is uploaded as layers — one folder per trait, one image per variant.
+          The protocol composes each piece. Possible looks are the product of those
+          variants. The number of Apes that can ever exist is the supply: 3,000.
+        </p>
+      </div>
+      <ul class="facts">
+        <li>Nothing exists at launch. Buys mint one item per whole token received.</li>
+        <li>Fractions and transfers never mint. Only new buys create Apes.</li>
+        <li>Traits cannot be previewed or cherry-picked. Looks come from a later block.</li>
+        <li>Layers stay on-chain. Any Ape can be rendered from chain data alone.</li>
+      </ul>
+    </section>
+
+    <section class="gallery-wrap" id="gallery">
+      <p class="eyebrow">SAMPLE APES</p>
+      <h2>Generated pieces</h2>
+      <p class="section-lede">
+        Sample cosmic Apes from the layer set. The live collection mints unique
+        combinations as whole $uAPES tokens are bought on the curve.
+      </p>
+      <div class="gallery" id="gallery-grid"></div>
+    </section>
+
+    <section class="band" id="how">
+      <p class="eyebrow">PROTOCOL</p>
+      <h2>How an Ape is born</h2>
+      <ol class="steps">
+        <li>
+          <span>01</span>
+          <div>
+            <h3>Deploy</h3>
+            <p>Name, ticker $uAPES, 3,000 supply, and curve are set permanently. Collections use 18 decimals, so one whole token always backs one item.</p>
+          </div>
+        </li>
+        <li>
+          <span>02</span>
+          <div>
+            <h3>Upload layers</h3>
+            <p>Art goes on-chain across several transactions. Once trading opens, the layer set is locked. Metadata cannot change later.</p>
+          </div>
+        </li>
+        <li>
+          <span>03</span>
+          <div>
+            <h3>Buy &amp; reveal</h3>
+            <p>A buy mints one Ape per whole token. Traits reveal layer by layer from a later block, so rarity cannot be gamed at buy time.</p>
+          </div>
+        </li>
+        <li>
+          <span>04</span>
+          <div>
+            <h3>Graduate</h3>
+            <p>At the ETH target, anyone can graduate. Liquidity moves to Uniswap and the LP key is burned. Each Ape also trades on its own card.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>PLANET APES</p>
+    <p>3,000 on-chain Apes · $uAPES generative collection</p>
+    <a href="https://x.com/Planetapesking" target="_blank" rel="noopener noreferrer">x.com/Planetapesking</a>
+  </footer>
+
+  <dialog class="lightbox" id="lightbox">
+    <img alt="" width="200" height="200" />
+    <p></p>
+    <button type="button" aria-label="Close">Close</button>
+  </dialog>
+
+  <script>
+    const APE_COUNT = 12;
+    const logoSrc = "assets/logo.jpg";
+
+    const gallery = document.getElementById("gallery-grid");
+    const ticker = document.getElementById("ticker-track");
+    const lightbox = document.getElementById("lightbox");
+    const lightImg = lightbox.querySelector("img");
+    const lightCap = lightbox.querySelector("p");
+    const lightClose = lightbox.querySelector("button");
+
+    function apeLabel(i) {
+      return `#${String(i).padStart(2, "0")}`;
+    }
+
+    function buildGallery() {
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < APE_COUNT; i += 1) {
+        const figure = document.createElement("figure");
+        figure.className = "unk";
+        figure.tabIndex = 0;
+        figure.dataset.index = String(i);
+
+        const img = document.createElement("img");
+        img.src = logoSrc;
+        img.alt = `Ape ${apeLabel(i)}`;
+        img.width = 200;
+        img.height = 200;
+        // slight variety with filters
+        const filters = [
+          "none",
+          "hue-rotate(15deg)",
+          "hue-rotate(-20deg) saturate(1.2)",
+          "hue-rotate(40deg)",
+          "hue-rotate(-35deg) brightness(1.1)",
+          "saturate(1.4)",
+          "hue-rotate(60deg)",
+          "hue-rotate(-50deg)",
+          "contrast(1.15)",
+          "hue-rotate(25deg) saturate(1.3)",
+          "hue-rotate(-10deg)",
+          "brightness(1.15) contrast(1.1)"
+        ];
+        img.style.filter = filters[i % filters.length];
+
+        const cap = document.createElement("figcaption");
+        cap.textContent = apeLabel(i);
+
+        figure.append(img, cap);
+        frag.append(figure);
+      }
+      gallery.append(frag);
+    }
+
+    function buildTicker() {
+      const frag = document.createDocumentFragment();
+      for (let n = 0; n < 24; n++) {
+        const img = document.createElement("img");
+        img.src = logoSrc;
+        img.alt = "";
+        img.width = 64;
+        img.height = 64;
+        frag.append(img);
+      }
+      ticker.append(frag);
+    }
+
+    function openApe(index) {
+      lightImg.src = logoSrc;
+      lightImg.alt = `Ape ${apeLabel(index)}`;
+      lightImg.style.filter = gallery.querySelector(`[data-index="${index}"] img`).style.filter || "none";
+      lightCap.textContent = `Ape ${apeLabel(index)}`;
+      if (typeof lightbox.showModal === "function") {
+        lightbox.showModal();
+      }
+    }
+
+    gallery.addEventListener("click", (event) => {
+      const card = event.target.closest(".unk");
+      if (!card) return;
+      openApe(Number(card.dataset.index));
+    });
+
+    gallery.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const card = event.target.closest(".unk");
+      if (!card) return;
+      event.preventDefault();
+      openApe(Number(card.dataset.index));
+    });
+
+    lightClose.addEventListener("click", () => lightbox.close());
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) lightbox.close();
+    });
+
+    buildGallery();
+    buildTicker();
+  </script>
+</body>
+</html>
